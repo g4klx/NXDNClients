@@ -1,0 +1,7 @@
+# NXDNHosts.txt
+#
+# The format of this file is the number of the Talk Group followed by the host name or address and port
+#
+
+# World Wide, 65000
+65000	176.9.1.168	41008

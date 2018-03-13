@@ -1,0 +1,19 @@
+CC      = gcc
+CXX     = g++
+CFLAGS  = -g -O3 -Wall -std=c++0x -pthread
+LIBS    = -lpthread
+LDFLAGS = -g
+
+OBJECTS = Conf.o Log.o Mutex.o NXCoreNetwork.o NXDNLookup.o NXDNNetwork.o NXDNReflector.o StopWatch.o Thread.o Timer.o UDPSocket.o Utils.o
+
+all:		NXDNReflector
+
+NXDNReflector:	$(OBJECTS)
+		$(CXX) $(OBJECTS) $(CFLAGS) $(LIBS) -o NXDNReflector
+
+%.o: %.cpp
+		$(CXX) $(CFLAGS) -c -o $@ $<
+
+clean:
+		$(RM) NXDNReflector *.o *.d *.bak *~
+ 
