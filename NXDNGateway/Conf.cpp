@@ -42,7 +42,7 @@ m_rptAddress(),
 m_rptPort(0U),
 m_myAddress(),
 m_myPort(0U),
-m_announcements(true),
+m_rptDebug(false),
 m_daemon(false),
 m_lookupName(),
 m_lookupTime(0U),
@@ -118,8 +118,8 @@ bool CConf::read()
 			  m_myAddress = value;
 		  else if (::strcmp(key, "LocalPort") == 0)
 			  m_myPort = (unsigned int)::atoi(value);
-		  else if (::strcmp(key, "Announcements") == 0)
-			  m_announcements = ::atoi(value) == 1;
+		  else if (::strcmp(key, "Debug") == 0)
+			  m_rptDebug = ::atoi(value) == 1;
 		  else if (::strcmp(key, "Daemon") == 0)
 			  m_daemon = ::atoi(value) == 1;
 	  } else if (section == SECTION_ID_LOOKUP) {
@@ -191,9 +191,9 @@ unsigned int CConf::getMyPort() const
 	return m_myPort;
 }
 
-bool CConf::getAnnouncements() const
+bool CConf::getRptDebug() const
 {
-	return m_announcements;
+	return m_rptDebug;
 }
 
 bool CConf::getDaemon() const

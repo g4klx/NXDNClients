@@ -161,7 +161,7 @@ void CNXDNGateway::run()
 	}
 #endif
 
-	CIcomNetwork localNetwork(m_conf.getMyAddress(), m_conf.getMyPort(), m_conf.getRptAddress(), m_conf.getRptPort(), false);
+	CIcomNetwork localNetwork(m_conf.getMyAddress(), m_conf.getMyPort(), m_conf.getRptAddress(), m_conf.getRptPort(), m_conf.getRptDebug());
 	ret = localNetwork.open();
 	if (!ret) {
 		::LogFinalise();
