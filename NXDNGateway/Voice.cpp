@@ -36,8 +36,8 @@ const unsigned char NXDN_FRAME_LENGTH = 33U;
 
 const unsigned int NXDN_FRAME_TIME = 80U;
 
-const unsigned int SILENCE_LENGTH = 9U;
-const unsigned int AMBE_LENGTH = 9U;
+const unsigned int SILENCE_LENGTH = 4U;
+const unsigned int AMBE_LENGTH = 13U;
 
 const unsigned char BIT_MASK_TABLE[] = { 0x80U, 0x40U, 0x20U, 0x10U, 0x08U, 0x04U, 0x02U, 0x01U };
 
@@ -59,10 +59,10 @@ m_voiceLength(0U)
 {
 #if defined(_WIN32) || defined(_WIN64)
 	m_indxFile = directory + "\\" + language + ".indx";
-	m_ambeFile = directory + "\\" + language + ".ambe";
+	m_ambeFile = directory + "\\" + language + ".nxdn";
 #else
 	m_indxFile = directory + "/" + language + ".indx";
-	m_ambeFile = directory + "/" + language + ".ambe";
+	m_ambeFile = directory + "/" + language + ".nxdn";
 #endif
 
 	// Approximately 10 seconds worth
@@ -173,10 +173,10 @@ void CVoice::createVoice(unsigned int tg, const std::vector<std::string>& words)
 	}
 
 	// Ensure that the AMBE is an integer number of DMR frames
-	if ((ambeLength % (4U * AMBE_LENGTH)) != 0U) {
-		unsigned int frames = ambeLength / (4U * AMBE_LENGTH);
+	if ((ambeLength % (2U * AMBE_LENGTH)) != 0U) {
+		unsigned int frames = ambeLength / (2U * AMBE_LENGTH);
 		frames++;
-		ambeLength = frames * (4U * AMBE_LENGTH);
+		ambeLength = frames * (2U * AMBE_LENGTH);
 	}
 
 	// Add space for silence before and after the voice
@@ -194,7 +194,7 @@ void CVoice::createVoice(unsigned int tg, const std::vector<std::string>& words)
 	for (std::vector<std::string>::const_iterator it = words.begin(); it != words.end(); ++it) {
 		if (m_positions.count(*it) > 0U) {
 			CPositions* position = m_positions.at(*it);
-			unsigned int start = position->m_start;
+			unsigned int start  = position->m_start;
 			unsigned int length = position->m_length;
 			::memcpy(ambeData + pos, m_ambe + start, length);
 			pos += length;
@@ -217,7 +217,7 @@ void CVoice::createVoice(unsigned int tg, const std::vector<std::string>& words)
 	sacch[6U] = (tg >> 0) & 0xFFU;
 
 	unsigned int n = 0U;
-	for (unsigned int i = 0U; i < ambeLength; i += (4U * AMBE_LENGTH)) {
+	for (unsigned int i = 0U; i < ambeLength; i += (2U * AMBE_LENGTH)) {
 		unsigned char* p = ambeData + i;
 
 		unsigned char buffer[NXDN_FRAME_LENGTH];
@@ -239,8 +239,8 @@ void CVoice::createVoice(unsigned int tg, const std::vector<std::string>& words)
 
 		CNXDNCRC::encodeCRC6(buffer + 1U, 26U);
 
-		::memcpy(buffer + 5U + 0U,  p + 0U,  13U);
-		::memcpy(buffer + 5U + 14U, p + 13U, 13U);
+		::memcpy(buffer + 5U + 0U,  p + 0U,  AMBE_LENGTH);
+		::memcpy(buffer + 5U + 14U, p + 13U, AMBE_LENGTH);
 
 		n = (n + 1U) % 4U;
 
