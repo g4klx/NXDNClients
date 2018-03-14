@@ -268,6 +268,9 @@ void CNXDNGateway::run()
 						if (currentId != 9999U) {
 							LogMessage("Unlinked from reflector %u by %s", currentId, callsign.c_str());
 
+							if (voice != NULL && dstId == 9999U)
+								voice->unlinked();
+
 							remoteNetwork.writeUnlink(currentAddr, currentPort);
 							remoteNetwork.writeUnlink(currentAddr, currentPort);
 							remoteNetwork.writeUnlink(currentAddr, currentPort);
@@ -276,9 +279,6 @@ void CNXDNGateway::run()
 							pollTimer.stop();
 							lostTimer.stop();
 						}
-
-						if (voice != NULL)
-							voice->linkedTo(dstId);
 
 						currentId = dstId;
 					}
@@ -291,6 +291,9 @@ void CNXDNGateway::run()
 
 						std::string callsign = lookup->find(srcId);
 						LogMessage("Linked to reflector %u by %s", currentId, callsign.c_str());
+
+						if (voice != NULL)
+							voice->linkedTo(currentId);
 
 						remoteNetwork.writePoll(currentAddr, currentPort);
 						remoteNetwork.writePoll(currentAddr, currentPort);

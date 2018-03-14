@@ -49,6 +49,8 @@ public:
 
 	bool read(unsigned char* data);
 
+	void abort();
+
 	void clock(unsigned int ms);
 
 private:

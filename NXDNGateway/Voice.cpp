@@ -30,7 +30,7 @@
 const unsigned char HEADER[] = { 0x83U, 0x01U, 0x10U, 0x00U, 0x0FU, 0x01U, 0x00U, 0x20U };
 const unsigned char TRAILER[] = { 0x83U, 0x01U, 0x10U, 0x00U, 0x0FU, 0x08U, 0x00U, 0x20U };
 
-const unsigned char SILENCE[] = {0xACU, 0xAAU, 0x40U, 0x20U, 0x00U, 0x44U, 0x40U, 0x80U, 0x80U};
+const unsigned char SILENCE[] = { 0xF0U, 0x00U, 0x00U, 0x00U, 0x00U, 0x00U, 0x78U, 0x00U, 0x00U, 0x00U, 0x00U, 0x00U, 0x00U };
 
 const unsigned char NXDN_FRAME_LENGTH = 33U;
 
@@ -53,9 +53,9 @@ m_timer(1000U, 1U),
 m_stopWatch(),
 m_sent(0U),
 m_ambe(NULL),
-m_positions(),
 m_voiceData(NULL),
-m_voiceLength(0U)
+m_voiceLength(0U),
+m_positions()
 {
 #if defined(_WIN32) || defined(_WIN64)
 	m_indxFile = directory + "\\" + language + ".indx";
@@ -172,12 +172,9 @@ void CVoice::createVoice(unsigned int tg, const std::vector<std::string>& words)
 		}
 	}
 
-	// Ensure that the AMBE is an integer number of DMR frames
-	if ((ambeLength % (2U * AMBE_LENGTH)) != 0U) {
-		unsigned int frames = ambeLength / (2U * AMBE_LENGTH);
-		frames++;
-		ambeLength = frames * (2U * AMBE_LENGTH);
-	}
+	// Ensure that the AMBE is an integer number of NXDN frames
+	if ((ambeLength % (2U * AMBE_LENGTH)) != 0U)
+		ambeLength++;
 
 	// Add space for silence before and after the voice
 	ambeLength += SILENCE_LENGTH * AMBE_LENGTH;
@@ -189,7 +186,7 @@ void CVoice::createVoice(unsigned int tg, const std::vector<std::string>& words)
 	for (unsigned int i = 0U; i < ambeLength; i += AMBE_LENGTH)
 		::memcpy(ambeData + i, SILENCE, AMBE_LENGTH);
 
-    // Put offset in for silence at the beginning
+	// Put offset in for silence at the beginning
 	unsigned int pos = SILENCE_LENGTH * AMBE_LENGTH;
 	for (std::vector<std::string>::const_iterator it = words.begin(); it != words.end(); ++it) {
 		if (m_positions.count(*it) > 0U) {
@@ -207,7 +204,7 @@ void CVoice::createVoice(unsigned int tg, const std::vector<std::string>& words)
 
 	unsigned char sacch[12U];
 	::memset(sacch, 0x00U, 12U);
-
+	sacch[0U] = 0x01U;
 	sacch[2U] = 0x20U;
 
 	sacch[3U] = (m_srcId >> 8) & 0xFFU;
@@ -268,6 +265,8 @@ bool CVoice::read(unsigned char* data)
 	if (m_sent < count) {
 		unsigned int offset = m_sent * NXDN_FRAME_LENGTH;
 		::memcpy(data, m_voiceData + offset, NXDN_FRAME_LENGTH);
+
+		offset += NXDN_FRAME_LENGTH;
 		m_sent++;
 
 		if (offset >= m_voiceLength) {
@@ -280,6 +279,13 @@ bool CVoice::read(unsigned char* data)
 	}
 
 	return false;
+}
+
+void CVoice::abort()
+{
+	m_status = VS_NONE;
+	m_voiceLength = 0U;
+	m_sent = 0U;
 }
 
 void CVoice::clock(unsigned int ms)

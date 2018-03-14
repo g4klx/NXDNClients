@@ -49,7 +49,7 @@ bool CNXDNNetwork::writeData(const unsigned char* data, unsigned int length, uns
 	assert(length > 0U);
 	assert(port > 0U);
 
-	unsigned char buffer[20U];
+	unsigned char buffer[50U];
 
 	buffer[0U] = 'N';
 	buffer[1U] = 'X';

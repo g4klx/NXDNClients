@@ -29,7 +29,7 @@ const unsigned int BUFFER_LENGTH = 200U;
 const unsigned int NXCORE_PORT = 41300U;
 
 CNXCoreNetwork::CNXCoreNetwork(const std::string& address, bool debug) :
-m_socket("", NXCORE_PORT),
+m_socket(NXCORE_PORT),
 m_address(),
 m_debug(debug),
 m_buffer(1000U, "NXCore Network")
