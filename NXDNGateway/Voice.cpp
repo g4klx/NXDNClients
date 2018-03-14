@@ -53,9 +53,9 @@ m_timer(1000U, 1U),
 m_stopWatch(),
 m_sent(0U),
 m_ambe(NULL),
-m_positions(),
 m_voiceData(NULL),
-m_voiceLength(0U)
+m_voiceLength(0U),
+m_positions()
 {
 #if defined(_WIN32) || defined(_WIN64)
 	m_indxFile = directory + "\\" + language + ".indx";
