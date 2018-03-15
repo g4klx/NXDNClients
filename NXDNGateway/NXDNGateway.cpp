@@ -192,8 +192,14 @@ void CNXDNGateway::run()
 	stopWatch.start();
 
 	CVoice* voice = NULL;
-	if (m_conf.getVoiceEnabled())
+	if (m_conf.getVoiceEnabled()) {
 		voice = new CVoice(m_conf.getVoiceDirectory(), m_conf.getVoiceLanguage(), 1U);
+		bool ok = voice->open();
+		if (!ok) {
+			delete voice;
+			voice = NULL;
+		}
+	}
 
 	LogMessage("Starting NXDNGateway-%s", VERSION);
 
