@@ -85,7 +85,7 @@ void CNXDNParrot::run()
 			parrot.write(buffer, len);
 			watchdogTimer.start();
 
-			if ((buffer[9U] & 0x04U) == 0x04U) {
+			if ((buffer[9U] & 0x08U) == 0x08U) {
 				::fprintf(stdout, "Received end of transmission\n");
 				turnaroundTimer.start();
 				watchdogTimer.stop();

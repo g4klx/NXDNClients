@@ -67,8 +67,8 @@ bool CNXDNNetwork::writeData(const unsigned char* data, unsigned int length, uns
 	buffer[9U] |= grp ? 0x01U : 0x00U;
 
 	if (data[0U] == 0x81U || data[0U] == 0x83U) {
-		buffer[9U] |= buffer[5U] == 0x01U ? 0x04U : 0x00U;
-		buffer[9U] |= buffer[5U] == 0x08U ? 0x08U : 0x00U;
+		buffer[9U] |= data[5U] == 0x01U ? 0x04U : 0x00U;
+		buffer[9U] |= data[5U] == 0x08U ? 0x08U : 0x00U;
 	}
 
 	::memcpy(buffer + 10U, data, 33U);

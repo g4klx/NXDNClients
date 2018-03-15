@@ -244,7 +244,7 @@ void CNXDNReflector::run()
 
 						unsigned short srcId = (buffer[5U] << 8) | buffer[6U];
 						unsigned short dstId = (buffer[7U] << 8) | buffer[8U];
-						bool grp = (buffer[9U] & 0x01U) == 0x01U;
+						bool grp             = (buffer[9U] & 0x01U) == 0x01U;
 
 						std::string callsign = lookup->find(srcId);
 						LogMessage("Transmission from %s at %s to %s%u", callsign.c_str(), current->m_callsign.c_str(), grp ? "TG " : "", dstId);
@@ -263,7 +263,7 @@ void CNXDNReflector::run()
 								nxCoreNetwork->write(buffer, len);
 						}
 
-						if ((buffer[9U] & 0x04U) == 0x04U) {
+						if ((buffer[9U] & 0x08U) == 0x08U) {
 							LogMessage("Received end of transmission");
 							watchdogTimer.stop();
 							current = NULL;
@@ -282,7 +282,7 @@ void CNXDNReflector::run()
 				if (current == NULL) {
 					if (!nxCore) {
 						if ((buffer[0U] == 0x81U || buffer[0U] == 0x83U) && buffer[5U] == 0x01U) {
-							bool grp = (buffer[7U] & 0x20U) == 0x20U;
+							bool grp             = (buffer[7U] & 0x20U) == 0x20U;
 							unsigned short srcId = (buffer[8U]  << 8) | buffer[9U];
 							unsigned short dstId = (buffer[10U] << 8) | buffer[11U];
 
