@@ -95,12 +95,6 @@ void CIcomNetwork::clock(unsigned int ms)
 	if (::memcmp(buffer, "ICOM", 4U) != 0)
 		return;
 
-	// Check if the data is for us
-	if (m_address.s_addr != address.s_addr || port != m_port) {
-		LogMessage("Icom packet received from an invalid source, %08X != %08X and/or %u != %u", m_address.s_addr, address.s_addr, m_port, port);
-		return;
-	}
-
 	// An Icom repeater connect request
 	if (buffer[4U] == 0x01U && buffer[5U] == 0x61U) {
 		buffer[5U]  = 0x62U;
