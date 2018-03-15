@@ -130,10 +130,14 @@ unsigned int CNXDNNetwork::readData(unsigned char* data, unsigned int length, in
 	if (len <= 0)
 		return 0U;
 
-	if (m_debug)
-		CUtils::dump(1U, "NXDN Network Data Received", data, len);
+	if ((::memcmp(data, "NXDNP", 5U) == 0 && len == 15) || (::memcmp(data, "NXDND", 5U) == 0 && len == 43)) {
+		if (m_debug)
+			CUtils::dump(1U, "NXDN Network Data Received", data, len);
 
-	return len;
+		return len;
+	}
+
+	return 0U;
 }
 
 void CNXDNNetwork::close()

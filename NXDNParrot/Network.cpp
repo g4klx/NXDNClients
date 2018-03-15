@@ -66,9 +66,9 @@ void CNetwork::clock(unsigned int ms)
 	m_address.s_addr = address.s_addr;
 	m_port = port;
 
-	if (::memcmp(buffer, "NXDNP", 5U) == 0) {			// A poll
+	if (::memcmp(buffer, "NXDNP", 5U) == 0 && length == 15) {			// A poll
 		write(buffer, length);
-	} else if (::memcmp(buffer, "NXDND", 5U) == 0) {
+	} else if (::memcmp(buffer, "NXDND", 5U) == 0 && length == 43) {
 		unsigned char l = length;
 		m_buffer.addData(&l, 1U);
 		m_buffer.addData(buffer, length);
