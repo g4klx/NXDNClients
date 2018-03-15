@@ -205,7 +205,7 @@ void CNXDNReflector::run()
 		if (len > 0U) {
 			CNXDNRepeater* rpt = findRepeater(address, port);
 
-			if (::memcmp(buffer, "NXDNP", 5U) == 0) {
+			if (::memcmp(buffer, "NXDNP", 5U) == 0 && len == 15U) {
 				if (rpt == NULL) {
 					rpt = new CNXDNRepeater;
 					rpt->m_timer.start();
@@ -215,14 +215,13 @@ void CNXDNReflector::run()
 					m_repeaters.push_back(rpt);
 
 					LogMessage("Adding %s (%s:%u)", rpt->m_callsign.c_str(), ::inet_ntoa(address), port);
-				}
-				else {
+				} else {
 					rpt->m_timer.start();
 				}
 
 				// Return the poll
 				nxdnNetwork.write(buffer, len, address, port);
-			} else if (::memcmp(buffer, "NXDNU", 5U) == 0) {
+			} else if (::memcmp(buffer, "NXDNU", 5U) == 0 && len == 15U) {
 				if (rpt != NULL) {
 					std::string callsign = std::string((char*)(buffer + 5U), 10U);
 					LogMessage("Removing %s (%s:%u)", callsign.c_str(), ::inet_ntoa(address), port);
@@ -236,7 +235,7 @@ void CNXDNReflector::run()
 
 					delete rpt;
 				}
-			} else if (::memcmp(buffer, "NXDND", 5U) == 0) {
+			} else if (::memcmp(buffer, "NXDND", 5U) == 0 && len == 43U) {
 				if (rpt != NULL) {
 					rpt->m_timer.start();
 
