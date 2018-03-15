@@ -45,6 +45,7 @@ const unsigned char BIT_MASK_TABLE[] = { 0x80U, 0x40U, 0x20U, 0x10U, 0x08U, 0x04
 #define READ_BIT1(p,i)    (p[(i)>>3] & BIT_MASK_TABLE[(i)&7])
 
 CVoice::CVoice(const std::string& directory, const std::string& language, unsigned int srcId) :
+m_language(language),
 m_indxFile(),
 m_ambeFile(),
 m_srcId(srcId),
@@ -57,6 +58,9 @@ m_voiceData(NULL),
 m_voiceLength(0U),
 m_positions()
 {
+	assert(!directory.empty());
+	assert(!language.empty());
+
 #if defined(_WIN32) || defined(_WIN64)
 	m_indxFile = directory + "\\" + language + ".indx";
 	m_ambeFile = directory + "\\" + language + ".nxdn";
@@ -129,6 +133,8 @@ bool CVoice::open()
 
 	::fclose(fpindx);
 	::fclose(fpambe);
+
+	LogInfo("Loaded the audio and index file for %s", m_language.c_str());
 
 	return true;
 }

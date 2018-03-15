@@ -54,6 +54,7 @@ public:
 	void clock(unsigned int ms);
 
 private:
+	std::string                            m_language;
 	std::string                            m_indxFile;
 	std::string                            m_ambeFile;
 	unsigned int                           m_srcId;
