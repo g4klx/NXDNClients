@@ -4,7 +4,7 @@
 #
 
 # Australia-Test, 505
-505	vk4tux.duckdns.org	41400
+505	nxdn.duckdns.org	41400
 
 # Spanish speaking, 10301
 10301	ea5gvk.duckdns.org	41400
