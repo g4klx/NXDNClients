@@ -40,7 +40,6 @@ m_file(file),
 m_callsign(),
 m_rptAddress(),
 m_rptPort(0U),
-m_myAddress(),
 m_myPort(0U),
 m_rptDebug(false),
 m_daemon(false),
@@ -114,8 +113,6 @@ bool CConf::read()
 			  m_rptAddress = value;
 		  else if (::strcmp(key, "RptPort") == 0)
 			  m_rptPort = (unsigned int)::atoi(value);
-		  else if (::strcmp(key, "LocalAddress") == 0)
-			  m_myAddress = value;
 		  else if (::strcmp(key, "LocalPort") == 0)
 			  m_myPort = (unsigned int)::atoi(value);
 		  else if (::strcmp(key, "Debug") == 0)
@@ -179,11 +176,6 @@ std::string CConf::getRptAddress() const
 unsigned int CConf::getRptPort() const
 {
 	return m_rptPort;
-}
-
-std::string CConf::getMyAddress() const
-{
-	return m_myAddress;
 }
 
 unsigned int CConf::getMyPort() const

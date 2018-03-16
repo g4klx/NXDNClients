@@ -161,7 +161,10 @@ void CNXDNGateway::run()
 	}
 #endif
 
-	CIcomNetwork localNetwork(m_conf.getMyAddress(), m_conf.getMyPort(), m_conf.getRptAddress(), m_conf.getRptPort(), m_conf.getRptDebug());
+	in_addr rptAddr = CUDPSocket::lookup(m_conf.getRptAddress());
+	unsigned int rptPort = m_conf.getRptPort();
+
+	CIcomNetwork localNetwork(m_conf.getMyPort(), m_conf.getRptDebug());
 	ret = localNetwork.open();
 	if (!ret) {
 		::LogFinalise();
@@ -243,7 +246,7 @@ void CNXDNGateway::run()
 			if (currentId != 9999U && currentAddr.s_addr == address.s_addr && currentPort == port) {
 				// Don't pass reflector control data through to the MMDVM
 				if (::memcmp(buffer, "NXDND", 5U) == 0)
-					localNetwork.write(buffer + 10U, len - 10U);
+					localNetwork.write(buffer + 10U, len - 10U, rptAddr, rptPort);
 
 				// Any network activity is proof that the reflector is alive
 				lostTimer.start();
@@ -251,7 +254,7 @@ void CNXDNGateway::run()
 		}
 
 		// From the MMDVM to the reflector or control data
-		len = localNetwork.read(buffer);
+		len = localNetwork.read(buffer, address, port);
 		if (len > 0U) {
 			if (buffer[0U] == 0x81U || buffer[0U] == 0x83U) {
 				grp = (buffer[7U] & 0x20U) == 0x20U;
@@ -322,7 +325,7 @@ void CNXDNGateway::run()
 		if (voice != NULL) {
 			unsigned int length = voice->read(buffer);
 			if (length > 0U)
-				localNetwork.write(buffer, length);
+				localNetwork.write(buffer, length, rptAddr, rptPort);
 		}
 
 		unsigned int ms = stopWatch.elapsed();
@@ -370,8 +373,6 @@ void CNXDNGateway::run()
 			inactivityTimer.stop();
 			lostTimer.stop();
 		}
-
-		localNetwork.clock(ms);
 
 		if (ms < 5U)
 			CThread::sleep(5U);

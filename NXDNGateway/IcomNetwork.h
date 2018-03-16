@@ -19,7 +19,6 @@
 #ifndef	IcomNetwork_H
 #define	IcomNetwork_H
 
-#include "RingBuffer.h"
 #include "UDPSocket.h"
 #include "Timer.h"
 
@@ -28,25 +27,22 @@
 
 class CIcomNetwork {
 public:
-	CIcomNetwork(const std::string& localAddress, unsigned int localPort, const std::string& gatewayAddress, unsigned int gatewayPort, bool debug);
+	CIcomNetwork(unsigned int localPort, bool debug);
 	~CIcomNetwork();
 
 	bool open();
 
-	bool write(const unsigned char* data, unsigned int length);
+	bool write(const unsigned char* data, unsigned int length, const in_addr& address, unsigned int port);
 
-	bool read(unsigned char* data);
+	bool read(unsigned char* data, in_addr& address, unsigned int& port);
 
 	void close();
 
-	void clock(unsigned int ms);
-
 private:
-	CUDPSocket                 m_socket;
-	in_addr                    m_address;
-	unsigned int               m_port;
-	bool                       m_debug;
-	CRingBuffer<unsigned char> m_buffer;
+	CUDPSocket   m_socket;
+	in_addr      m_address;
+	unsigned int m_port;
+	bool         m_debug;
 };
 
 #endif

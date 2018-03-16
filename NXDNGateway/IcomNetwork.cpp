@@ -26,17 +26,10 @@
 
 const unsigned int BUFFER_LENGTH = 200U;
 
-CIcomNetwork::CIcomNetwork(const std::string& localAddress, unsigned int localPort, const std::string& gatewayAddress, unsigned int gatewayPort, bool debug) :
-m_socket(localAddress, localPort),
-m_address(),
-m_port(gatewayPort),
-m_debug(debug),
-m_buffer(1000U, "Icom")
+CIcomNetwork::CIcomNetwork(unsigned int localPort, bool debug) :
+m_socket(localPort),
+m_debug(debug)
 {
-	assert(gatewayPort > 0U);
-	assert(!gatewayAddress.empty());
-
-	m_address = CUDPSocket::lookup(gatewayAddress);
 }
 
 CIcomNetwork::~CIcomNetwork()
@@ -53,7 +46,7 @@ bool CIcomNetwork::open()
 	return m_socket.open();
 }
 
-bool CIcomNetwork::write(const unsigned char* data, unsigned int length)
+bool CIcomNetwork::write(const unsigned char* data, unsigned int length, const in_addr& address, unsigned int port)
 {
 	assert(data != NULL);
 
@@ -78,22 +71,22 @@ bool CIcomNetwork::write(const unsigned char* data, unsigned int length)
 	if (m_debug)
 		CUtils::dump(1U, "Icom Data Sent", buffer, 102U);
 
-	return m_socket.write(buffer, 102U, m_address, m_port);
+	return m_socket.write(buffer, 102U, address, port);
 }
 
-void CIcomNetwork::clock(unsigned int ms)
+bool CIcomNetwork::read(unsigned char* data, in_addr& address, unsigned int& port)
 {
+	assert(data != NULL);
+
 	unsigned char buffer[BUFFER_LENGTH];
 
-	in_addr address;
-	unsigned int port;
 	int length = m_socket.read(buffer, BUFFER_LENGTH, address, port);
 	if (length <= 0)
-		return;
+		return false;
 
 	// Invalid packet type?
 	if (::memcmp(buffer, "ICOM", 4U) != 0)
-		return;
+		return false;
 
 	// An Icom repeater connect request
 	if (buffer[4U] == 0x01U && buffer[5U] == 0x61U) {
@@ -101,27 +94,17 @@ void CIcomNetwork::clock(unsigned int ms)
 		buffer[37U] = 0x02U;
 		buffer[38U] = 0x4FU;
 		buffer[39U] = 0x4BU;
-		m_socket.write(buffer, length, m_address, m_port);
-		return;
+		m_socket.write(buffer, length, address, port);
+		return false;
 	}
 
 	if (length != 102)
-		return;
+		return false;
 
 	if (m_debug)
 		CUtils::dump(1U, "Icom Data Received", buffer, length);
 
-	m_buffer.addData(buffer + 40U, 33U);
-}
-
-bool CIcomNetwork::read(unsigned char* data)
-{
-	assert(data != NULL);
-
-	if (m_buffer.isEmpty())
-		return false;
-
-	m_buffer.getData(data, 33U);
+	::memcpy(data, buffer + 40U, 33U);
 
 	return true;
 }

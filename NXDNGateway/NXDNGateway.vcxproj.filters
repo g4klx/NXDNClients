@@ -53,9 +53,6 @@
     <ClInclude Include="NXDNNetwork.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RingBuffer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Voice.h">
       <Filter>Header Files</Filter>
     </ClInclude>
