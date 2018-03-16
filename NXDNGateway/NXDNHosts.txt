@@ -3,8 +3,11 @@
 # The format of this file is the number of the Talk Group followed by the host name or address and port
 #
 
+# Australia-Test, 505
+505	vk4tux.duckdns.org	41400
+
 # Spanish speaking, 10301
-10301	ea5gvk.duckdns.org  port 41400
+10301	ea5gvk.duckdns.org	41400
 
 # Pacific, 10400
 10400	nxdn.mmdvmvk.org	41400
