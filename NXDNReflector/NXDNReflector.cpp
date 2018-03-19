@@ -194,6 +194,10 @@ void CNXDNReflector::run()
 	CNXDNRepeater* current = NULL;
 	bool nxCore = false;
 
+	unsigned short srcId = 0U;
+	unsigned short dstId = 0U;
+	bool grp = false;
+
 	CTimer watchdogTimer(1000U, 0U, 1500U);
 
 	for (;;) {
@@ -282,9 +286,10 @@ void CNXDNReflector::run()
 				if (current == NULL) {
 					if (!nxCore) {
 						if ((buffer[0U] == 0x81U || buffer[0U] == 0x83U) && buffer[5U] == 0x01U) {
-							bool grp             = (buffer[7U] & 0x20U) == 0x20U;
-							unsigned short srcId = (buffer[8U]  << 8) | buffer[9U];
-							unsigned short dstId = (buffer[10U] << 8) | buffer[11U];
+							// Save the grp, src and dest for use in the NXDN Protocol messages
+							grp   = (buffer[7U] & 0x20U) == 0x20U;
+							srcId = (buffer[8U]  << 8) | buffer[9U];
+							dstId = (buffer[10U] << 8) | buffer[11U];
 
 							std::string callsign = lookup->find(srcId);
 							LogMessage("Transmission from %s at NXCore to %s%u", callsign.c_str(), grp ? "TG " : "", dstId);
@@ -299,7 +304,7 @@ void CNXDNReflector::run()
 						for (std::vector<CNXDNRepeater*>::const_iterator it = m_repeaters.begin(); it != m_repeaters.end(); ++it) {
 							in_addr addr = (*it)->m_address;
 							unsigned int prt = (*it)->m_port;
-							nxdnNetwork.write(buffer, len, addr, prt);
+							nxdnNetwork.write(buffer, len, srcId, dstId, grp, addr, prt);
 						}
 
 						if ((buffer[0U] == 0x81U || buffer[0U] == 0x83U) && buffer[5U] == 0x08U) {

@@ -32,6 +32,7 @@ public:
 	bool open();
 
 	bool write(const unsigned char* data, unsigned int length, const in_addr& address, unsigned int port);
+	bool write(const unsigned char* data, unsigned int length, unsigned short srcId, unsigned short dstId, bool grp, const in_addr& address, unsigned int port);
 
 	unsigned int read(unsigned char* data, unsigned int length, in_addr& address, unsigned int& port);
 

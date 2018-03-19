@@ -53,6 +53,42 @@ bool CNXDNNetwork::write(const unsigned char* data, unsigned int length, const i
 	return m_socket.write(data, length, address, port);
 }
 
+bool CNXDNNetwork::write(const unsigned char* data, unsigned int length, unsigned short srcId, unsigned short dstId, bool grp, const in_addr& address, unsigned int port)
+{
+	assert(data != NULL);
+	assert(length > 0U);
+	assert(port > 0U);
+
+	unsigned char buffer[50U];
+
+	buffer[0U] = 'N';
+	buffer[1U] = 'X';
+	buffer[2U] = 'D';
+	buffer[3U] = 'N';
+	buffer[4U] = 'D';
+
+	buffer[5U] = (srcId >> 8) & 0xFFU;
+	buffer[6U] = (srcId >> 0) & 0xFFU;
+
+	buffer[7U] = (dstId >> 8) & 0xFFU;
+	buffer[8U] = (dstId >> 0) & 0xFFU;
+
+	buffer[9U] = 0x00U;
+	buffer[9U] |= grp ? 0x01U : 0x00U;
+
+	if (data[0U] == 0x81U || data[0U] == 0x83U) {
+		buffer[9U] |= data[5U] == 0x01U ? 0x04U : 0x00U;
+		buffer[9U] |= data[5U] == 0x08U ? 0x08U : 0x00U;
+	}
+
+	::memcpy(buffer + 10U, data, 33U);
+
+	if (m_debug)
+		CUtils::dump(1U, "NXDN Network Data Sent", buffer, 43U);
+
+	return m_socket.write(buffer, 43U, address, port);
+}
+
 unsigned int CNXDNNetwork::read(unsigned char* data, unsigned int length, in_addr& address, unsigned int& port)
 {
 	assert(data != NULL);
