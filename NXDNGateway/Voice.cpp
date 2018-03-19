@@ -189,8 +189,9 @@ void CVoice::createVoice(unsigned int tg, const std::vector<std::string>& words)
 	unsigned char* ambeData = new unsigned char[ambeLength];
 
 	// Fill the AMBE data with silence
-	for (unsigned int i = 0U; i < ambeLength; i += AMBE_LENGTH)
-		::memcpy(ambeData + i, SILENCE, AMBE_LENGTH);
+	unsigned int offset = 0U;
+	for (unsigned int i = 0U; i < (ambeLength / AMBE_LENGTH); i++, offset += AMBE_LENGTH)
+		::memcpy(ambeData + offset, SILENCE, AMBE_LENGTH);
 
 	// Put offset in for silence at the beginning
 	unsigned int pos = SILENCE_LENGTH * AMBE_LENGTH;
@@ -259,12 +260,12 @@ void CVoice::createVoice(unsigned int tg, const std::vector<std::string>& words)
 	m_timer.start();
 }
 
-bool CVoice::read(unsigned char* data)
+unsigned int CVoice::read(unsigned char* data)
 {
 	assert(data != NULL);
 
 	if (m_status != VS_SENDING)
-		return false;
+		return 0U;
 
 	unsigned int count = m_stopWatch.elapsed() / NXDN_FRAME_TIME;
 
@@ -281,10 +282,10 @@ bool CVoice::read(unsigned char* data)
 			m_status = VS_NONE;
 		}
 
-		return true;
+		return NXDN_FRAME_LENGTH;
 	}
 
-	return false;
+	return 0U;
 }
 
 void CVoice::abort()

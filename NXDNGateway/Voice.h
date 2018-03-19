@@ -47,7 +47,7 @@ public:
 	void linkedTo(unsigned int tg);
 	void unlinked();
 
-	bool read(unsigned char* data);
+	unsigned int read(unsigned char* data);
 
 	void abort();
 
