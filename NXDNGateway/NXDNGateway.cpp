@@ -54,6 +54,8 @@ const char* DEFAULT_INI_FILE = "/etc/NXDNGateway.ini";
 #include <ctime>
 #include <cstring>
 
+const unsigned short NXDN_VOICE_ID = 9999U;
+
 int main(int argc, char** argv)
 {
 	const char* iniFile = DEFAULT_INI_FILE;
@@ -196,7 +198,7 @@ void CNXDNGateway::run()
 
 	CVoice* voice = NULL;
 	if (m_conf.getVoiceEnabled()) {
-		voice = new CVoice(m_conf.getVoiceDirectory(), m_conf.getVoiceLanguage(), 1U);
+		voice = new CVoice(m_conf.getVoiceDirectory(), m_conf.getVoiceLanguage(), NXDN_VOICE_ID);
 		bool ok = voice->open();
 		if (!ok) {
 			delete voice;
@@ -272,9 +274,8 @@ void CNXDNGateway::run()
 
 					// If we're unlinking or changing reflectors, unlink from the current one
 					if (dstId == 9999U || reflector != NULL) {
-						std::string callsign = lookup->find(srcId);
-
 						if (currentId != 9999U) {
+							std::string callsign = lookup->find(srcId);
 							LogMessage("Unlinked from reflector %u by %s", currentId, callsign.c_str());
 
 							if (voice != NULL && dstId == 9999U)
