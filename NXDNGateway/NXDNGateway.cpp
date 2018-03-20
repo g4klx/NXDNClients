@@ -258,7 +258,8 @@ void CNXDNGateway::run()
 		// From the MMDVM to the reflector or control data
 		len = localNetwork.read(buffer, address, port);
 		if (len > 0U) {
-			if (buffer[0U] == 0x81U || buffer[0U] == 0x83U) {
+			// Only process the beginning and ending blocks here
+			if ((buffer[0U] == 0x81U || buffer[0U] == 0x83U) && (buffer[5U] == 0x01U || buffer[5U] == 0x08U)) {
 				grp = (buffer[7U] & 0x20U) == 0x20U;
 
 				srcId  = (buffer[8U] << 8) & 0xFF00U;
@@ -313,6 +314,12 @@ void CNXDNGateway::run()
 						pollTimer.start();
 						lostTimer.start();
 					}
+				}
+
+				// If it's the end of the transmission, start the voice
+				if (buffer[5U] == 0x08U) {
+					if (voice != NULL)
+						voice->eof();
 				}
 			}
 

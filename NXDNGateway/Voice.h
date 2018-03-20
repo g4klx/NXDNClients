@@ -49,7 +49,7 @@ public:
 
 	unsigned int read(unsigned char* data);
 
-	void abort();
+	void eof();
 
 	void clock(unsigned int ms);
 

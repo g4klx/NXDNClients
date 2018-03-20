@@ -255,9 +255,6 @@ void CVoice::createVoice(unsigned int tg, const std::vector<std::string>& words)
 	createTrailer(true, tg);
 
 	delete[] ambeData;
-
-	m_status = VS_WAITING;
-	m_timer.start();
 }
 
 unsigned int CVoice::read(unsigned char* data)
@@ -288,11 +285,14 @@ unsigned int CVoice::read(unsigned char* data)
 	return 0U;
 }
 
-void CVoice::abort()
+void CVoice::eof()
 {
-	m_status = VS_NONE;
-	m_voiceLength = 0U;
-	m_sent = 0U;
+	if (m_voiceLength == 0U)
+		return;
+
+	m_status = VS_WAITING;
+
+	m_timer.start();
 }
 
 void CVoice::clock(unsigned int ms)
