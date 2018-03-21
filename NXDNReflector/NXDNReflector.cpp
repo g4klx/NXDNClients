@@ -252,7 +252,9 @@ void CNXDNReflector::run()
 						if (m_nxCoreNetwork == NULL) {
 							std::string callsign = lookup->find(srcId);
 							LogMessage("NXCore link enabled by %s at %s", callsign.c_str(), current->m_callsign.c_str());
-							openNXCore();
+							bool ok = openNXCore();
+							if (!ok)
+								LogWarning("Unable to open the NXCore link");
 						}
 					} else if (nxCoreTGDisable != 0U && grp && dstId == nxCoreTGDisable) {
 						if (m_nxCoreNetwork != NULL) {
