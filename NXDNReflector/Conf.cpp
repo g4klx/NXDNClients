@@ -48,6 +48,8 @@ m_networkPort(0U),
 m_networkDebug(false),
 m_nxCoreEnabled(false),
 m_nxCoreAddress(),
+m_nxCoreTGEnable(0U),
+m_nxCoreTGDisable(0U),
 m_nxCoreDebug(false)
 {
 }
@@ -120,6 +122,10 @@ bool CConf::read()
 			  m_nxCoreEnabled = ::atoi(value) == 1;
 		  else if (::strcmp(key, "Address") == 0)
 			  m_nxCoreAddress = value;
+		  else if (::strcmp(key, "TGEnable") == 0)
+			  m_nxCoreTGEnable = (unsigned short)::atoi(value);
+		  else if (::strcmp(key, "TGDisable") == 0)
+			  m_nxCoreTGDisable = (unsigned short)::atoi(value);
 		  else if (::strcmp(key, "Debug") == 0)
 			  m_nxCoreDebug = ::atoi(value) == 1;
 	  }
@@ -183,6 +189,16 @@ bool CConf::getNXCoreEnabled() const
 std::string CConf::getNXCoreAddress() const
 {
 	return m_nxCoreAddress;
+}
+
+unsigned short CConf::getNXCoreTGEnable() const
+{
+	return m_nxCoreTGEnable;
+}
+
+unsigned short CConf::getNXCoreTGDisable() const
+{
+	return m_nxCoreTGDisable;
 }
 
 bool CConf::getNXCoreDebug() const

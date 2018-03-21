@@ -48,9 +48,11 @@ public:
   bool         getNetworkDebug() const;
 
   // The NXCore section
-  bool         getNXCoreEnabled() const;
-  std::string  getNXCoreAddress() const;
-  bool         getNXCoreDebug() const;
+  bool           getNXCoreEnabled() const;
+  std::string    getNXCoreAddress() const;
+  unsigned short getNXCoreTGEnable() const;
+  unsigned short getNXCoreTGDisable() const;
+  bool           getNXCoreDebug() const;
 
 private:
   std::string  m_file;
@@ -67,9 +69,11 @@ private:
   unsigned int m_networkPort;
   bool         m_networkDebug;
 
-  bool         m_nxCoreEnabled;
-  std::string  m_nxCoreAddress;
-  bool         m_nxCoreDebug;
+  bool           m_nxCoreEnabled;
+  std::string    m_nxCoreAddress;
+  unsigned short m_nxCoreTGEnable;
+  unsigned short m_nxCoreTGDisable;
+  bool           m_nxCoreDebug;
 };
 
 #endif

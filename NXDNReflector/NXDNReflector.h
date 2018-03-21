@@ -19,6 +19,7 @@
 #if !defined(NXDNReflector_H)
 #define	NXDNReflector_H
 
+#include "NXCoreNetwork.h"
 #include "Timer.h"
 #include "Conf.h"
 
@@ -63,11 +64,15 @@ public:
 	void run();
 
 private:
-	CConf                      m_conf;
+	CConf                       m_conf;
+	CNXCoreNetwork*             m_nxCoreNetwork;
 	std::vector<CNXDNRepeater*> m_repeaters;
 
 	CNXDNRepeater* findRepeater(const in_addr& address, unsigned int port) const;
 	void dumpRepeaters() const;
+
+	bool openNXCore();
+	void closeNXCore();
 };
 
 #endif

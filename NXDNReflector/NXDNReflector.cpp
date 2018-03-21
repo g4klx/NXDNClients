@@ -16,7 +16,6 @@
 *   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#include "NXCoreNetwork.h"
 #include "NXDNReflector.h"
 #include "NXDNNetwork.h"
 #include "NXDNLookup.h"
@@ -80,6 +79,7 @@ int main(int argc, char** argv)
 
 CNXDNReflector::CNXDNReflector(const std::string& file) :
 m_conf(file),
+m_nxCoreNetwork(NULL),
 m_repeaters()
 {
 }
@@ -168,16 +168,19 @@ void CNXDNReflector::run()
 		return;
 	}
 
-	CNXCoreNetwork* nxCoreNetwork = NULL;
+	unsigned short nxCoreTGEnable = 0U;
+	unsigned short nxCoreTGDisable = 0U;
+
 	if (m_conf.getNXCoreEnabled()) {
-		nxCoreNetwork = new CNXCoreNetwork(m_conf.getNXCoreAddress(), m_conf.getNXCoreDebug());
-		ret = nxCoreNetwork->open();
+		ret = openNXCore();
 		if (!ret) {
 			nxdnNetwork.close();
-			delete nxCoreNetwork;
 			::LogFinalise();
 			return;
 		}
+
+		nxCoreTGEnable  = m_conf.getNXCoreTGEnable();
+		nxCoreTGDisable = m_conf.getNXCoreTGDisable();
 	}
 
 	CNXDNLookup* lookup = new CNXDNLookup(m_conf.getLookupName(), m_conf.getLookupTime());
@@ -192,7 +195,7 @@ void CNXDNReflector::run()
 	LogMessage("Starting NXDNReflector-%s", VERSION);
 
 	CNXDNRepeater* current = NULL;
-	bool nxCore = false;
+	bool nxCoreActive = false;
 
 	unsigned short srcId = 0U;
 	unsigned short dstId = 0U;
@@ -241,36 +244,50 @@ void CNXDNReflector::run()
 				}
 			} else if (::memcmp(buffer, "NXDND", 5U) == 0 && len == 43U) {
 				if (rpt != NULL) {
-					rpt->m_timer.start();
+					unsigned short srcId = (buffer[5U] << 8) | buffer[6U];
+					unsigned short dstId = (buffer[7U] << 8) | buffer[8U];
+					bool grp = (buffer[9U] & 0x01U) == 0x01U;
 
-					if (current == NULL && !nxCore) {
-						current = rpt;
+					if (nxCoreTGEnable != 0U && grp && dstId == nxCoreTGEnable) {
+						if (m_nxCoreNetwork == NULL) {
+							std::string callsign = lookup->find(srcId);
+							LogMessage("NXCore link enabled by %s at %s", callsign.c_str(), current->m_callsign.c_str());
+							openNXCore();
+						}
+					} else if (nxCoreTGDisable != 0U && grp && dstId == nxCoreTGDisable) {
+						if (m_nxCoreNetwork != NULL) {
+							std::string callsign = lookup->find(srcId);
+							LogMessage("NXCore link disabled by %s at %s", callsign.c_str(), current->m_callsign.c_str());
+							closeNXCore();
+						}
+					} else {
+						rpt->m_timer.start();
 
-						unsigned short srcId = (buffer[5U] << 8) | buffer[6U];
-						unsigned short dstId = (buffer[7U] << 8) | buffer[8U];
-						bool grp             = (buffer[9U] & 0x01U) == 0x01U;
+						if (current == NULL && !nxCoreActive) {
+							current = rpt;
 
-						std::string callsign = lookup->find(srcId);
-						LogMessage("Transmission from %s at %s to %s%u", callsign.c_str(), current->m_callsign.c_str(), grp ? "TG " : "", dstId);
-					}
-
-					if (current == rpt) {
-						watchdogTimer.start();
-
-						for (std::vector<CNXDNRepeater*>::const_iterator it = m_repeaters.begin(); it != m_repeaters.end(); ++it) {
-							in_addr addr = (*it)->m_address;
-							unsigned int prt = (*it)->m_port;
-							if (addr.s_addr != address.s_addr || prt != port)
-								nxdnNetwork.write(buffer, len, addr, prt);
-
-							if (nxCoreNetwork != NULL)
-								nxCoreNetwork->write(buffer, len);
+							std::string callsign = lookup->find(srcId);
+							LogMessage("Transmission from %s at %s to %s%u", callsign.c_str(), current->m_callsign.c_str(), grp ? "TG " : "", dstId);
 						}
 
-						if ((buffer[9U] & 0x08U) == 0x08U) {
-							LogMessage("Received end of transmission");
-							watchdogTimer.stop();
-							current = NULL;
+						if (current == rpt) {
+							watchdogTimer.start();
+
+							for (std::vector<CNXDNRepeater*>::const_iterator it = m_repeaters.begin(); it != m_repeaters.end(); ++it) {
+								in_addr addr = (*it)->m_address;
+								unsigned int prt = (*it)->m_port;
+								if (addr.s_addr != address.s_addr || prt != port)
+									nxdnNetwork.write(buffer, len, addr, prt);
+
+								if (m_nxCoreNetwork != NULL)
+									m_nxCoreNetwork->write(buffer, len);
+							}
+
+							if ((buffer[9U] & 0x08U) == 0x08U) {
+								LogMessage("Received end of transmission");
+								watchdogTimer.stop();
+								current = NULL;
+							}
 						}
 					}
 				} else {
@@ -280,11 +297,11 @@ void CNXDNReflector::run()
 			}
 		}
 
-		if (nxCoreNetwork != NULL) {
-			len = nxCoreNetwork->read(buffer, 200U);
+		if (m_nxCoreNetwork != NULL) {
+			len = m_nxCoreNetwork->read(buffer, 200U);
 			if (len > 0U) {
 				if (current == NULL) {
-					if (!nxCore) {
+					if (!nxCoreActive) {
 						if ((buffer[0U] == 0x81U || buffer[0U] == 0x83U) && buffer[5U] == 0x01U) {
 							// Save the grp, src and dest for use in the NXDN Protocol messages
 							grp   = (buffer[7U] & 0x20U) == 0x20U;
@@ -294,11 +311,11 @@ void CNXDNReflector::run()
 							std::string callsign = lookup->find(srcId);
 							LogMessage("Transmission from %s at NXCore to %s%u", callsign.c_str(), grp ? "TG " : "", dstId);
 
-							nxCore = true;
+							nxCoreActive = true;
 						}
 					}
 
-					if (nxCore) {
+					if (nxCoreActive) {
 						watchdogTimer.start();
 
 						for (std::vector<CNXDNRepeater*>::const_iterator it = m_repeaters.begin(); it != m_repeaters.end(); ++it) {
@@ -309,7 +326,7 @@ void CNXDNReflector::run()
 
 						if ((buffer[0U] == 0x81U || buffer[0U] == 0x83U) && buffer[5U] == 0x08U) {
 							LogMessage("Received end of transmission");
-							nxCore = false;
+							nxCoreActive = false;
 							watchdogTimer.stop();
 						}
 					}
@@ -342,7 +359,7 @@ void CNXDNReflector::run()
 			LogMessage("Network watchdog has expired");
 			watchdogTimer.stop();
 			current = NULL;
-			nxCore  = false;
+			nxCoreActive = false;
 		}
 
 		dumpTimer.clock(ms);
@@ -351,8 +368,8 @@ void CNXDNReflector::run()
 			dumpTimer.start();
 		}
 
-		if (nxCoreNetwork != NULL)
-			nxCoreNetwork->clock(ms);
+		if (m_nxCoreNetwork != NULL)
+			m_nxCoreNetwork->clock(ms);
 
 		if (ms < 5U)
 			CThread::sleep(5U);
@@ -360,10 +377,7 @@ void CNXDNReflector::run()
 
 	nxdnNetwork.close();
 
-	if (nxCoreNetwork != NULL) {
-		nxCoreNetwork->close();
-		delete nxCoreNetwork;
-	}
+	closeNXCore();
 
 	lookup->stop();
 
@@ -396,5 +410,27 @@ void CNXDNReflector::dumpRepeaters() const
 		unsigned int timer   = (*it)->m_timer.getTimer();
 		unsigned int timeout = (*it)->m_timer.getTimeout();
 		LogMessage("    %s (%s:%u) %u/%u", callsign.c_str(), ::inet_ntoa(address), port, timer, timeout);
+	}
+}
+
+bool CNXDNReflector::openNXCore()
+{
+	m_nxCoreNetwork = new CNXCoreNetwork(m_conf.getNXCoreAddress(), m_conf.getNXCoreDebug());
+	bool ret = m_nxCoreNetwork->open();
+	if (!ret) {
+		delete m_nxCoreNetwork;
+		m_nxCoreNetwork = NULL;
+		return false;
+	}
+
+	return true;
+}
+
+void CNXDNReflector::closeNXCore()
+{
+	if (m_nxCoreNetwork != NULL) {
+		m_nxCoreNetwork->close();
+		delete m_nxCoreNetwork;
+		m_nxCoreNetwork = NULL;
 	}
 }
