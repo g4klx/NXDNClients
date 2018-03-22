@@ -86,7 +86,7 @@ unsigned int CNXCoreNetwork::read(unsigned char* data)
 
 	in_addr address;
 	unsigned int port;
-	int length = m_socket.read(data, BUFFER_LENGTH, address, port);
+	int length = m_socket.read(buffer, BUFFER_LENGTH, address, port);
 	if (length <= 0)
 		return 0U;
 
