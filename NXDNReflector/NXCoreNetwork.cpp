@@ -31,8 +31,7 @@ const unsigned int NXCORE_PORT = 41300U;
 CNXCoreNetwork::CNXCoreNetwork(const std::string& address, bool debug) :
 m_socket(NXCORE_PORT),
 m_address(),
-m_debug(debug),
-m_buffer(1000U, "NXCore Network")
+m_debug(debug)
 {
 	assert(!address.empty());
 
@@ -81,45 +80,35 @@ bool CNXCoreNetwork::write(const unsigned char* data, unsigned int len)
 	return m_socket.write(buffer, 102U, m_address, NXCORE_PORT);
 }
 
-void CNXCoreNetwork::clock(unsigned int ms)
+unsigned int CNXCoreNetwork::read(unsigned char* data, unsigned int len)
 {
 	unsigned char buffer[BUFFER_LENGTH];
 
 	in_addr address;
 	unsigned int port;
-	int length = m_socket.read(buffer, BUFFER_LENGTH, address, port);
+	int length = m_socket.read(data, BUFFER_LENGTH, address, port);
 	if (length <= 0)
-		return;
+		return 0U;
 
 	// Check if the data is for us
 	if (m_address.s_addr != address.s_addr || port != NXCORE_PORT) {
 		LogMessage("NXCore packet received from an invalid source, %08X != %08X and/or %u != %u", m_address.s_addr, address.s_addr, NXCORE_PORT, port);
-		return;
+		return 0U;
 	}
 
 	// Invalid packet type?
 	if (::memcmp(buffer, "ICOM", 4U) != 0)
-		return;
+		return 0U;
 
 	if (length != 102)
-		return;
+		return 0U;
 
 	if (m_debug)
 		CUtils::dump(1U, "NXCore Network Data Received", buffer, length);
 
-	m_buffer.addData(buffer + 40U, 33U);
-}
+	::memcpy(data, buffer + 40U, 33U);
 
-bool CNXCoreNetwork::read(unsigned char* data, unsigned int len)
-{
-	assert(data != NULL);
-
-	if (m_buffer.isEmpty())
-		return false;
-
-	m_buffer.getData(data, 33U);
-
-	return true;
+	return 33U;
 }
 
 void CNXCoreNetwork::close()

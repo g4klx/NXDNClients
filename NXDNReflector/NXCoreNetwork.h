@@ -19,7 +19,6 @@
 #ifndef	NXCoreNetwork_H
 #define	NXCoreNetwork_H
 
-#include "RingBuffer.h"
 #include "UDPSocket.h"
 #include "Timer.h"
 
@@ -35,17 +34,14 @@ public:
 
 	bool write(const unsigned char* data, unsigned int len);
 
-	bool read(unsigned char* data, unsigned int len);
+	unsigned int read(unsigned char* data, unsigned int len);
 
 	void close();
 
-	void clock(unsigned int ms);
-
 private:
-	CUDPSocket                 m_socket;
-	in_addr                    m_address;
-	bool                       m_debug;
-	CRingBuffer<unsigned char> m_buffer;
+	CUDPSocket m_socket;
+	in_addr    m_address;
+	bool       m_debug;
 };
 
 #endif

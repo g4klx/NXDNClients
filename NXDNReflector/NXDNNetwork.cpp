@@ -98,6 +98,13 @@ unsigned int CNXDNNetwork::read(unsigned char* data, unsigned int length, in_add
 	if (len <= 0)
 		return 0U;
 
+	// Invalid packet type?
+	if (::memcmp(data, "NXDN", 4U) != 0)
+		return 0U;
+
+	if (length != 15 && length != 43)
+		return 0U;
+
 	if (m_debug)
 		CUtils::dump(1U, "NXDN Network Data Received", data, len);
 

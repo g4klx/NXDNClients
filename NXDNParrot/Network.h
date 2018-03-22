@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2009-2014,2016 by Jonathan Naylor G4KLX
+ *   Copyright (C) 2009-2014,2016,2018 by Jonathan Naylor G4KLX
  *
  *   This program is free software; you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -19,7 +19,6 @@
 #ifndef	Network_H
 #define	Network_H
 
-#include "RingBuffer.h"
 #include "UDPSocket.h"
 
 #include <cstdint>
@@ -34,19 +33,16 @@ public:
 
 	bool write(const unsigned char* data, unsigned int length);
 
-	unsigned int read(unsigned char* data);
+	unsigned int read(unsigned char* data, unsigned int length);
 
 	void end();
 
 	void close();
 
-	void clock(unsigned int ms);
-
 private:
 	CUDPSocket   m_socket;
 	in_addr      m_address;
 	unsigned int m_port;
-	CRingBuffer<unsigned char> m_buffer;
 };
 
 #endif

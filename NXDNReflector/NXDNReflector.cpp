@@ -370,9 +370,6 @@ void CNXDNReflector::run()
 			dumpTimer.start();
 		}
 
-		if (m_nxCoreNetwork != NULL)
-			m_nxCoreNetwork->clock(ms);
-
 		if (ms < 5U)
 			CThread::sleep(5U);
 	}

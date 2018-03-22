@@ -80,7 +80,7 @@ void CNXDNParrot::run()
 	for (;;) {
 		unsigned char buffer[200U];
 
-		unsigned int len = network.read(buffer);
+		unsigned int len = network.read(buffer, 200U);
 		if (len > 0U) {
 			parrot.write(buffer, len);
 			watchdogTimer.start();
@@ -120,7 +120,6 @@ void CNXDNParrot::run()
 		unsigned int ms = stopWatch.elapsed();
 		stopWatch.start();
 
-		network.clock(ms);
 		watchdogTimer.clock(ms);
 		turnaroundTimer.clock(ms);
 

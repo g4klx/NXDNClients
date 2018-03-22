@@ -26,7 +26,6 @@
     <ClInclude Include="Mutex.h" />
     <ClInclude Include="NXDNNetwork.h" />
     <ClInclude Include="NXDNReflector.h" />
-    <ClInclude Include="RingBuffer.h" />
     <ClInclude Include="StopWatch.h" />
     <ClInclude Include="Thread.h" />
     <ClInclude Include="Timer.h" />
