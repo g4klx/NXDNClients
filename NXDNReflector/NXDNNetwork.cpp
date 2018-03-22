@@ -102,7 +102,7 @@ unsigned int CNXDNNetwork::read(unsigned char* data, unsigned int length, in_add
 	if (::memcmp(data, "NXDN", 4U) != 0)
 		return 0U;
 
-	if (length != 15 && length != 43)
+	if (len != 15 && len != 43)
 		return 0U;
 
 	if (m_debug)

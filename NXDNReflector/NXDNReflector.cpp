@@ -300,7 +300,7 @@ void CNXDNReflector::run()
 		}
 
 		if (m_nxCoreNetwork != NULL) {
-			len = m_nxCoreNetwork->read(buffer, 200U);
+			len = m_nxCoreNetwork->read(buffer);
 			if (len > 0U) {
 				if (current == NULL) {
 					if (!nxCoreActive) {

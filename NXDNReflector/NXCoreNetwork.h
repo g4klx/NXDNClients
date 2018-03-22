@@ -34,7 +34,7 @@ public:
 
 	bool write(const unsigned char* data, unsigned int len);
 
-	unsigned int read(unsigned char* data, unsigned int len);
+	unsigned int read(unsigned char* data);
 
 	void close();
 

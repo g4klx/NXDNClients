@@ -80,7 +80,7 @@ bool CNXCoreNetwork::write(const unsigned char* data, unsigned int len)
 	return m_socket.write(buffer, 102U, m_address, NXCORE_PORT);
 }
 
-unsigned int CNXCoreNetwork::read(unsigned char* data, unsigned int len)
+unsigned int CNXCoreNetwork::read(unsigned char* data)
 {
 	unsigned char buffer[BUFFER_LENGTH];
 
