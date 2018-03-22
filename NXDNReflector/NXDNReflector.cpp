@@ -280,10 +280,10 @@ void CNXDNReflector::run()
 								unsigned int prt = (*it)->m_port;
 								if (addr.s_addr != address.s_addr || prt != port)
 									nxdnNetwork.write(buffer, len, addr, prt);
-
-								if (m_nxCoreNetwork != NULL)
-									m_nxCoreNetwork->write(buffer, len);
 							}
+
+							if (m_nxCoreNetwork != NULL)
+								m_nxCoreNetwork->write(buffer, len);
 
 							if ((buffer[9U] & 0x08U) == 0x08U) {
 								LogMessage("Received end of transmission");
