@@ -161,6 +161,8 @@ void CNXDNReflector::run()
 	}
 #endif
 
+	unsigned short tg = m_conf.getTG();
+
 	CNXDNNetwork nxdnNetwork(m_conf.getNetworkPort(), m_conf.getNetworkDebug());
 	ret = nxdnNetwork.open();
 	if (!ret) {
@@ -262,7 +264,7 @@ void CNXDNReflector::run()
 							LogMessage("NXCore link disabled by %s at %s", callsign.c_str(), current->m_callsign.c_str());
 							closeNXCore();
 						}
-					} else {
+					} else if (grp && dstId == tg) {
 						rpt->m_timer.start();
 
 						if (current == NULL && !nxCoreActive) {
@@ -305,15 +307,21 @@ void CNXDNReflector::run()
 				if (current == NULL) {
 					if (!nxCoreActive) {
 						if ((buffer[0U] == 0x81U || buffer[0U] == 0x83U) && buffer[5U] == 0x01U) {
-							// Save the grp, src and dest for use in the NXDN Protocol messages
-							grp   = (buffer[7U] & 0x20U) == 0x20U;
-							srcId = (buffer[8U]  << 8) | buffer[9U];
-							dstId = (buffer[10U] << 8) | buffer[11U];
+							bool           tempGrp   = (buffer[7U] & 0x20U) == 0x20U;
+							unsigned short tempSrcId = (buffer[8U]  << 8) | buffer[9U];
+							unsigned short tempDstId = (buffer[10U] << 8) | buffer[11U];
 
-							std::string callsign = lookup->find(srcId);
-							LogMessage("Transmission from %s at NXCore to %s%u", callsign.c_str(), grp ? "TG " : "", dstId);
+							if (tempGrp && tempDstId == tg) {
+								// Save the grp, src and dest for use in the NXDN Protocol messages
+								grp   = tempGrp;
+								srcId = tempSrcId;
+								dstId = tempDstId;
 
-							nxCoreActive = true;
+								std::string callsign = lookup->find(srcId);
+								LogMessage("Transmission from %s at NXCore to %s%u", callsign.c_str(), grp ? "TG " : "", dstId);
+
+								nxCoreActive = true;
+							}
 						}
 					}
 

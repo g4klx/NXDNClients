@@ -247,8 +247,16 @@ void CNXDNGateway::run()
 			// If we're linked and it's from the right place, send it on
 			if (currentId != 9999U && currentAddr.s_addr == address.s_addr && currentPort == port) {
 				// Don't pass reflector control data through to the MMDVM
-				if (::memcmp(buffer, "NXDND", 5U) == 0)
-					localNetwork.write(buffer + 10U, len - 10U, rptAddr, rptPort);
+				if (::memcmp(buffer, "NXDND", 5U) == 0) {
+					unsigned short dstId = 0U;
+					dstId |= (buffer[7U] << 8) & 0xFF00U;
+					dstId |= (buffer[8U] << 0) & 0x00FFU;
+
+					bool grp = (buffer[9U] & 0x01U) == 0x01U;
+
+					if (grp && currentId == dstId)
+						localNetwork.write(buffer + 10U, len - 10U, rptAddr, rptPort);
+				}
 
 				// Any network activity is proof that the reflector is alive
 				lostTimer.start();

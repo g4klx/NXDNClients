@@ -37,6 +37,7 @@ enum SECTION {
 
 CConf::CConf(const std::string& file) :
 m_file(file),
+m_tg(9999U),
 m_daemon(false),
 m_lookupName(),
 m_lookupTime(0U),
@@ -98,6 +99,8 @@ bool CConf::read()
 	  if (section == SECTION_GENERAL) {
 		  if (::strcmp(key, "Daemon") == 0)
 			  m_daemon = ::atoi(value) == 1;
+		  else if (::strcmp(key, "TG") == 0)
+			  m_tg = (unsigned short)::atoi(value);
 	  } else if (section == SECTION_ID_LOOKUP) {
 		  if (::strcmp(key, "Name") == 0)
 			  m_lookupName = value;
@@ -139,6 +142,11 @@ bool CConf::read()
 bool CConf::getDaemon() const
 {
 	return m_daemon;
+}
+
+unsigned short CConf::getTG() const
+{
+	return m_tg;
 }
 
 std::string CConf::getLookupName() const

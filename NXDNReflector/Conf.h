@@ -31,21 +31,22 @@ public:
   bool read();
 
   // The General section
-  bool         getDaemon() const;
+  unsigned short getTG() const;
+  bool           getDaemon() const;
 
   // The Id Lookup section
-  std::string  getLookupName() const;
-  unsigned int getLookupTime() const;
+  std::string    getLookupName() const;
+  unsigned int   getLookupTime() const;
 
   // The Log section
-  unsigned int getLogDisplayLevel() const;
-  unsigned int getLogFileLevel() const;
-  std::string  getLogFilePath() const;
-  std::string  getLogFileRoot() const;
+  unsigned int   getLogDisplayLevel() const;
+  unsigned int   getLogFileLevel() const;
+  std::string    getLogFilePath() const;
+  std::string    getLogFileRoot() const;
 
   // The Network section
-  unsigned int getNetworkPort() const;
-  bool         getNetworkDebug() const;
+  unsigned int   getNetworkPort() const;
+  bool           getNetworkDebug() const;
 
   // The NXCore section
   bool           getNXCoreEnabled() const;
@@ -55,19 +56,20 @@ public:
   bool           getNXCoreDebug() const;
 
 private:
-  std::string  m_file;
-  bool         m_daemon;
+  std::string    m_file;
+  unsigned short m_tg;
+  bool           m_daemon;
 
-  std::string  m_lookupName;
-  unsigned int m_lookupTime;
+  std::string    m_lookupName;
+  unsigned int   m_lookupTime;
 
-  unsigned int m_logDisplayLevel;
-  unsigned int m_logFileLevel;
-  std::string  m_logFilePath;
-  std::string  m_logFileRoot;
+  unsigned int   m_logDisplayLevel;
+  unsigned int   m_logFileLevel;
+  std::string    m_logFilePath;
+  std::string    m_logFileRoot;
 
-  unsigned int m_networkPort;
-  bool         m_networkDebug;
+  unsigned int   m_networkPort;
+  bool           m_networkDebug;
 
   bool           m_nxCoreEnabled;
   std::string    m_nxCoreAddress;
