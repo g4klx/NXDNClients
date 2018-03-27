@@ -146,7 +146,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Network.h" />
+    <ClInclude Include="NXDNNetwork.h" />
     <ClInclude Include="NXDNParrot.h" />
     <ClInclude Include="Parrot.h" />
     <ClInclude Include="StopWatch.h" />
@@ -156,7 +156,7 @@
     <ClInclude Include="Version.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Network.cpp" />
+    <ClCompile Include="NXDNNetwork.cpp" />
     <ClCompile Include="NXDNParrot.cpp" />
     <ClCompile Include="Parrot.cpp" />
     <ClCompile Include="StopWatch.cpp" />

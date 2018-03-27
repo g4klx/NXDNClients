@@ -16,11 +16,11 @@
 *   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#include "StopWatch.h"
+#include "NXDNNetwork.h"
 #include "NXDNParrot.h"
-#include "Parrot.h"
-#include "Network.h"
+#include "StopWatch.h"
 #include "Version.h"
+#include "Parrot.h"
 #include "Thread.h"
 #include "Timer.h"
 
@@ -59,7 +59,7 @@ CNXDNParrot::~CNXDNParrot()
 void CNXDNParrot::run()
 {
 	CParrot parrot(180U);
-	CNetwork network(m_port);
+	CNXDNNetwork network(m_port);
 
 	bool ret = network.open();
 	if (!ret)

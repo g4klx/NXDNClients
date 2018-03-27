@@ -33,9 +33,9 @@ public:
 
 	bool writeData(const unsigned char* data, unsigned int length, unsigned short srcId, unsigned short dstId, bool grp, const in_addr& address, unsigned int port);
 
-	bool writePoll(const in_addr& address, unsigned int port);
+	bool writePoll(const in_addr& address, unsigned int port, unsigned short tg);
 
-	bool writeUnlink(const in_addr& address, unsigned int port);
+	bool writeUnlink(const in_addr& address, unsigned int port, unsigned short tg);
 
 	unsigned int readData(unsigned char* data, unsigned int length, in_addr& address, unsigned int& port);
 

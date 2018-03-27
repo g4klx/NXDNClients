@@ -52,15 +52,15 @@ public:
   std::string  getLogFileRoot() const;
 
   // The Network section
-  unsigned int getNetworkPort() const;
-  std::string  getNetworkHosts1() const;
-  std::string  getNetworkHosts2() const;
-  unsigned int getNetworkReloadTime() const;
-  std::string  getNetworkParrotAddress() const;
-  unsigned int getNetworkParrotPort() const;
-  unsigned int getNetworkStartup() const;
-  unsigned int getNetworkInactivityTimeout() const;
-  bool         getNetworkDebug() const;
+  unsigned int   getNetworkPort() const;
+  std::string    getNetworkHosts1() const;
+  std::string    getNetworkHosts2() const;
+  unsigned int   getNetworkReloadTime() const;
+  std::string    getNetworkParrotAddress() const;
+  unsigned int   getNetworkParrotPort() const;
+  unsigned short getNetworkStartup() const;
+  unsigned int   getNetworkInactivityTimeout() const;
+  bool           getNetworkDebug() const;
 
 private:
   std::string  m_file;
@@ -81,15 +81,15 @@ private:
   std::string  m_logFilePath;
   std::string  m_logFileRoot;
 
-  unsigned int m_networkPort;
-  std::string  m_networkHosts1;
-  std::string  m_networkHosts2;
-  unsigned int m_networkReloadTime;
-  std::string  m_networkParrotAddress;
-  unsigned int m_networkParrotPort;
-  unsigned int m_networkStartup;
-  unsigned int m_networkInactivityTimeout;
-  bool         m_networkDebug;
+  unsigned int   m_networkPort;
+  std::string    m_networkHosts1;
+  std::string    m_networkHosts2;
+  unsigned int   m_networkReloadTime;
+  std::string    m_networkParrotAddress;
+  unsigned int   m_networkParrotPort;
+  unsigned short m_networkStartup;
+  unsigned int   m_networkInactivityTimeout;
+  bool           m_networkDebug;
 };
 
 #endif

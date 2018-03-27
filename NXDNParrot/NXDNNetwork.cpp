@@ -16,31 +16,31 @@
  *   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-#include "Network.h"
+#include "NXDNNetwork.h"
 
 #include <cstdio>
 #include <cassert>
 #include <cstring>
 
-CNetwork::CNetwork(unsigned int port) :
+CNXDNNetwork::CNXDNNetwork(unsigned int port) :
 m_socket(port),
 m_address(),
 m_port(0U)
 {
 }
 
-CNetwork::~CNetwork()
+CNXDNNetwork::~CNXDNNetwork()
 {
 }
 
-bool CNetwork::open()
+bool CNXDNNetwork::open()
 {
 	::fprintf(stdout, "Opening NXDN network connection\n");
 
 	return m_socket.open();
 }
 
-bool CNetwork::write(const unsigned char* data, unsigned int length)
+bool CNXDNNetwork::write(const unsigned char* data, unsigned int length)
 {
 	if (m_port == 0U)
 		return true;
@@ -50,7 +50,7 @@ bool CNetwork::write(const unsigned char* data, unsigned int length)
 	return m_socket.write(data, length, m_address, m_port);
 }
 
-unsigned int CNetwork::read(unsigned char* data, unsigned int len)
+unsigned int CNXDNNetwork::read(unsigned char* data, unsigned int len)
 {
 	in_addr address;
 	unsigned int port;
@@ -61,7 +61,7 @@ unsigned int CNetwork::read(unsigned char* data, unsigned int len)
 	m_address.s_addr = address.s_addr;
 	m_port = port;
 
-	if (::memcmp(data, "NXDNP", 5U) == 0 && length == 15) {			// A poll
+	if (::memcmp(data, "NXDNP", 5U) == 0 && length == 17) {			// A poll
 		write(data, length);
 		return 0U;
 	} else if (::memcmp(data, "NXDND", 5U) == 0 && length == 43) {
@@ -71,12 +71,12 @@ unsigned int CNetwork::read(unsigned char* data, unsigned int len)
 	}
 }
 
-void CNetwork::end()
+void CNXDNNetwork::end()
 {
 	m_port = 0U;
 }
 
-void CNetwork::close()
+void CNXDNNetwork::close()
 {
 	m_socket.close();
 

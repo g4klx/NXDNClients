@@ -150,7 +150,7 @@ bool CConf::read()
 		  else if (::strcmp(key, "ParrotPort") == 0)
 			  m_networkParrotPort = (unsigned int)::atoi(value);
 		  else if (::strcmp(key, "Startup") == 0)
-			  m_networkStartup = (unsigned int)::atoi(value);
+			  m_networkStartup = (unsigned short)::atoi(value);
 		  else if (::strcmp(key, "InactivityTimeout") == 0)
 			  m_networkInactivityTimeout = (unsigned int)::atoi(value);
 		  else if (::strcmp(key, "Debug") == 0)
@@ -258,7 +258,7 @@ unsigned int CConf::getNetworkParrotPort() const
 	return m_networkParrotPort;
 }
 
-unsigned int CConf::getNetworkStartup() const
+unsigned short CConf::getNetworkStartup() const
 {
 	return m_networkStartup;
 }

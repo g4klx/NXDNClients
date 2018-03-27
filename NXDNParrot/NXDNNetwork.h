@@ -16,18 +16,18 @@
  *   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-#ifndef	Network_H
-#define	Network_H
+#ifndef	NXDNNetwork_H
+#define	NXDNNetwork_H
 
 #include "UDPSocket.h"
 
 #include <cstdint>
 #include <string>
 
-class CNetwork {
+class CNXDNNetwork {
 public:
-	CNetwork(unsigned int port);
-	~CNetwork();
+	CNXDNNetwork(unsigned int port);
+	~CNXDNNetwork();
 
 	bool open();
 

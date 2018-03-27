@@ -79,7 +79,7 @@ bool CNXDNNetwork::writeData(const unsigned char* data, unsigned int length, uns
 	return m_socket.write(buffer, 43U, address, port);
 }
 
-bool CNXDNNetwork::writePoll(const in_addr& address, unsigned int port)
+bool CNXDNNetwork::writePoll(const in_addr& address, unsigned int port, unsigned short tg)
 {
 	assert(port > 0U);
 
@@ -94,13 +94,16 @@ bool CNXDNNetwork::writePoll(const in_addr& address, unsigned int port)
 	for (unsigned int i = 0U; i < 10U; i++)
 		data[i + 5U] = m_callsign.at(i);
 
-	if (m_debug)
-		CUtils::dump(1U, "NXDN Network Poll Sent", data, 15U);
+	data[15U] = (tg >> 8) & 0xFFU;
+	data[16U] = (tg >> 0) & 0xFFU;
 
-	return m_socket.write(data, 15U, address, port);
+	if (m_debug)
+		CUtils::dump(1U, "NXDN Network Poll Sent", data, 17U);
+
+	return m_socket.write(data, 17U, address, port);
 }
 
-bool CNXDNNetwork::writeUnlink(const in_addr& address, unsigned int port)
+bool CNXDNNetwork::writeUnlink(const in_addr& address, unsigned int port, unsigned short tg)
 {
 	assert(port > 0U);
 
@@ -115,10 +118,13 @@ bool CNXDNNetwork::writeUnlink(const in_addr& address, unsigned int port)
 	for (unsigned int i = 0U; i < 10U; i++)
 		data[i + 5U] = m_callsign.at(i);
 
-	if (m_debug)
-		CUtils::dump(1U, "NXDN Network Unlink Sent", data, 15U);
+	data[15U] = (tg >> 8) & 0xFFU;
+	data[16U] = (tg >> 0) & 0xFFU;
 
-	return m_socket.write(data, 15U, address, port);
+	if (m_debug)
+		CUtils::dump(1U, "NXDN Network Unlink Sent", data, 17U);
+
+	return m_socket.write(data, 17U, address, port);
 }
 
 unsigned int CNXDNNetwork::readData(unsigned char* data, unsigned int length, in_addr& address, unsigned int& port)
@@ -130,7 +136,7 @@ unsigned int CNXDNNetwork::readData(unsigned char* data, unsigned int length, in
 	if (len <= 0)
 		return 0U;
 
-	if ((::memcmp(data, "NXDNP", 5U) == 0 && len == 15) || (::memcmp(data, "NXDND", 5U) == 0 && len == 43)) {
+	if ((::memcmp(data, "NXDNP", 5U) == 0 && len == 17) || (::memcmp(data, "NXDND", 5U) == 0 && len == 43)) {
 		if (m_debug)
 			CUtils::dump(1U, "NXDN Network Data Received", data, len);
 

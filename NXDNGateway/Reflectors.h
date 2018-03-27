@@ -28,15 +28,15 @@
 class CNXDNReflector {
 public:
 	CNXDNReflector() :
-	m_id(),
+	m_id(0U),
 	m_address(),
 	m_port(0U)
 	{
 	}
 
-	unsigned int m_id;
-	in_addr      m_address;
-	unsigned int m_port;
+	unsigned short m_id;
+	in_addr        m_address;
+	unsigned int   m_port;
 };
 
 class CReflectors {
@@ -48,7 +48,7 @@ public:
 
 	bool load();
 
-	CNXDNReflector* find(unsigned int id);
+	CNXDNReflector* find(unsigned short id);
 
 	void clock(unsigned int ms);
 

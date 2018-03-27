@@ -214,35 +214,41 @@ void CNXDNReflector::run()
 		if (len > 0U) {
 			CNXDNRepeater* rpt = findRepeater(address, port);
 
-			if (::memcmp(buffer, "NXDNP", 5U) == 0 && len == 15U) {
-				if (rpt == NULL) {
-					rpt = new CNXDNRepeater;
-					rpt->m_timer.start();
-					rpt->m_address = address;
-					rpt->m_port = port;
-					rpt->m_callsign = std::string((char*)(buffer + 5U), 10U);
-					m_repeaters.push_back(rpt);
+			if (::memcmp(buffer, "NXDNP", 5U) == 0 && len == 17U) {
+				unsigned short id = (buffer[15U] << 8) | buffer[16U];
+				if (id == tg) {
+					if (rpt == NULL) {
+						rpt = new CNXDNRepeater;
+						rpt->m_timer.start();
+						rpt->m_address = address;
+						rpt->m_port = port;
+						rpt->m_callsign = std::string((char*)(buffer + 5U), 10U);
+						m_repeaters.push_back(rpt);
 
-					LogMessage("Adding %s (%s:%u)", rpt->m_callsign.c_str(), ::inet_ntoa(address), port);
-				} else {
-					rpt->m_timer.start();
-				}
-
-				// Return the poll
-				nxdnNetwork.write(buffer, len, address, port);
-			} else if (::memcmp(buffer, "NXDNU", 5U) == 0 && len == 15U) {
-				if (rpt != NULL) {
-					std::string callsign = std::string((char*)(buffer + 5U), 10U);
-					LogMessage("Removing %s (%s:%u)", callsign.c_str(), ::inet_ntoa(address), port);
-
-					for (std::vector<CNXDNRepeater*>::iterator it = m_repeaters.begin(); it != m_repeaters.end(); ++it) {
-						if (*it == rpt) {
-							m_repeaters.erase(it);
-							break;
-						}
+						LogMessage("Adding %s (%s:%u)", rpt->m_callsign.c_str(), ::inet_ntoa(address), port);
+					} else {
+						rpt->m_timer.start();
 					}
 
-					delete rpt;
+					// Return the poll
+					nxdnNetwork.write(buffer, len, address, port);
+				}
+			} else if (::memcmp(buffer, "NXDNU", 5U) == 0 && len == 17U) {
+				unsigned short id = (buffer[15U] << 8) | buffer[16U];
+				if (id == tg) {
+					if (rpt != NULL) {
+						std::string callsign = std::string((char*)(buffer + 5U), 10U);
+						LogMessage("Removing %s (%s:%u)", callsign.c_str(), ::inet_ntoa(address), port);
+
+						for (std::vector<CNXDNRepeater*>::iterator it = m_repeaters.begin(); it != m_repeaters.end(); ++it) {
+							if (*it == rpt) {
+								m_repeaters.erase(it);
+								break;
+							}
+						}
+
+						delete rpt;
+					}
 				}
 			} else if (::memcmp(buffer, "NXDND", 5U) == 0 && len == 43U) {
 				if (rpt != NULL) {

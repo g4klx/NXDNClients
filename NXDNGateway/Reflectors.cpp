@@ -77,7 +77,7 @@ bool CReflectors::load()
 				in_addr address = CUDPSocket::lookup(host);
 				if (address.s_addr != INADDR_NONE) {
 					CNXDNReflector* refl = new CNXDNReflector;
-					refl->m_id      = (unsigned int)::atoi(p1);
+					refl->m_id      = (unsigned short)::atoi(p1);
 					refl->m_address = address;
 					refl->m_port    = (unsigned int)::atoi(p3);
 
@@ -106,7 +106,7 @@ bool CReflectors::load()
 				in_addr address = CUDPSocket::lookup(host);
 				if (address.s_addr != INADDR_NONE) {
 					CNXDNReflector* refl = new CNXDNReflector;
-					refl->m_id      = (unsigned int)::atoi(p1);
+					refl->m_id      = (unsigned short)::atoi(p1);
 					refl->m_address = address;
 					refl->m_port    = (unsigned int)::atoi(p3);
 
@@ -138,7 +138,7 @@ bool CReflectors::load()
 	return true;
 }
 
-CNXDNReflector* CReflectors::find(unsigned int id)
+CNXDNReflector* CReflectors::find(unsigned short id)
 {
 	for (std::vector<CNXDNReflector*>::iterator it = m_reflectors.begin(); it != m_reflectors.end(); ++it) {
 		if (id == (*it)->m_id)
