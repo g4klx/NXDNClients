@@ -4,13 +4,13 @@
 #
 
 # Florida, 1200
-1200	nxcore1200.mmdvmvk.org	41400
+1200	florida.nxref.org	41400
 
 # Spanish speaking, 10301
 10301	ea5gvk.duckdns.org	41400
 
 # Pacific, 10400
-10400	nxdn.mmdvmvk.org	41400
+10400	pacific.nxref.org	41400
 
 # World Wide, 65000
 65000	176.9.1.168	41400
