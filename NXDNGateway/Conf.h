@@ -58,6 +58,8 @@ public:
   unsigned int   getNetworkReloadTime() const;
   std::string    getNetworkParrotAddress() const;
   unsigned int   getNetworkParrotPort() const;
+  std::string    getNetworkNXDN2DMRAddress() const;
+  unsigned int   getNetworkNXDN2DMRPort() const;
   unsigned short getNetworkStartup() const;
   unsigned int   getNetworkInactivityTimeout() const;
   bool           getNetworkDebug() const;
@@ -87,6 +89,8 @@ private:
   unsigned int   m_networkReloadTime;
   std::string    m_networkParrotAddress;
   unsigned int   m_networkParrotPort;
+  std::string    m_networkNXDN2DMRAddress;
+  unsigned int   m_networkNXDN2DMRPort;
   unsigned short m_networkStartup;
   unsigned int   m_networkInactivityTimeout;
   bool           m_networkDebug;

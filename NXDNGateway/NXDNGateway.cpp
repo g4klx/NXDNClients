@@ -184,6 +184,8 @@ void CNXDNGateway::run()
 	CReflectors reflectors(m_conf.getNetworkHosts1(), m_conf.getNetworkHosts2(), m_conf.getNetworkReloadTime());
 	if (m_conf.getNetworkParrotPort() > 0U)
 		reflectors.setParrot(m_conf.getNetworkParrotAddress(), m_conf.getNetworkParrotPort());
+	if (m_conf.getNetworkNXDN2DMRPort() > 0U)
+		reflectors.setNXDN2DMR(m_conf.getNetworkNXDN2DMRAddress(), m_conf.getNetworkNXDN2DMRPort());
 	reflectors.load();
 
 	CNXDNLookup* lookup = new CNXDNLookup(m_conf.getLookupName(), m_conf.getLookupTime());
