@@ -52,6 +52,12 @@ void CReflectors::setParrot(const std::string& address, unsigned int port)
 	m_parrotPort    = port;
 }
 
+void CReflectors::setNXDN2DMR(const std::string& address, unsigned int port)
+{
+	m_nxdn2dmrAddress = address;
+	m_nxdn2dmrPort    = port;
+}
+
 bool CReflectors::load()
 {
 	// Clear out the old reflector list
@@ -129,6 +135,16 @@ bool CReflectors::load()
 		refl->m_port    = m_parrotPort;
 		m_reflectors.push_back(refl);
 		LogInfo("Loaded NXDN parrot (TG%u)", refl->m_id);
+	}
+
+	// Add the NXDN2DMR entry
+	if (m_nxdn2dmrPort > 0U) {
+		CNXDNReflector* refl = new CNXDNReflector;
+		refl->m_id      = 20U;
+		refl->m_address = CUDPSocket::lookup(m_nxdn2dmrAddress);
+		refl->m_port    = m_nxdn2dmrPort;
+		m_reflectors.push_back(refl);
+		LogInfo("Loaded NXDN2DMR reflector (TG%u)", refl->m_id);
 	}
 
 	size = m_reflectors.size();
