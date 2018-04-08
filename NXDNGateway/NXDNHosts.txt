@@ -20,3 +20,6 @@
 
 # French-Test, 65208
 65208	m55.evxonline.net  41400
+
+# North America 10200
+10200   dvswitch.org    42400
