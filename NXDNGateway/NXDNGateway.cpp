@@ -218,11 +218,11 @@ void CNXDNGateway::run()
 	in_addr currentAddr;
 	unsigned int currentPort = 0U;
 
-	unsigned short id = m_conf.getNetworkStartup();
-	if (id != 9999U) {
-		CNXDNReflector* reflector = reflectors.find(id);
+	unsigned short startupId = m_conf.getNetworkStartup();
+	if (startupId != 9999U) {
+		CNXDNReflector* reflector = reflectors.find(startupId);
 		if (reflector != NULL) {
-			currentId   = id;
+			currentId   = startupId;
 			currentAddr = reflector->m_address;
 			currentPort = reflector->m_port;
 
@@ -235,6 +235,8 @@ void CNXDNGateway::run()
 			remoteNetwork.writePoll(currentAddr, currentPort, currentId);
 
 			LogMessage("Linked at startup to reflector %u", currentId);
+		} else {
+			startupId = 9999U;
 		}
 	}
 
@@ -356,7 +358,7 @@ void CNXDNGateway::run()
 
 		inactivityTimer.clock(ms);
 		if (inactivityTimer.isRunning() && inactivityTimer.hasExpired()) {
-			if (currentId != 9999U) {
+			if (currentId != 9999U && startupId == 9999U) {
 				LogMessage("Unlinking from %u due to inactivity", currentId);
 
 				remoteNetwork.writeUnlink(currentAddr, currentPort, currentId);
@@ -367,11 +369,41 @@ void CNXDNGateway::run()
 					voice->unlinked();
 				currentId = 9999U;
 
+				inactivityTimer.stop();
 				pollTimer.stop();
 				lostTimer.stop();
-			}
+			} else if (currentId != startupId) {
+				if (currentId != 9999U) {
+					remoteNetwork.writeUnlink(currentAddr, currentPort, currentId);
+					remoteNetwork.writeUnlink(currentAddr, currentPort, currentId);
+					remoteNetwork.writeUnlink(currentAddr, currentPort, currentId);
+				}
 
-			inactivityTimer.stop();
+				CNXDNReflector* reflector = reflectors.find(startupId);
+				if (reflector != NULL) {
+					currentId   = startupId;
+					currentAddr = reflector->m_address;
+					currentPort = reflector->m_port;
+
+					inactivityTimer.start();
+					pollTimer.start();
+					lostTimer.start();
+
+					LogMessage("Relinked to reflector %u due to inactivity", currentId);
+
+					if (voice != NULL)
+						voice->linkedTo(currentId);
+
+					remoteNetwork.writePoll(currentAddr, currentPort, currentId);
+					remoteNetwork.writePoll(currentAddr, currentPort, currentId);
+					remoteNetwork.writePoll(currentAddr, currentPort, currentId);
+				} else {
+					startupId = 9999U;
+					inactivityTimer.stop();
+					pollTimer.stop();
+					lostTimer.stop();
+				}
+			}
 		}
 
 		pollTimer.clock(ms);
