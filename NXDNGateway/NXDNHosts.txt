@@ -6,11 +6,17 @@
 # Florida, 1200
 1200	florida.nxref.org	41400
 
+# North America 10200
+10200   dvswitch.org    42400
+
 # Spanish speaking, 10301
 10301	ea5gvk.duckdns.org	41400
 
 # Pacific, 10400
 10400	pacific.nxref.org	41400
+
+# DMR Link?, 31665
+31665	nxdn.alecwasserman.com	41400
 
 # China, 46000
 46000	120.234.41.144	41400
@@ -20,6 +26,3 @@
 
 # French-Test, 65208
 65208	m55.evxonline.net  41400
-
-# North America 10200
-10200   dvswitch.org    42400
