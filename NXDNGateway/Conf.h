@@ -53,8 +53,7 @@ public:
 
   // The Network section
   unsigned int   getNetworkPort() const;
-  std::string    getNetworkHosts1() const;
-  std::string    getNetworkHosts2() const;
+  std::string    getNetworkHosts() const;
   unsigned int   getNetworkReloadTime() const;
   std::string    getNetworkParrotAddress() const;
   unsigned int   getNetworkParrotPort() const;
@@ -84,8 +83,7 @@ private:
   std::string  m_logFileRoot;
 
   unsigned int   m_networkPort;
-  std::string    m_networkHosts1;
-  std::string    m_networkHosts2;
+  std::string    m_networkHosts;
   unsigned int   m_networkReloadTime;
   std::string    m_networkParrotAddress;
   unsigned int   m_networkParrotPort;

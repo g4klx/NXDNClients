@@ -181,7 +181,7 @@ void CNXDNGateway::run()
 		return;
 	}
 
-	CReflectors reflectors(m_conf.getNetworkHosts1(), m_conf.getNetworkHosts2(), m_conf.getNetworkReloadTime());
+	CReflectors reflectors(m_conf.getNetworkHosts(), m_conf.getNetworkReloadTime());
 	if (m_conf.getNetworkParrotPort() > 0U)
 		reflectors.setParrot(m_conf.getNetworkParrotAddress(), m_conf.getNetworkParrotPort());
 	if (m_conf.getNetworkNXDN2DMRPort() > 0U)

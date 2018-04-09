@@ -26,9 +26,8 @@
 #include <cstring>
 #include <cctype>
 
-CReflectors::CReflectors(const std::string& hostsFile1, const std::string& hostsFile2, unsigned int reloadTime) :
-m_hostsFile1(hostsFile1),
-m_hostsFile2(hostsFile2),
+CReflectors::CReflectors(const std::string& hostsFile, unsigned int reloadTime) :
+m_hostsFile(hostsFile),
 m_parrotAddress(),
 m_parrotPort(0U),
 m_reflectors(),
@@ -66,7 +65,7 @@ bool CReflectors::load()
 
 	m_reflectors.clear();
 
-	FILE* fp = ::fopen(m_hostsFile1.c_str(), "rt");
+	FILE* fp = ::fopen(m_hostsFile.c_str(), "rt");
 	if (fp != NULL) {
 		char buffer[100U];
 		while (::fgets(buffer, 100U, fp) != NULL) {
@@ -76,35 +75,6 @@ bool CReflectors::load()
 			char* p1 = ::strtok(buffer, " \t\r\n");
 			char* p2 = ::strtok(NULL,   " \t\r\n");
 			char* p3 = ::strtok(NULL,   " \t\r\n");
-
-			if (p1 != NULL && p2 != NULL && p3 != NULL) {
-				std::string host = std::string(p2);
-
-				in_addr address = CUDPSocket::lookup(host);
-				if (address.s_addr != INADDR_NONE) {
-					CNXDNReflector* refl = new CNXDNReflector;
-					refl->m_id      = (unsigned short)::atoi(p1);
-					refl->m_address = address;
-					refl->m_port    = (unsigned int)::atoi(p3);
-
-					m_reflectors.push_back(refl);
-				}
-			}
-		}
-
-		::fclose(fp);
-	}
-
-	fp = ::fopen(m_hostsFile2.c_str(), "rt");
-	if (fp != NULL) {
-		char buffer[100U];
-		while (::fgets(buffer, 100U, fp) != NULL) {
-			if (buffer[0U] == '#')
-				continue;
-
-			char* p1 = ::strtok(buffer, " \t\r\n");
-			char* p2 = ::strtok(NULL, " \t\r\n");
-			char* p3 = ::strtok(NULL, " \t\r\n");
 
 			if (p1 != NULL && p2 != NULL && p3 != NULL) {
 				std::string host = std::string(p2);
