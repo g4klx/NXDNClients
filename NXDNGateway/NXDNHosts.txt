@@ -6,7 +6,7 @@
 # Florida, 1200
 1200	florida.nxref.org	41400
 
-# North America 10200
+# North America, 10200
 10200   dvswitch.org    42400
 
 # Spanish speaking, 10301
@@ -14,6 +14,9 @@
 
 # Pacific, 10400
 10400	pacific.nxref.org	41400
+
+# Alabama-Link, 31010
+31010	nxdn.alabamalink.info	41400
 
 # DMR Link?, 31665
 31665	nxdn.alecwasserman.com	41400
