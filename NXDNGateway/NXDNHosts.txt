@@ -15,6 +15,9 @@
 # NXDN 10302 Test Transcoding BM EA Spain
 10302	93.186.254.219	41400
 
+# Italian speaking, 10303
+10303	185.203.118.8	41400
+
 # Pacific, 10400
 10400	pacific.nxref.org	41400
 
