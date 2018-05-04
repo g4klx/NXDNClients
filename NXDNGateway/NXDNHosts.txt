@@ -9,6 +9,9 @@
 # North America, 10200
 10200   dvswitch.org    42400
 
+# Portuguese speaking test, 10268
+10268 ct1jib.dyndns.org 41400
+
 # Spanish speaking, 10301
 10301	ea5gvk.duckdns.org	41400
 
