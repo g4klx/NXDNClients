@@ -270,7 +270,7 @@ void CNXDNGateway::run()
 		// From the MMDVM to the reflector or control data
 		len = localNetwork.read(buffer, address, port);
 		if (len > 0U) {
-			// Only process the beginning and ending blocks here
+			// Only process the beginning and ending voice blocks here
 			if ((buffer[0U] == 0x81U || buffer[0U] == 0x83U) && (buffer[5U] == 0x01U || buffer[5U] == 0x08U)) {
 				grp = (buffer[7U] & 0x20U) == 0x20U;
 
@@ -328,8 +328,8 @@ void CNXDNGateway::run()
 					}
 				}
 
-				// If it's the end of the transmission, start the voice
-				if (buffer[5U] == 0x08U) {
+				// If it's the end of the voice transmission, start the voice prompt
+				if ((buffer[0U] == 0x81U || buffer[0U] == 0x83U) && buffer[5U] == 0x08U) {
 					if (voice != NULL)
 						voice->eof();
 				}

@@ -67,8 +67,17 @@ bool CNXDNNetwork::writeData(const unsigned char* data, unsigned int length, uns
 	buffer[9U] |= grp ? 0x01U : 0x00U;
 
 	if (data[0U] == 0x81U || data[0U] == 0x83U) {
+		// This is a voice header or trailer.
 		buffer[9U] |= data[5U] == 0x01U ? 0x04U : 0x00U;
 		buffer[9U] |= data[5U] == 0x08U ? 0x08U : 0x00U;
+	} else if ((data[0U] & 0xF0U) == 0x90U) {
+		// This if data.
+		buffer[9U] |= 0x02U;
+		if (data[0U] == 0x90U || data[0U] == 0x92U || data[0U] == 0x9CU || data[0U] == 0x9EU) {
+			// This is data header or trailer.
+			buffer[9U] |= data[2U] == 0x09U ? 0x04U : 0x00U;
+			buffer[9U] |= data[2U] == 0x08U ? 0x08U : 0x00U;
+		}
 	}
 
 	::memcpy(buffer + 10U, data, 33U);

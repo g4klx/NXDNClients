@@ -62,9 +62,15 @@ bool CIcomNetwork::write(const unsigned char* data, unsigned int length, const i
 	buffer[6U] = 0x08U;
 	buffer[7U] = 0xE0U;
 
-	buffer[37U] = 0x23U;
-	buffer[38U] = (data[0U] == 0x81U || data[0U] == 0x83U) ? 0x1CU : 0x10U;
-	buffer[39U] = 0x21U;
+	if ((data[0U] & 0xF0U) == 0x90U) {
+		buffer[37U] = 0x23U;
+		buffer[38U] = 0x02U;
+		buffer[39U] = 0x18U;
+	} else {
+		buffer[37U] = 0x23U;
+		buffer[38U] = (data[0U] == 0x81U || data[0U] == 0x83U) ? 0x1CU : 0x10U;
+		buffer[39U] = 0x21U;
+	}
 
 	::memcpy(buffer + 40U, data, length);
 

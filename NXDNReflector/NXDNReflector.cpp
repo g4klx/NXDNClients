@@ -329,6 +329,23 @@ void CNXDNReflector::run()
 								nxCoreActive = true;
 							}
 						}
+						if ((buffer[0U] & 0xF0U) == 0x90U && buffer[2U] == 0x09U) {
+							bool           tempGrp   = (buffer[4U] & 0x20U) == 0x20U;
+							unsigned short tempSrcId = (buffer[5U] << 8) | buffer[6U];
+							unsigned short tempDstId = (buffer[7U] << 8) | buffer[8U];
+
+							if (tempGrp && tempDstId == tg) {
+								// Save the grp, src and dest for use in the NXDN Protocol messages
+								grp = tempGrp;
+								srcId = tempSrcId;
+								dstId = tempDstId;
+
+								std::string callsign = lookup->find(srcId);
+								LogMessage("Transmission from %s at NXCore to %s%u", callsign.c_str(), grp ? "TG " : "", dstId);
+
+								nxCoreActive = true;
+							}
+						}
 					}
 
 					if (nxCoreActive) {
@@ -341,6 +358,11 @@ void CNXDNReflector::run()
 						}
 
 						if ((buffer[0U] == 0x81U || buffer[0U] == 0x83U) && buffer[5U] == 0x08U) {
+							LogMessage("Received end of transmission");
+							nxCoreActive = false;
+							watchdogTimer.stop();
+						}
+						if ((buffer[0U] & 0xF0U) == 0x90U && buffer[2U] == 0x08U) {
 							LogMessage("Received end of transmission");
 							nxCoreActive = false;
 							watchdogTimer.stop();

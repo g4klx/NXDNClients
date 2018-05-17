@@ -68,9 +68,15 @@ bool CNXCoreNetwork::write(const unsigned char* data, unsigned int len)
 	buffer[6U] = 0x08U;
 	buffer[7U] = 0xE0U;
 
-	buffer[37U] = 0x23U;
-	buffer[38U] = (data[9U] & 0x0CU) != 0x00U ? 0x1CU : 0x10U;
-	buffer[39U] = 0x21U;
+	if ((data[9U] & 0x02U) == 0x02U) {
+		buffer[37U] = 0x23U;
+		buffer[38U] = 0x02U;
+		buffer[39U] = 0x18U;
+	} else {
+		buffer[37U] = 0x23U;
+		buffer[38U] = (data[9U] & 0x0CU) != 0x00U ? 0x1CU : 0x10U;
+		buffer[39U] = 0x21U;
+	}
 
 	::memcpy(buffer + 40U, data + 10U, 33U);
 
