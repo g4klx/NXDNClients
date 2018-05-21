@@ -24,6 +24,9 @@
 # Pacific, 10400
 10400	pacific.nxref.org	41400
 
+# America-Ragchew, 28299
+28299	65.101.7.52	41400
+
 # Alabama-Link, 31010
 31010	nxdn.alabamalink.info	41400
 
