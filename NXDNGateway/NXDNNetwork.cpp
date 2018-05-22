@@ -71,7 +71,7 @@ bool CNXDNNetwork::writeData(const unsigned char* data, unsigned int length, uns
 		buffer[9U] |= data[5U] == 0x01U ? 0x04U : 0x00U;
 		buffer[9U] |= data[5U] == 0x08U ? 0x08U : 0x00U;
 	} else if ((data[0U] & 0xF0U) == 0x90U) {
-		// This if data.
+		// This is data.
 		buffer[9U] |= 0x02U;
 		if (data[0U] == 0x90U || data[0U] == 0x92U || data[0U] == 0x9CU || data[0U] == 0x9EU) {
 			// This is data header or trailer.

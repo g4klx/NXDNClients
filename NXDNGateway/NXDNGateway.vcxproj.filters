@@ -59,6 +59,21 @@
     <ClInclude Include="NXDNCRC.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="APRSWriter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="APRSWriterThread.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TCPSocket.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RingBuffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GPSHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Conf.cpp">
@@ -104,6 +119,18 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="NXDNCRC.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="APRSWriter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="APRSWriterThread.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TCPSocket.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GPSHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -21,6 +21,7 @@
 #include "NXDNGateway.h"
 #include "NXDNLookup.h"
 #include "Reflectors.h"
+#include "GPSHandler.h"
 #include "StopWatch.h"
 #include "Version.h"
 #include "Thread.h"
@@ -53,6 +54,10 @@ const char* DEFAULT_INI_FILE = "/etc/NXDNGateway.ini";
 #include <cstdarg>
 #include <ctime>
 #include <cstring>
+
+const unsigned char NXDN_TYPE_DCALL_HDR = 0x09U;
+const unsigned char NXDN_TYPE_DCALL = 0x0BU;
+const unsigned char NXDN_TYPE_TX_REL = 0x08U;
 
 const unsigned short NXDN_VOICE_ID = 9999U;
 
@@ -166,6 +171,8 @@ void CNXDNGateway::run()
 	in_addr rptAddr = CUDPSocket::lookup(m_conf.getRptAddress());
 	unsigned int rptPort = m_conf.getRptPort();
 
+	createGPS();
+
 	CIcomNetwork localNetwork(m_conf.getMyPort(), m_conf.getRptDebug());
 	ret = localNetwork.open();
 	if (!ret) {
@@ -236,7 +243,7 @@ void CNXDNGateway::run()
 
 			LogMessage("Linked at startup to reflector %u", currentId);
 		} else {
-			startupId = 9999U;
+startupId = 9999U;
 		}
 	}
 
@@ -274,10 +281,10 @@ void CNXDNGateway::run()
 			if ((buffer[0U] == 0x81U || buffer[0U] == 0x83U) && (buffer[5U] == 0x01U || buffer[5U] == 0x08U)) {
 				grp = (buffer[7U] & 0x20U) == 0x20U;
 
-				srcId  = (buffer[8U] << 8) & 0xFF00U;
+				srcId = (buffer[8U] << 8) & 0xFF00U;
 				srcId |= (buffer[9U] << 0) & 0x00FFU;
 
-				dstId  = (buffer[10U] << 8) & 0xFF00U;
+				dstId = (buffer[10U] << 8) & 0xFF00U;
 				dstId |= (buffer[11U] << 0) & 0x00FFU;
 
 				if (dstId != currentId) {
@@ -308,7 +315,7 @@ void CNXDNGateway::run()
 
 					// Link to the new reflector
 					if (reflector != NULL) {
-						currentId   = dstId;
+						currentId = dstId;
 						currentAddr = reflector->m_address;
 						currentPort = reflector->m_port;
 
@@ -332,6 +339,29 @@ void CNXDNGateway::run()
 				if ((buffer[0U] == 0x81U || buffer[0U] == 0x83U) && buffer[5U] == 0x08U) {
 					if (voice != NULL)
 						voice->eof();
+				}
+			}
+
+			if (m_gps != NULL) {
+				if ((buffer[0U] & 0xF0U) == 0x90U) {
+					switch (buffer[2U] & 0x3FU) {
+					case NXDN_TYPE_DCALL_HDR: {
+						unsigned short srcId = 0U;
+						srcId |= (buffer[5U] << 8) & 0xFF00U;
+						srcId |= (buffer[6U] << 0) & 0x00FFU;
+						std::string callsign = lookup->find(srcId);
+						m_gps->processHeader(callsign);
+						}
+						break;
+					case NXDN_TYPE_DCALL:
+						m_gps->processData(buffer + 3U);
+						break;
+					case NXDN_TYPE_TX_REL:
+						m_gps->processEnd();
+						break;
+					default:
+						break;
+					}
 				}
 			}
 
@@ -424,6 +454,9 @@ void CNXDNGateway::run()
 			lostTimer.stop();
 		}
 
+		if (m_gps != NULL)
+			m_gps->clock(ms);
+
 		if (ms < 5U)
 			CThread::sleep(5U);
 	}
@@ -436,5 +469,39 @@ void CNXDNGateway::run()
 
 	lookup->stop();
 
+	if (m_gps != NULL) {
+		m_gps->close();
+		delete m_gps;
+	}
+
 	::LogFinalise();
+}
+
+void CNXDNGateway::createGPS()
+{
+	if (!m_conf.getAPRSEnabled())
+		return;
+
+	std::string callsign = m_conf.getCallsign();
+	std::string suffix   = m_conf.getSuffix();
+	std::string hostname = m_conf.getAPRSServer();
+	unsigned int port    = m_conf.getAPRSPort();
+	std::string password = m_conf.getAPRSPassword();
+	std::string desc     = m_conf.getAPRSDescription();
+
+	m_gps = new CGPSHandler(callsign, suffix, password, hostname, port);
+
+	unsigned int txFrequency = m_conf.getTxFrequency();
+	unsigned int rxFrequency = m_conf.getRxFrequency();
+	float latitude           = m_conf.getLatitude();
+	float longitude          = m_conf.getLongitude();
+	int height               = m_conf.getHeight();
+
+	m_gps->setInfo(txFrequency, rxFrequency, latitude, longitude, height, desc);
+
+	bool ret = m_gps->open();
+	if (!ret) {
+		delete m_gps;
+		m_gps = NULL;
+	}
 }

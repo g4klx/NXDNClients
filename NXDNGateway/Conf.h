@@ -32,11 +32,22 @@ public:
 
   // The General section
   std::string  getCallsign() const;
+  std::string  getSuffix() const;
   std::string  getRptAddress() const;
   unsigned int getRptPort() const;
   unsigned int getMyPort() const;
   bool         getRptDebug() const;
   bool         getDaemon() const;
+
+  // The Info section
+  unsigned int getRxFrequency() const;
+  unsigned int getTxFrequency() const;
+  unsigned int getPower() const;
+  float        getLatitude() const;
+  float        getLongitude() const;
+  int          getHeight() const;
+  std::string  getName() const;
+  std::string  getDescription() const;
 
   // The Id Lookup section
   std::string  getLookupName() const;
@@ -46,6 +57,13 @@ public:
   bool         getVoiceEnabled() const;
   std::string  getVoiceLanguage() const;
   std::string  getVoiceDirectory() const;
+
+  // The aprs.fi section
+  bool         getAPRSEnabled() const;
+  std::string  getAPRSServer() const;
+  unsigned int getAPRSPort() const;
+  std::string  getAPRSPassword() const;
+  std::string  getAPRSDescription() const;
 
   // The Log section
   std::string  getLogFilePath() const;
@@ -66,11 +84,21 @@ public:
 private:
   std::string  m_file;
   std::string  m_callsign;
+  std::string  m_suffix;
   std::string  m_rptAddress;
   unsigned int m_rptPort;
   unsigned int m_myPort;
   bool         m_rptDebug;
   bool         m_daemon;
+
+  unsigned int m_rxFrequency;
+  unsigned int m_txFrequency;
+  unsigned int m_power;
+  float        m_latitude;
+  float        m_longitude;
+  int          m_height;
+  std::string  m_name;
+  std::string  m_description;
 
   std::string  m_lookupName;
   unsigned int m_lookupTime;
@@ -81,6 +109,12 @@ private:
 
   std::string  m_logFilePath;
   std::string  m_logFileRoot;
+
+  bool         m_aprsEnabled;
+  std::string  m_aprsServer;
+  unsigned int m_aprsPort;
+  std::string  m_aprsPassword;
+  std::string  m_aprsDescription;
 
   unsigned int   m_networkPort;
   std::string    m_networkHosts;

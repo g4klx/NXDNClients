@@ -19,6 +19,7 @@
 #if !defined(NXDNGateway_H)
 #define	NXDNGateway_H
 
+#include "GPSHandler.h"
 #include "Timer.h"
 #include "Conf.h"
 
@@ -47,7 +48,10 @@ public:
 	void run();
 
 private:
-	CConf m_conf;
+	CConf        m_conf;
+	CGPSHandler* m_gps;
+
+	void createGPS();
 };
 
 #endif
