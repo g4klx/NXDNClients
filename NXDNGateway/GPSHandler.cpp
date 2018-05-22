@@ -63,6 +63,7 @@ void CGPSHandler::setInfo(unsigned int txFrequency, unsigned int rxFrequency, fl
 
 void CGPSHandler::processHeader(const std::string& source)
 {
+	reset();
 	m_source = source;
 }
 
