@@ -43,11 +43,11 @@ public:
 	void close();
 
 private:
-	std::string  m_callsign;
-	CAPRSWriter  m_writer;
-	char*        m_data;
-	unsigned int m_length;
-	std::string  m_source;
+	std::string    m_callsign;
+	CAPRSWriter    m_writer;
+	unsigned char* m_data;
+	unsigned int   m_length;
+	std::string    m_source;
 
 	void processNMEA();
 	bool checkXOR() const;

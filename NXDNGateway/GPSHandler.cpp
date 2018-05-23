@@ -18,6 +18,7 @@
 
 #include "GPSHandler.h"
 #include "Utils.h"
+#include "Log.h"
 
 #include <cstdint>
 #include <cstdio>
@@ -27,7 +28,7 @@
 const unsigned char NXDN_DATA_TYPE_GPS = 0x06U;
 
 const unsigned int NXDN_DATA_LENGTH = 20U;
-const unsigned int NXDN_DATA_MAX_LENGTH = 15U * NXDN_DATA_LENGTH;
+const unsigned int NXDN_DATA_MAX_LENGTH = 16U * NXDN_DATA_LENGTH;
 
 CGPSHandler::CGPSHandler(const std::string& callsign, const std::string& suffix, const std::string& password, const std::string& address, unsigned int port) :
 m_callsign(callsign),
@@ -41,7 +42,7 @@ m_source()
 	assert(!address.empty());
 	assert(port > 0U);
 
-	m_data = new char[NXDN_DATA_MAX_LENGTH];
+	m_data = new unsigned char[NXDN_DATA_MAX_LENGTH];
 
 	reset();
 }
@@ -65,6 +66,7 @@ void CGPSHandler::processHeader(const std::string& source)
 {
 	reset();
 	m_source = source;
+	LogDebug("Received Data header from %s", source.c_str());
 }
 
 void CGPSHandler::processData(const unsigned char* data)
@@ -73,6 +75,8 @@ void CGPSHandler::processData(const unsigned char* data)
 
 	::memcpy(m_data + m_length, data + 1U, NXDN_DATA_LENGTH);
 	m_length += NXDN_DATA_LENGTH;
+
+	CUtils::dump("Received Data block", data, NXDN_DATA_LENGTH + 1U);
 
 	if (data[0U] == 0x00U) {
 		processNMEA();
@@ -104,17 +108,27 @@ void CGPSHandler::reset()
 
 void CGPSHandler::processNMEA()
 {
-	if (m_data[0U] != NXDN_DATA_TYPE_GPS)
-		return;
+	LogDebug("Received complete Data", m_data, m_length);
 
-	if (::memcmp(m_data + 1U, "$G", 2U) != 0)
+	if (m_data[0U] != NXDN_DATA_TYPE_GPS) {
+		LogDebug("Not GPS data type - %02X", m_data[0U]);
 		return;
+	}
 
-	if (::strchr(m_data + 1U, '*') == NULL)
+	if (::memcmp(m_data + 1U, "$G", 2U) != 0) {
+		LogDebug("Doesn't start with $G - %.2s", m_data + 1U);
 		return;
+	}
 
-	if (!checkXOR())
+	if (::strchr((char*)(m_data + 1U), '*') == NULL) {
+		LogDebug("Can't find a *");
 		return;
+	}
+
+	if (!checkXOR()) {
+		LogDebug("Checksum failed");
+		return;
+	}
 
 	if (::memcmp(m_data + 4U, "RMC", 3U) != 0) {
 		CUtils::dump("Unhandled NMEA sentence", (unsigned char*)(m_data + 1U), m_length - 1U);
@@ -127,19 +141,23 @@ void CGPSHandler::processNMEA()
 	unsigned int nRMC = 0U;
 
 	char* p = NULL;
-	char* d = m_data + 1U;
+	char* d = (char*)(m_data + 1U);
 	while ((p = ::strtok(d, ",\r\n")) != NULL) {
 		pRMC[nRMC++] = p;
 		d = NULL;
 	}
 
 	// Is there any position data?
-	if (pRMC[3U] == NULL || pRMC[4U] == NULL || pRMC[5U] == NULL || pRMC[6U] == NULL || ::strlen(pRMC[3U]) == 0U || ::strlen(pRMC[4U]) == 0U || ::strlen(pRMC[5U]) == 0 || ::strlen(pRMC[6U]) == 0)
+	if (pRMC[3U] == NULL || pRMC[4U] == NULL || pRMC[5U] == NULL || pRMC[6U] == NULL || ::strlen(pRMC[3U]) == 0U || ::strlen(pRMC[4U]) == 0U || ::strlen(pRMC[5U]) == 0 || ::strlen(pRMC[6U]) == 0) {
+		LogDebug("Position data isn't correct");
 		return;
+	}
 
 	// Is it a valid GPS fix?
-	if (::strcmp(pRMC[2U], "A") != 0)
+	if (::strcmp(pRMC[2U], "A") != 0) {
+		LogDebug("GPS data isn't valid - %s", pRMC[2U]);
 		return;
+	}
 
 	char output[300U];
 	if (pRMC[7U] != NULL && pRMC[8U] != NULL && ::strlen(pRMC[7U]) > 0U && ::strlen(pRMC[8U]) > 0U) {
@@ -158,11 +176,11 @@ void CGPSHandler::processNMEA()
 
 bool CGPSHandler::checkXOR() const
 {
-	char* p1 = ::strchr(m_data, '$');
-	char* p2 = ::strchr(m_data, '*');
+	char* p1 = ::strchr((char*)m_data, '$');
+	char* p2 = ::strchr((char*)m_data, '*');
 
 	unsigned char res = 0U;
-	for (char* q = p1; q < p2; q++)
+	for (char* q = p1 + 1U; q < p2; q++)
 		res ^= *q;
 
 	char buffer[10U];
