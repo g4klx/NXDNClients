@@ -18,7 +18,6 @@
 
 #include "GPSHandler.h"
 #include "Utils.h"
-#include "Log.h"
 
 #include <cstdint>
 #include <cstdio>
@@ -66,7 +65,6 @@ void CGPSHandler::processHeader(const std::string& source)
 {
 	reset();
 	m_source = source;
-	LogDebug("Received Data header from %s", source.c_str());
 }
 
 void CGPSHandler::processData(const unsigned char* data)
@@ -75,8 +73,6 @@ void CGPSHandler::processData(const unsigned char* data)
 
 	::memcpy(m_data + m_length, data + 1U, NXDN_DATA_LENGTH);
 	m_length += NXDN_DATA_LENGTH;
-
-	CUtils::dump("Received Data block", data, NXDN_DATA_LENGTH + 1U);
 
 	if (data[0U] == 0x00U) {
 		processNMEA();
@@ -108,27 +104,17 @@ void CGPSHandler::reset()
 
 void CGPSHandler::processNMEA()
 {
-	LogDebug("Received complete Data", m_data, m_length);
-
-	if (m_data[0U] != NXDN_DATA_TYPE_GPS) {
-		LogDebug("Not GPS data type - %02X", m_data[0U]);
+	if (m_data[0U] != NXDN_DATA_TYPE_GPS)
 		return;
-	}
 
-	if (::memcmp(m_data + 1U, "$G", 2U) != 0) {
-		LogDebug("Doesn't start with $G - %.2s", m_data + 1U);
+	if (::memcmp(m_data + 1U, "$G", 2U) != 0)
 		return;
-	}
 
-	if (::strchr((char*)(m_data + 1U), '*') == NULL) {
-		LogDebug("Can't find a *");
+	if (::strchr((char*)(m_data + 1U), '*') == NULL)
 		return;
-	}
 
-	if (!checkXOR()) {
-		LogDebug("Checksum failed");
+	if (!checkXOR())
 		return;
-	}
 
 	if (::memcmp(m_data + 4U, "RMC", 3U) != 0) {
 		CUtils::dump("Unhandled NMEA sentence", (unsigned char*)(m_data + 1U), m_length - 1U);
@@ -148,27 +134,26 @@ void CGPSHandler::processNMEA()
 	}
 
 	// Is there any position data?
-	if (pRMC[3U] == NULL || pRMC[4U] == NULL || pRMC[5U] == NULL || pRMC[6U] == NULL || ::strlen(pRMC[3U]) == 0U || ::strlen(pRMC[4U]) == 0U || ::strlen(pRMC[5U]) == 0 || ::strlen(pRMC[6U]) == 0) {
-		LogDebug("Position data isn't correct");
+	if (pRMC[3U] == NULL || pRMC[4U] == NULL || pRMC[5U] == NULL || pRMC[6U] == NULL || ::strlen(pRMC[3U]) == 0U || ::strlen(pRMC[4U]) == 0U || ::strlen(pRMC[5U]) == 0 || ::strlen(pRMC[6U]) == 0)
 		return;
-	}
 
 	// Is it a valid GPS fix?
-	if (::strcmp(pRMC[2U], "A") != 0) {
-		LogDebug("GPS data isn't valid - %s", pRMC[2U]);
+	if (::strcmp(pRMC[2U], "A") != 0)
 		return;
-	}
+
+	double latitude  = ::atof(pRMC[3U]);
+	double longitude = ::atof(pRMC[5U]);
 
 	char output[300U];
 	if (pRMC[7U] != NULL && pRMC[8U] != NULL && ::strlen(pRMC[7U]) > 0U && ::strlen(pRMC[8U]) > 0U) {
 		int bearing = ::atoi(pRMC[8U]);
 		int speed   = ::atoi(pRMC[7U]);
 
-		::sprintf(output, "%s-Y>APDPRS,NXDN*,qAR,%s:!%s%s/%s%sr%03d/%03d via MMDVM",
-			m_source.c_str(), m_callsign.c_str(), pRMC[3U], pRMC[4U], pRMC[5U], pRMC[6U], bearing, speed);
+		::sprintf(output, "%s-Y>APDPRS,NXDN*,qAR,%s:!%07.2lf%s/%08.2lf%sr%03d/%03d via MMDVM",
+			m_source.c_str(), m_callsign.c_str(), latitude, pRMC[4U], longitude, pRMC[6U], bearing, speed);
 	} else {
-		::sprintf(output, "%s-Y>APDPRS,NXDN*,qAR,%s:!%s%s/%s%sr via MMDVM",
-			m_source.c_str(), m_callsign.c_str(), pRMC[3U], pRMC[4U], pRMC[5U], pRMC[6U]);
+		::sprintf(output, "%s-Y>APDPRS,NXDN*,qAR,%s:!%07.2lf%s/%08.2lf%sr via MMDVM",
+			m_source.c_str(), m_callsign.c_str(), latitude, pRMC[4U], longitude, pRMC[6U]);
 	}
 
 	m_writer.write(output);
