@@ -149,10 +149,10 @@ void CGPSHandler::processNMEA()
 		int bearing = ::atoi(pRMC[8U]);
 		int speed   = ::atoi(pRMC[7U]);
 
-		::sprintf(output, "%s-Y>APDPRS,NXDN*,qAR,%s:!%07.2lf%s/%08.2lf%sr%03d/%03d via MMDVM",
+		::sprintf(output, "%s-N>APDPRS,NXDN*,qAR,%s:!%07.2lf%s/%08.2lf%sr%03d/%03d via MMDVM",
 			m_source.c_str(), m_callsign.c_str(), latitude, pRMC[4U], longitude, pRMC[6U], bearing, speed);
 	} else {
-		::sprintf(output, "%s-Y>APDPRS,NXDN*,qAR,%s:!%07.2lf%s/%08.2lf%sr via MMDVM",
+		::sprintf(output, "%s-N>APDPRS,NXDN*,qAR,%s:!%07.2lf%s/%08.2lf%sr via MMDVM",
 			m_source.c_str(), m_callsign.c_str(), latitude, pRMC[4U], longitude, pRMC[6U]);
 	}
 
