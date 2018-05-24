@@ -63,6 +63,7 @@ public:
   std::string  getAPRSServer() const;
   unsigned int getAPRSPort() const;
   std::string  getAPRSPassword() const;
+  std::string  getAPRSSuffix() const;
   std::string  getAPRSDescription() const;
 
   // The Log section
@@ -114,6 +115,7 @@ private:
   std::string  m_aprsServer;
   unsigned int m_aprsPort;
   std::string  m_aprsPassword;
+  std::string  m_aprsSuffix;
   std::string  m_aprsDescription;
 
   unsigned int   m_networkPort;

@@ -65,6 +65,7 @@ m_aprsEnabled(false),
 m_aprsServer(),
 m_aprsPort(0U),
 m_aprsPassword(),
+m_aprsSuffix(),
 m_aprsDescription(),
 m_networkPort(0U),
 m_networkHosts(),
@@ -188,6 +189,8 @@ bool CConf::read()
 			  m_aprsPort = (unsigned int)::atoi(value);
 		  else if (::strcmp(key, "Password") == 0)
 			  m_aprsPassword = value;
+		  else if (::strcmp(key, "Suffix") == 0)
+			  m_aprsSuffix = value;
 		  else if (::strcmp(key, "Description") == 0)
 			  m_aprsDescription = value;
 	  } else if (section == SECTION_NETWORK) {
@@ -342,6 +345,11 @@ unsigned int CConf::getAPRSPort() const
 std::string CConf::getAPRSPassword() const
 {
 	return m_aprsPassword;
+}
+
+std::string CConf::getAPRSSuffix() const
+{
+	return m_aprsSuffix;
 }
 
 std::string CConf::getAPRSDescription() const

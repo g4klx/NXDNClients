@@ -29,12 +29,13 @@ const unsigned char NXDN_DATA_TYPE_GPS = 0x06U;
 const unsigned int NXDN_DATA_LENGTH = 20U;
 const unsigned int NXDN_DATA_MAX_LENGTH = 16U * NXDN_DATA_LENGTH;
 
-CGPSHandler::CGPSHandler(const std::string& callsign, const std::string& suffix, const std::string& password, const std::string& address, unsigned int port) :
+CGPSHandler::CGPSHandler(const std::string& callsign, const std::string& rptSuffix, const std::string& password, const std::string& address, unsigned int port, const std::string& suffix) :
 m_callsign(callsign),
-m_writer(callsign, suffix, password, address, port),
+m_writer(callsign, rptSuffix, password, address, port),
 m_data(NULL),
 m_length(0U),
-m_source()
+m_source(),
+m_suffix(suffix)
 {
 	assert(!callsign.empty());
 	assert(!password.empty());
@@ -144,16 +145,22 @@ void CGPSHandler::processNMEA()
 	double latitude  = ::atof(pRMC[3U]);
 	double longitude = ::atof(pRMC[5U]);
 
+	std::string source = m_source;
+	if (!m_suffix.empty()) {
+		source.append("-");
+		source.append(m_suffix.substr(0U, 1U));
+	}
+
 	char output[300U];
 	if (pRMC[7U] != NULL && pRMC[8U] != NULL && ::strlen(pRMC[7U]) > 0U && ::strlen(pRMC[8U]) > 0U) {
 		int bearing = ::atoi(pRMC[8U]);
 		int speed   = ::atoi(pRMC[7U]);
 
-		::sprintf(output, "%s-N>APDPRS,NXDN*,qAR,%s:!%07.2lf%s/%08.2lf%sr%03d/%03d via MMDVM",
-			m_source.c_str(), m_callsign.c_str(), latitude, pRMC[4U], longitude, pRMC[6U], bearing, speed);
+		::sprintf(output, "%s>APDPRS,NXDN*,qAR,%s:!%07.2lf%s/%08.2lf%sr%03d/%03d via MMDVM",
+			source.c_str(), m_callsign.c_str(), latitude, pRMC[4U], longitude, pRMC[6U], bearing, speed);
 	} else {
-		::sprintf(output, "%s-N>APDPRS,NXDN*,qAR,%s:!%07.2lf%s/%08.2lf%sr via MMDVM",
-			m_source.c_str(), m_callsign.c_str(), latitude, pRMC[4U], longitude, pRMC[6U]);
+		::sprintf(output, "%s>APDPRS,NXDN*,qAR,%s:!%07.2lf%s/%08.2lf%sr via MMDVM",
+			source.c_str(), m_callsign.c_str(), latitude, pRMC[4U], longitude, pRMC[6U]);
 	}
 
 	m_writer.write(output);

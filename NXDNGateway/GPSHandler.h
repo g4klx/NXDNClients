@@ -25,7 +25,7 @@
 
 class CGPSHandler {
 public:
-	CGPSHandler(const std::string& callsign, const std::string& suffix, const std::string& password, const std::string& address, unsigned int port);
+	CGPSHandler(const std::string& callsign, const std::string& rptSuffix, const std::string& password, const std::string& address, unsigned int port, const std::string& suffix);
 	~CGPSHandler();
 
 	bool open();
@@ -48,6 +48,7 @@ private:
 	unsigned char* m_data;
 	unsigned int   m_length;
 	std::string    m_source;
+	std::string    m_suffix;
 
 	void processNMEA();
 	bool checkXOR() const;

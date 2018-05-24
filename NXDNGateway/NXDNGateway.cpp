@@ -482,14 +482,15 @@ void CNXDNGateway::createGPS()
 	if (!m_conf.getAPRSEnabled())
 		return;
 
-	std::string callsign = m_conf.getCallsign();
-	std::string suffix   = m_conf.getSuffix();
-	std::string hostname = m_conf.getAPRSServer();
-	unsigned int port    = m_conf.getAPRSPort();
-	std::string password = m_conf.getAPRSPassword();
-	std::string desc     = m_conf.getAPRSDescription();
+	std::string callsign  = m_conf.getCallsign();
+	std::string rptSuffix = m_conf.getSuffix();
+	std::string hostname  = m_conf.getAPRSServer();
+	unsigned int port     = m_conf.getAPRSPort();
+	std::string password  = m_conf.getAPRSPassword();
+	std::string desc      = m_conf.getAPRSDescription();
+	std::string suffix    = m_conf.getAPRSSuffix();
 
-	m_gps = new CGPSHandler(callsign, suffix, password, hostname, port);
+	m_gps = new CGPSHandler(callsign, rptSuffix, password, hostname, port, suffix);
 
 	unsigned int txFrequency = m_conf.getTxFrequency();
 	unsigned int rxFrequency = m_conf.getRxFrequency();
