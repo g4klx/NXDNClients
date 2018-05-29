@@ -24,6 +24,9 @@
 # Pacific, 10400
 10400	pacific.nxref.org	41400
 
+# Europe, German speaking, 20000
+20000	89.185.97.38	41400
+
 # America-Ragchew, 28299
 28299	65.101.7.52	41400
 
