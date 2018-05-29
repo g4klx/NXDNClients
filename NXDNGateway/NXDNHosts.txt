@@ -15,7 +15,7 @@
 # Spanish speaking, 10301
 10301	ea5gvk.duckdns.org	41400
 
-# NXDN 10302 Test Transcoding BM EA Spain
+# NXDN 10302 Multimode BM 21461 EA Spain
 10302	93.186.254.219	41400
 
 # Italian speaking, 10303
