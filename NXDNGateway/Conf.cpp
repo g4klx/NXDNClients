@@ -68,7 +68,8 @@ m_aprsPassword(),
 m_aprsSuffix(),
 m_aprsDescription(),
 m_networkPort(0U),
-m_networkHosts(),
+m_networkHosts1(),
+m_networkHosts2(),
 m_networkReloadTime(0U),
 m_networkParrotAddress("127.0.0.1"),
 m_networkParrotPort(0U),
@@ -196,8 +197,10 @@ bool CConf::read()
 	  } else if (section == SECTION_NETWORK) {
 		  if (::strcmp(key, "Port") == 0)
 			  m_networkPort = (unsigned int)::atoi(value);
-		  else if (::strcmp(key, "HostsFile") == 0)
-			  m_networkHosts = value;
+		  else if (::strcmp(key, "HostsFile1") == 0)
+			  m_networkHosts1 = value;
+		  else if (::strcmp(key, "HostsFile2") == 0)
+			  m_networkHosts2 = value;
 		  else if (::strcmp(key, "ReloadTime") == 0)
 			  m_networkReloadTime = (unsigned int)::atoi(value);
 		  else if (::strcmp(key, "ParrotAddress") == 0)
@@ -367,9 +370,14 @@ unsigned int CConf::getNetworkPort() const
 	return m_networkPort;
 }
 
-std::string CConf::getNetworkHosts() const
+std::string CConf::getNetworkHosts1() const
 {
-	return m_networkHosts;
+	return m_networkHosts1;
+}
+
+std::string CConf::getNetworkHosts2() const
+{
+	return m_networkHosts2;
 }
 
 unsigned int CConf::getNetworkReloadTime() const

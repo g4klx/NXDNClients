@@ -36,6 +36,9 @@
 # DMR Link?, 31665
 31665	nxdn.alecwasserman.com	41400
 
+# Pi-Star NXDN Reflector, 31672
+31672 pi-nxdn.trianglenc.net  41500
+
 # China, 46000
 46000	120.234.41.144	41400
 
