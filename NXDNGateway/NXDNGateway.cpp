@@ -127,10 +127,6 @@ void CNXDNGateway::run()
 			return;
 		}
 
-		::close(STDIN_FILENO);
-		::close(STDOUT_FILENO);
-		::close(STDERR_FILENO);
-
 		// If we are currently root...
 		if (getuid() == 0) {
 			struct passwd* user = ::getpwnam("mmdvm");
@@ -167,6 +163,14 @@ void CNXDNGateway::run()
 		::fprintf(stderr, "NXDNGateway: unable to open the log file\n");
 		return;
 	}
+
+#if !defined(_WIN32) && !defined(_WIN64)
+	if (m_daemon) {
+		::close(STDIN_FILENO);
+		::close(STDOUT_FILENO);
+		::close(STDERR_FILENO);
+	}
+#endif
 
 	in_addr rptAddr = CUDPSocket::lookup(m_conf.getRptAddress());
 	unsigned int rptPort = m_conf.getRptPort();

@@ -120,10 +120,6 @@ void CNXDNReflector::run()
 			return;
 		}
 
-		::close(STDIN_FILENO);
-		::close(STDOUT_FILENO);
-		::close(STDERR_FILENO);
-
 		// If we are currently root...
 		if (getuid() == 0) {
 			struct passwd* user = ::getpwnam("mmdvm");
@@ -160,6 +156,14 @@ void CNXDNReflector::run()
 		::fprintf(stderr, "NXDNReflector: unable to open the log file\n");
 		return;
 	}
+
+#if !defined(_WIN32) && !defined(_WIN64)
+	if (m_daemon) {
+		::close(STDIN_FILENO);
+		::close(STDOUT_FILENO);
+		::close(STDERR_FILENO);
+	}
+#endif
 
 	unsigned short tg = m_conf.getTG();
 
