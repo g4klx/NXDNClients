@@ -2,9 +2,14 @@
 #
 # The format of this file is the number of the Talk Group followed by the host name or address and port
 #
+# VKCore 505
+505	43.229.63.42	41450
 
 # Florida, 1200
 1200	florida.nxref.org	41400
+
+# KenWood bridge NXCore 9000
+9000	nxdn.duckdns.org	41490
 
 # North America, 10200
 10200   dvswitch.org    42400
@@ -26,6 +31,9 @@
 
 # Europe, German speaking, 20000
 20000	89.185.97.38	41400
+
+# CT NXCore 25000
+25000	45.62.211.216	41425
 
 # America-Ragchew, 28299
 28299	65.101.7.52	41400
