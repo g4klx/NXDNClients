@@ -129,7 +129,7 @@ void CGPSHandler::processNMEA()
 
 	char* p = NULL;
 	char* d = (char*)(m_data + 1U);
-	while ((p = ::strtok(d, ",\r\n")) != NULL) {
+	while ((p = ::strtok(d, ",\r\n")) != NULL && nRMC < 20U) {
 		pRMC[nRMC++] = p;
 		d = NULL;
 	}
