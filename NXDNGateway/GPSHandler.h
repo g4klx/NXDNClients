@@ -25,12 +25,8 @@
 
 class CGPSHandler {
 public:
-	CGPSHandler(const std::string& callsign, const std::string& rptSuffix, const std::string& password, const std::string& address, unsigned int port, const std::string& suffix);
+	CGPSHandler(const std::string& callsign, const std::string& suffix, CAPRSWriter* writer);
 	~CGPSHandler();
-
-	bool open();
-
-	void setInfo(unsigned int txFrequency, unsigned int rxFrequency, float latitude, float longitude, int height, const std::string& desc);
 
 	void processHeader(const std::string& source);
 
@@ -38,13 +34,9 @@ public:
 
 	void processEnd();
 
-	void clock(unsigned int ms);
-
-	void close();
-
 private:
 	std::string    m_callsign;
-	CAPRSWriter    m_writer;
+	CAPRSWriter*   m_writer;
 	unsigned char* m_data;
 	unsigned int   m_length;
 	std::string    m_source;

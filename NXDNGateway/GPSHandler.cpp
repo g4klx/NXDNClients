@@ -29,18 +29,16 @@ const unsigned char NXDN_DATA_TYPE_GPS = 0x06U;
 const unsigned int NXDN_DATA_LENGTH = 20U;
 const unsigned int NXDN_DATA_MAX_LENGTH = 16U * NXDN_DATA_LENGTH;
 
-CGPSHandler::CGPSHandler(const std::string& callsign, const std::string& rptSuffix, const std::string& password, const std::string& address, unsigned int port, const std::string& suffix) :
+CGPSHandler::CGPSHandler(const std::string& callsign, const std::string& suffix, CAPRSWriter* writer) :
 m_callsign(callsign),
-m_writer(callsign, rptSuffix, password, address, port),
+m_writer(writer),
 m_data(NULL),
 m_length(0U),
 m_source(),
 m_suffix(suffix)
 {
 	assert(!callsign.empty());
-	assert(!password.empty());
-	assert(!address.empty());
-	assert(port > 0U);
+	assert(writer != NULL);
 
 	m_data = new unsigned char[NXDN_DATA_MAX_LENGTH];
 
@@ -50,16 +48,6 @@ m_suffix(suffix)
 CGPSHandler::~CGPSHandler()
 {
 	delete[] m_data;
-}
-
-bool CGPSHandler::open()
-{
-	return m_writer.open();
-}
-
-void CGPSHandler::setInfo(unsigned int txFrequency, unsigned int rxFrequency, float latitude, float longitude, int height, const std::string& desc)
-{
-	m_writer.setInfo(txFrequency, rxFrequency, latitude, longitude, height, desc);
 }
 
 void CGPSHandler::processHeader(const std::string& source)
@@ -84,16 +72,6 @@ void CGPSHandler::processData(const unsigned char* data)
 void CGPSHandler::processEnd()
 {
 	reset();
-}
-
-void CGPSHandler::clock(unsigned int ms)
-{
-	m_writer.clock(ms);
-}
-
-void CGPSHandler::close()
-{
-	m_writer.close();
 }
 
 void CGPSHandler::reset()
@@ -163,7 +141,7 @@ void CGPSHandler::processNMEA()
 			source.c_str(), m_callsign.c_str(), latitude, pRMC[4U], longitude, pRMC[6U]);
 	}
 
-	m_writer.write(output);
+	m_writer->write(output);
 }
 
 bool CGPSHandler::checkXOR() const

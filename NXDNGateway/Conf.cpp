@@ -34,7 +34,8 @@ enum SECTION {
   SECTION_VOICE,
   SECTION_LOG,
   SECTION_APRS_FI,
-  SECTION_NETWORK
+  SECTION_NETWORK,
+  SECTION_MOBILE_GPS
 };
 
 CConf::CConf(const std::string& file) :
@@ -77,7 +78,10 @@ m_networkNXDN2DMRAddress("127.0.0.1"),
 m_networkNXDN2DMRPort(0U),
 m_networkStartup(9999U),
 m_networkInactivityTimeout(0U),
-m_networkDebug(false)
+m_networkDebug(false),
+m_mobileGPSEnabled(false),
+m_mobileGPSAddress(),
+m_mobileGPSPort(0U)
 {
 }
 
@@ -115,6 +119,8 @@ bool CConf::read()
 			  section = SECTION_APRS_FI;
 		  else if (::strncmp(buffer, "[Network]", 9U) == 0)
 			  section = SECTION_NETWORK;
+		  else if (::strncmp(buffer, "[Mobile GPS]", 12U) == 0)
+			  section = SECTION_MOBILE_GPS;
 		  else
 			  section = SECTION_NONE;
 
@@ -217,6 +223,13 @@ bool CConf::read()
 			  m_networkInactivityTimeout = (unsigned int)::atoi(value);
 		  else if (::strcmp(key, "Debug") == 0)
 			  m_networkDebug = ::atoi(value) == 1;
+	  } else if (section == SECTION_MOBILE_GPS) {
+		  if (::strcmp(key, "Enable") == 0)
+			  m_mobileGPSEnabled = ::atoi(value) == 1;
+		  else if (::strcmp(key, "Address") == 0)
+			  m_mobileGPSAddress = value;
+		  else if (::strcmp(key, "Port") == 0)
+			  m_mobileGPSPort = (unsigned int)::atoi(value);
 	  }
   }
 
@@ -419,3 +432,19 @@ bool CConf::getNetworkDebug() const
 {
 	return m_networkDebug;
 }
+
+bool CConf::getMobileGPSEnabled() const
+{
+	return m_mobileGPSEnabled;
+}
+
+std::string CConf::getMobileGPSAddress() const
+{
+	return m_mobileGPSAddress;
+}
+
+unsigned int CConf::getMobileGPSPort() const
+{
+	return m_mobileGPSPort;
+}
+

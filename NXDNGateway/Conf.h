@@ -83,6 +83,11 @@ public:
   unsigned int   getNetworkInactivityTimeout() const;
   bool           getNetworkDebug() const;
 
+  // The Mobile GPS section
+  bool         getMobileGPSEnabled() const;
+  std::string  getMobileGPSAddress() const;
+  unsigned int getMobileGPSPort() const;
+
 private:
   std::string  m_file;
   std::string  m_callsign;
@@ -130,6 +135,10 @@ private:
   unsigned short m_networkStartup;
   unsigned int   m_networkInactivityTimeout;
   bool           m_networkDebug;
+
+  bool         m_mobileGPSEnabled;
+  std::string  m_mobileGPSAddress;
+  unsigned int m_mobileGPSPort;
 };
 
 #endif

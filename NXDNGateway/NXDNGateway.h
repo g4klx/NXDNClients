@@ -19,6 +19,7 @@
 #if !defined(NXDNGateway_H)
 #define	NXDNGateway_H
 
+#include "APRSWriter.h"
 #include "GPSHandler.h"
 #include "Timer.h"
 #include "Conf.h"
@@ -49,6 +50,7 @@ public:
 
 private:
 	CConf        m_conf;
+	CAPRSWriter* m_writer;
 	CGPSHandler* m_gps;
 
 	void createGPS();
