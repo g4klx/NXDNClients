@@ -44,6 +44,9 @@
 # Alabama-Link, 31010
 31010	nxdn.alabamalink.info	41400
 
+# Colorado HD, 31088 (nxcore connected)
+31088 54.191.50.212 41400
+
 # DMR Link?, 31665
 31665	nxdn.alecwasserman.com	41400
 
