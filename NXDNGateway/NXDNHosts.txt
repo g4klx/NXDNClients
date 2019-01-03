@@ -53,6 +53,9 @@
 # Pi-Star NXDN Reflector, 31672
 31672 pi-nxdn.trianglenc.net  41500
 
+# DX-LINK SYSTEM, 31777
+31777	45.77.204.214	41400
+
 # China, 46000
 46000	120.234.41.144	41400
 
