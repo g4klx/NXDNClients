@@ -62,6 +62,9 @@
 # DMR TG50525 bridge, 50525
 50525	50525.nxref.org	41400
 
+# New Zealand, 53099 linked to BM TG 53099
+53099	203.86.206.49	41000
+
 # World Wide, 65000
 65000	176.9.1.168	41400
 
