@@ -50,6 +50,9 @@
 # Colorado HD, 31088
 31088 54.191.50.212 41400
 
+# 31171 Illinois
+31171	74.208.235.115	41400
+
 # DMR Link?, 31665
 31665	nxdn.alecwasserman.com	41400
 
