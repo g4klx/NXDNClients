@@ -2,13 +2,14 @@
 #
 # The format of this file is the number of the Talk Group followed by the host name or address and port
 #
-# VKCore 505
+
+# VKCore, 505
 505	43.229.63.42	41450
 
 # Florida, 1200
 1200	florida.nxref.org	41400
 
-# KenWood bridge NXCore 9000
+# KenWood bridge NXCore, 9000
 9000	nxdn.duckdns.org	41490
 
 # North America, 10200
@@ -35,13 +36,13 @@
 # Europe, German speaking, 20000
 20000	89.185.97.38	41400
 
-# CT NXCore 25000
+# CT NXCore, 25000
 25000	45.62.211.216	41425
 
 # America-Ragchew, 28299
 28299	65.101.7.52	41400
 
-# NorCal-Bridge / Multimode-NXDN TG30639
+# NorCal-Bridge / Multimode-NXDN, 30639
 30639	wiresxdigi.dyndns.org	41400
 
 # Alabama-Link, 31010
@@ -50,8 +51,11 @@
 # Colorado HD, 31088
 31088 54.191.50.212 41400
 
-# 31171 Illinois
+# Illinois, 31171
 31171	74.208.235.115	41400
+
+# Rhode Island Digital Link, 31444
+31444	18.219.32.21	41400
 
 # DMR Link?, 31665
 31665	nxdn.alecwasserman.com	41400
