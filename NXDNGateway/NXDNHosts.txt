@@ -54,6 +54,9 @@
 # Illinois, 31171
 31171	74.208.235.115	41400
 
+# Southern Indiana, 31188
+31188	w9windigital.org	41400
+
 # Rhode Island Digital Link, 31444
 31444	18.219.32.21	41400
 
