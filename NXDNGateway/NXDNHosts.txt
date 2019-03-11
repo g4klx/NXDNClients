@@ -16,7 +16,7 @@
 10200   dvswitch.org    42400
 
 # Portuguese speaking test, 10268
-26810 84.90.7.110 41400
+26810	84.90.7.110	41400
 
 # Spanish speaking, 10301
 10301	ea5gvk.duckdns.org	41400
@@ -39,6 +39,9 @@
 # CT NXCore, 25000
 25000	45.62.211.216	41425
 
+# Russia NXDN Net, 25641
+25641	194.182.85.217	41400
+
 # America-Ragchew, 28299
 28299	65.101.7.52	41400
 
@@ -49,7 +52,7 @@
 31010	nxdn.alabamalink.info	41400
 
 # Colorado HD, 31088
-31088 54.191.50.212 41400
+31088	54.191.50.212	41400
 
 # Illinois, 31171
 31171	74.208.235.115	41400
@@ -64,7 +67,7 @@
 31665	nxdn.alecwasserman.com	41400
 
 # Pi-Star NXDN Reflector, 31672
-31672 nxdn-31672.pistar.uk    41400
+31672	nxdn-31672.pistar.uk	41400
 
 # DX-LINK SYSTEM, 31777
 31777	45.77.204.214	41400
