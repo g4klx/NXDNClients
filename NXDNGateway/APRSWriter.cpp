@@ -33,7 +33,10 @@ m_rxFrequency(0U),
 m_latitude(0.0F),
 m_longitude(0.0F),
 m_height(0),
-m_desc()
+m_desc(),
+m_mobileGPSAddress(),
+m_mobileGPSPort(0U),
+m_socket(NULL)
 {
 	assert(!callsign.empty());
 	assert(!password.empty());
@@ -230,9 +233,9 @@ void CAPRSWriter::sendIdFrameMobile()
 	if (pLatitude == NULL || pLongitude == NULL || pAltitude == NULL)
 		return;
 
-	float rawLatitude  = ::atof(pLatitude);
-	float rawLongitude = ::atof(pLongitude);
-	float rawAltitude  = ::atof(pAltitude);
+	float rawLatitude  = float(::atof(pLatitude));
+	float rawLongitude = float(::atof(pLongitude));
+	float rawAltitude  = float(::atof(pAltitude));
 
 	char desc[200U];
 	if (m_txFrequency != 0U) {
@@ -286,8 +289,8 @@ void CAPRSWriter::sendIdFrameMobile()
 		lon, (rawLongitude < 0.0F) ? 'W' : 'E');
 
 	if (pBearing != NULL && pVelocity != NULL) {
-		float rawBearing   = ::atof(pBearing);
-		float rawVelocity  = ::atof(pVelocity);
+		float rawBearing   = float(::atof(pBearing));
+		float rawVelocity  = float(::atof(pVelocity));
 
 		::sprintf(output + ::strlen(output), "%03.0f/%03.0f", rawBearing, rawVelocity * 0.539957F);
 	}
