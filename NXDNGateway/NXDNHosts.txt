@@ -6,6 +6,9 @@
 # VKCore, 505
 505	43.229.63.42	41450
 
+# New Zealand, 530
+530 101.98.22.194 41400
+
 # Florida, 1200
 1200	florida.nxref.org	41400
 
