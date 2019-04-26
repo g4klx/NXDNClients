@@ -63,6 +63,9 @@
 # Southern Indiana, 31188
 31188	w9windigital.org	41400
 
+# Oklahoma Link, 31403
+31403	3.208.70.29	41400
+
 # Rhode Island Digital Link, 31444
 31444	18.219.32.21	41400
 
