@@ -12,8 +12,8 @@
 # Florida, 1200
 1200	florida.nxref.org	41400
 
-# KenWood bridge NXCore, 9000
-9000	nxdn.duckdns.org	41490
+# BM NXCore bridge, 50599
+50599	nxdn.duckdns.org	41490
 
 # North America, 10200
 10200   dvswitch.org    42400
