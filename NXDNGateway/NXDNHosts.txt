@@ -12,6 +12,9 @@
 # Florida, 1200
 1200	florida.nxref.org	41400
 
+# VK7 TAS, 5057
+5057    45.248.50.37    41400
+
 # BM NXCore bridge, 50599
 50599	nxdn.duckdns.org	41490
 
