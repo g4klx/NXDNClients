@@ -60,6 +60,9 @@
 # Colorado HD, 31088
 31088	54.191.50.212	41400
 
+# Connecticut Chat, 31092
+31092 nxdn.alecwasserman.com  41400
+
 # Illinois, 31171
 31171	74.208.235.115	41400
 
