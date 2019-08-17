@@ -104,3 +104,6 @@
 
 # French-Test, 65208
 65208	m55.evxonline.net  41400
+
+# 3023 Ontario Crosslink
+3023 xlx302.hopto.org 41400
