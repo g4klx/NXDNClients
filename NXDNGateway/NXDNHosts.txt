@@ -69,6 +69,9 @@
 # Southern Indiana, 31188
 31188	w9windigital.org	41400
 
+# Central New Jersey, 31340
+31340 cnjham.msmts.com 41400
+
 # Oklahoma Link, 31403
 31403	3.208.70.29	41400
 
