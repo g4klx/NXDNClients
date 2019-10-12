@@ -119,3 +119,6 @@
 
 # 21465 ADER Multimode
 21465 80.211.106.186 41400
+
+# 22245 IT PIEDMONT GDO
+22245 nxdngdo.duckdns.org 41400
