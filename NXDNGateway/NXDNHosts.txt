@@ -122,3 +122,6 @@
 
 # 22245 IT PIEDMONT GDO
 22245 nxdngdo.duckdns.org 41400
+
+# 2249 IT SICILIA
+2249 nxdn.digitalsicilia.it 41400
