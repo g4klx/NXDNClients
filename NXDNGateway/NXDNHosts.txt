@@ -21,9 +21,6 @@
 # North America, 10200
 10200   dvswitch.org    42400
 
-# Poland, 26000
-26000	sq5akc.duckdns.org	42400
-
 # Portuguese speaking test, 10268
 26810	84.90.7.110	41400
 
@@ -50,6 +47,9 @@
 
 # Russia NXDN Net, 25641
 25641	194.182.85.217	41400
+
+# Poland, 26000
+26000	sq5akc.duckdns.org	41400
 
 # America-Ragchew, 28299
 28299	65.101.7.52	41400
