@@ -3,6 +3,9 @@
 # The format of this file is the number of the Talk Group followed by the host name or address and port
 #
 
+# Super Freq 420
+420 144.202.59.230 41400
+
 # VKCore, 505
 505	43.229.63.42	41450
 
