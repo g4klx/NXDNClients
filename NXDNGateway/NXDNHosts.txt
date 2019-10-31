@@ -10,7 +10,7 @@
 505	43.229.63.42	41450
 
 # New Zealand, 530
-zldigitalreflectors.hopto.org 41400
+530 zldigitalreflectors.hopto.org 41400
 
 # Florida, 1200
 1200	florida.nxref.org	41400
