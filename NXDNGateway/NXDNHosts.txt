@@ -4,7 +4,7 @@
 #
 
 # Super Freq 420
-420 144.202.59.230 41400
+420 nxdn.evsuperfreqs.com 41400
 
 # VKCore, 505
 505	43.229.63.42	41450
