@@ -48,6 +48,9 @@
 # Europe, German speaking, 20000
 20000	89.185.97.38	41400
 
+# NXDN Scotland, 23551
+23551 nxdnscotland.ddns.net 41400
+
 # CT NXCore, 25000
 25000	45.62.211.216	41425
 
