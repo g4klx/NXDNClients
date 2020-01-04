@@ -75,6 +75,9 @@
 # Connecticut Chat, 31092
 31092 nxdn.alecwasserman.com  41400
 
+# Kingsland Digital Link
+31137   74.91.119.94    41400
+
 # Illinois, 31171
 31171	74.208.235.115	41400
 
