@@ -143,3 +143,6 @@
 
 # 914 Latin America
 914 164.132.96.157 41400
+
+# RED NXDN SPAIN
+214 nxdn214.xreflector.es 41400
