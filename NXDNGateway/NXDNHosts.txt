@@ -3,6 +3,9 @@
 # The format of this file is the number of the Talk Group followed by the host name or address and port
 #
 
+# RED NXDN SPAIN
+214 nxdn214.xreflector.es 41400
+
 # Super Freq 420
 420 nxdn.evsuperfreqs.com 41400
 
@@ -12,23 +15,32 @@
 # New Zealand, 530
 530 zldigitalreflectors.hopto.org 41400
 
+# 914 Latin America
+914 164.132.96.157 41400
+
 # Florida, 1200
 1200	florida.nxref.org	41400
+
+# 2140 DMRplus BM Multi
+2140  94.177.235.81 41400
+
+# 2225  IT Tuscany
+2225  80.211.99.134 41400
+
+# 2249 IT SICILIA
+2249 nxdn.digitalsicilia.it 41400
 
 # RU DMR TG2503
 2503 nxdn.r1ik.ru 41400
 
+# 3023 Ontario Crosslink
+3023    ontxlink.hopto.org 41400
+
 # VK7 TAS, 5057
 5057    45.248.50.37    41400
 
-# BM NXCore bridge, 50599
-50599	nxdn.duckdns.org	41490
-
 # North America, 10200
 10200   dvswitch.org    42400
-
-# Portuguese speaking test, 10268
-26810	84.90.7.110	41400
 
 # Spanish speaking, 10301
 10301	ea5gvk.duckdns.org	41400
@@ -48,6 +60,12 @@
 # Europe, German speaking, 20000
 20000	89.185.97.38	41400
 
+# 21465 ADER Multimode
+21465 80.211.106.186 41400
+
+# 22245 IT PIEDMONT GDO
+22245 nxdngdo.duckdns.org 41400
+
 # NXDN Scotland, 23551
 23551 nxdnscotland.ddns.net 41400
 
@@ -59,6 +77,9 @@
 
 # Poland, 26000
 26000	31.0.161.238	41400
+
+# Portuguese speaking test, 10268
+26810	84.90.7.110	41400
 
 # America-Ragchew, 28299
 28299	65.101.7.52	41400
@@ -111,6 +132,9 @@
 # DMR TG50525 bridge, 50525
 50525	50525.nxref.org	41400
 
+# BM NXCore bridge, 50599
+50599	nxdn.duckdns.org	41490
+
 # Thailand DTDXA XLX520N, 52000
 52000 nxdn.dtdxa.com 41400
 
@@ -122,27 +146,3 @@
 
 # French-Test, 65208
 65208	m55.evxonline.net  41400
-
-# 3023 Ontario Crosslink
-3023    ontxlink.hopto.org 41400
-
-# 2140 DMRplus BM Multi
-2140  94.177.235.81 41400
-
-# 2225  IT Tuscany
-2225  80.211.99.134 41400
-
-# 21465 ADER Multimode
-21465 80.211.106.186 41400
-
-# 22245 IT PIEDMONT GDO
-22245 nxdngdo.duckdns.org 41400
-
-# 2249 IT SICILIA
-2249 nxdn.digitalsicilia.it 41400
-
-# 914 Latin America
-914 164.132.96.157 41400
-
-# RED NXDN SPAIN
-214 nxdn214.xreflector.es 41400
