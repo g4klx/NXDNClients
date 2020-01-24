@@ -146,3 +146,6 @@
 
 # RED NXDN SPAIN
 214 nxdn214.xreflector.es 41400
+
+# HELLAS Zone TG202
+202 hellaszone.com 41400
