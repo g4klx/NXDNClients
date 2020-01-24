@@ -2,6 +2,8 @@
 #
 # The format of this file is the number of the Talk Group followed by the host name or address and port
 #
+# HELLAS Zone TG202
+202 hellaszone.com 41400
 
 # RED NXDN SPAIN
 214 nxdn214.xreflector.es 41400
@@ -146,3 +148,4 @@
 
 # French-Test, 65208
 65208	m55.evxonline.net  41400
+
