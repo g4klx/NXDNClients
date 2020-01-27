@@ -1,2 +1,5 @@
 # 911  911 Cop Talk
 911 NXDN.k2cop.com 41400
+
+# 7225 MULTIPROTOCOLO ARGENTINA
+7225  ysfarg.ddns.net 41400
