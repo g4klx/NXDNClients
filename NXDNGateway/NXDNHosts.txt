@@ -6,6 +6,9 @@
 # RED NXDN SPAIN
 214 nxdn214.xreflector.es 41400
 
+# Canada, 302
+302 p25canada.hopto.org 41400
+
 # Super Freq 420
 420 nxdn.evsuperfreqs.com 41400
 
