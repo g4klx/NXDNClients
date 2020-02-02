@@ -20,6 +20,9 @@
 # New Zealand, 530
 530 zldigitalreflectors.hopto.org 41400
 
+# XLX545E PA NXDN
+545 70.44.20.24 41401
+
 # 914 Latin America
 914 164.132.96.157 41400
 
@@ -115,6 +118,9 @@
 
 # Oklahoma Link, 31403
 31403	3.208.70.29	41400
+
+# XLX545A Pennsylvania Cross Mode
+31425 70.44.20.24 41400
 
 # Rhode Island Digital Link, 31444
 31444	18.219.32.21	41400
