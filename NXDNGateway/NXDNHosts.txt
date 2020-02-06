@@ -23,6 +23,9 @@
 # XLX545E PA NXDN
 545 70.44.20.24 41401
 
+# RuralMN Reflector 707
+707 707nxdn.kd0ioe.com  41400
+
 # 914 Latin America
 914 164.132.96.157 41400
 
