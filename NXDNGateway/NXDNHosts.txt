@@ -9,7 +9,7 @@
 214 nxdn214.xreflector.es 41400
 
 # Super Freq 420
-420 nxdn.evsuperfreqs.com 41400
+420 hb.superfreqdigital.com 41400
 
 # VKCore, 505
 505	43.229.63.42	41450
