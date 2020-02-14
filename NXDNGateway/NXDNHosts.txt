@@ -47,6 +47,9 @@
 # VK7 TAS, 5057
 5057    45.248.50.37    41400
 
+# Multiprotocolo Argentina
+7225  ysfarg.ddns.net 41400
+
 # North America, 10200
 10200   dvswitch.org    42400
 
