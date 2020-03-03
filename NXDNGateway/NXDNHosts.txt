@@ -104,6 +104,9 @@
 # Alabama-Link, 31010
 31010	nxdn.alabamalink.info	41400
 
+# Colorado Fun Machine WE0FUN Bridge to C4FM, DMR, DStar, P25 and AllStarLink (Analog) http://www.we0fun.com
+31081	nxdn.we0fun.com	41400
+
 # Colorado HD, 31088
 31088	54.191.50.212	41400
 
