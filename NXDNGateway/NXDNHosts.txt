@@ -92,6 +92,9 @@
 # Poland, 26000
 26000	31.0.161.238	41400
 
+# Deutschland, 26200
+26200 26200.ham-nxdn.de 41400
+
 # Portuguese speaking test, 10268
 26810	84.90.7.110	41400
 
