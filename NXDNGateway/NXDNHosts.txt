@@ -134,8 +134,11 @@
 # Oklahoma Link, 31403
 31403	3.208.70.29	41400
 
-# XLX545A Pennsylvania Cross Mode
+# XLX545A Pennsylvania Cross Mode, 31425
 31425 70.44.20.24 41400
+
+# XLX545A Pennsylvania Cross Mode (alt), 31426
+31426 3.215.215.169 41400
 
 # Rhode Island Digital Link, 31444
 31444	18.219.32.21	41400
