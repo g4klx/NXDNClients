@@ -80,6 +80,9 @@
 # 22200 IT HBLINK ITALY
 22200 nxdn.hblink.it 41400
 
+# 22220 IT ECHOLINK ITALY
+22220 dagobah.hblink.it 41400                                                                                                                                                                                                      
+
 # 22245 IT PIEDMONT GDO
 22245 nxdngdo.duckdns.org 41400
 
