@@ -1,5 +1,5 @@
 /*
-*   Copyright (C) 2016,2017,2018 by Jonathan Naylor G4KLX
+*   Copyright (C) 2016,2017,2018,2020 by Jonathan Naylor G4KLX
 *
 *   This program is free software; you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -27,6 +27,7 @@
 #include "Thread.h"
 #include "Voice.h"
 #include "Timer.h"
+#include "Utils.h"
 #include "Log.h"
 
 #if defined(_WIN32) || defined(_WIN64)
@@ -178,6 +179,16 @@ void CNXDNGateway::run()
 	unsigned int rptPort = m_conf.getRptPort();
 
 	createGPS();
+
+	CUDPSocket* remoteSocket = NULL;
+	if (m_conf.getRemoteCommandsEnabled()) {
+		remoteSocket = new CUDPSocket(m_conf.getRemoteCommandsPort());
+		ret = remoteSocket->open();
+		if (!ret) {
+			delete remoteSocket;
+			remoteSocket = NULL;
+		}
+	}
 
 	CIcomNetwork localNetwork(m_conf.getMyPort(), m_conf.getRptDebug());
 	ret = localNetwork.open();
@@ -389,6 +400,79 @@ startupId = 9999U;
 
 		reflectors.clock(ms);
 
+		if (remoteSocket != NULL) {
+			int res = remoteSocket->read(buffer, 200U, address, port);
+			if (res > 0) {
+				buffer[res] = '\0';
+				if (::memcmp(buffer + 0U, "TalkGroup", 9U) == 0) {
+					unsigned int tg = (unsigned int)::atoi((char*)(buffer + 9U));
+
+					CNXDNReflector* reflector = NULL;
+					if (tg != 9999U)
+						reflector = reflectors.find(tg);
+
+					if (reflector == NULL && currentId != 9999U) {
+						LogMessage("Unlinked from reflector %u by remote command", currentId);
+
+						if (voice != NULL)
+							voice->unlinked();
+
+						remoteNetwork.writeUnlink(currentAddr, currentPort, currentId);
+						remoteNetwork.writeUnlink(currentAddr, currentPort, currentId);
+						remoteNetwork.writeUnlink(currentAddr, currentPort, currentId);
+
+						inactivityTimer.stop();
+						pollTimer.stop();
+						lostTimer.stop();
+
+						currentId = 9999U;
+					} else if (reflector != NULL && currentId == 9999U) {
+						currentId = tg;
+						currentAddr = reflector->m_address;
+						currentPort = reflector->m_port;
+
+						LogMessage("Linked to reflector %u by remote command", currentId);
+
+						if (voice != NULL)
+							voice->linkedTo(currentId);
+
+						remoteNetwork.writePoll(currentAddr, currentPort, currentId);
+						remoteNetwork.writePoll(currentAddr, currentPort, currentId);
+						remoteNetwork.writePoll(currentAddr, currentPort, currentId);
+
+						inactivityTimer.start();
+						pollTimer.start();
+						lostTimer.start();
+					} else if (reflector != NULL && currentId != 9999U) {
+						LogMessage("Unlinked from reflector %u by remote command", currentId);
+
+						remoteNetwork.writeUnlink(currentAddr, currentPort, currentId);
+						remoteNetwork.writeUnlink(currentAddr, currentPort, currentId);
+						remoteNetwork.writeUnlink(currentAddr, currentPort, currentId);
+
+						currentId = tg;
+						currentAddr = reflector->m_address;
+						currentPort = reflector->m_port;
+
+						LogMessage("Linked to reflector %u by remote command", currentId);
+
+						if (voice != NULL)
+							voice->linkedTo(currentId);
+
+						remoteNetwork.writePoll(currentAddr, currentPort, currentId);
+						remoteNetwork.writePoll(currentAddr, currentPort, currentId);
+						remoteNetwork.writePoll(currentAddr, currentPort, currentId);
+
+						inactivityTimer.start();
+						pollTimer.start();
+						lostTimer.start();
+					}
+				} else {
+					CUtils::dump("Invalid remote command received", buffer, res);
+				}
+			}
+		}
+
 		if (voice != NULL)
 			voice->clock(ms);
 
@@ -468,6 +552,11 @@ startupId = 9999U;
 	}
 
 	delete voice;
+
+	if (remoteSocket != NULL) {
+		remoteSocket->close();
+		delete remoteSocket;
+	}
 
 	localNetwork.close();
 
