@@ -16,36 +16,40 @@
  *   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-#ifndef	IcomNetwork_H
-#define	IcomNetwork_H
+#ifndef	RptNetwork_H
+#define	RptNetwork_H
 
-#include "RptNetwork.h"
-#include "UDPSocket.h"
-#include "Timer.h"
+#if !defined(_WIN32) && !defined(_WIN64)
+#include <netdb.h>
+#include <sys/time.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <unistd.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <errno.h>
+#else
+#include <winsock.h>
+#endif
 
 #include <cstdint>
 #include <string>
 
-class CIcomNetwork : public IRptNetwork {
+class IRptNetwork {
 public:
-	CIcomNetwork(unsigned int localPort, bool debug);
-	virtual ~CIcomNetwork();
+	virtual ~IRptNetwork() = 0;
 
-	virtual bool open();
+	virtual bool open() = 0;
 
-	virtual bool write(const unsigned char* data, unsigned int length, const in_addr& address, unsigned int port);
+	virtual bool write(const unsigned char* data, unsigned int length, const in_addr& address, unsigned int port) = 0;
 
-	virtual bool read(unsigned char* data, in_addr& address, unsigned int& port);
+	virtual bool read(unsigned char* data, in_addr& address, unsigned int& port) = 0;
 
-	virtual void close();
+	virtual void close() = 0;
 
-    virtual void clock(unsigned int ms);
+    virtual void clock(unsigned int ms) = 0;
 
 private:
-	CUDPSocket   m_socket;
-	in_addr      m_address;
-	unsigned int m_port;
-	bool         m_debug;
 };
 
 #endif

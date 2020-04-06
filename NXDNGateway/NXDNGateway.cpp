@@ -1,5 +1,5 @@
 /*
-*   Copyright (C) 2016,2017,2018 by Jonathan Naylor G4KLX
+*   Copyright (C) 2016,2017,2018,2020 by Jonathan Naylor G4KLX
 *
 *   This program is free software; you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -19,6 +19,7 @@
 #include "IcomNetwork.h"
 #include "NXDNNetwork.h"
 #include "NXDNGateway.h"
+#include "RptNetwork.h"
 #include "NXDNLookup.h"
 #include "Reflectors.h"
 #include "GPSHandler.h"
@@ -179,8 +180,8 @@ void CNXDNGateway::run()
 
 	createGPS();
 
-	CIcomNetwork localNetwork(m_conf.getMyPort(), m_conf.getRptDebug());
-	ret = localNetwork.open();
+	IRptNetwork* localNetwork = new CIcomNetwork(m_conf.getMyPort(), m_conf.getRptDebug());
+	ret = localNetwork->open();
 	if (!ret) {
 		::LogFinalise();
 		return;
@@ -189,7 +190,8 @@ void CNXDNGateway::run()
 	CNXDNNetwork remoteNetwork(m_conf.getNetworkPort(), m_conf.getCallsign(), m_conf.getNetworkDebug());
 	ret = remoteNetwork.open();
 	if (!ret) {
-		localNetwork.close();
+		localNetwork->close();
+		delete localNetwork;
 		::LogFinalise();
 		return;
 	}
@@ -272,7 +274,7 @@ startupId = 9999U;
 					bool grp = (buffer[9U] & 0x01U) == 0x01U;
 
 					if (grp && currentId == dstId)
-						localNetwork.write(buffer + 10U, len - 10U, rptAddr, rptPort);
+						localNetwork->write(buffer + 10U, len - 10U, rptAddr, rptPort);
 				}
 
 				// Any network activity is proof that the reflector is alive
@@ -281,7 +283,7 @@ startupId = 9999U;
 		}
 
 		// From the MMDVM to the reflector or control data
-		len = localNetwork.read(buffer, address, port);
+		len = localNetwork->read(buffer, address, port);
 		if (len > 0U) {
 			// Only process the beginning and ending voice blocks here
 			if ((buffer[0U] == 0x81U || buffer[0U] == 0x83U) && (buffer[5U] == 0x01U || buffer[5U] == 0x08U)) {
@@ -381,13 +383,15 @@ startupId = 9999U;
 		if (voice != NULL) {
 			unsigned int length = voice->read(buffer);
 			if (length > 0U)
-				localNetwork.write(buffer, length, rptAddr, rptPort);
+				localNetwork->write(buffer, length, rptAddr, rptPort);
 		}
 
 		unsigned int ms = stopWatch.elapsed();
 		stopWatch.start();
 
 		reflectors.clock(ms);
+
+		localNetwork->clock(ms);
 
 		if (voice != NULL)
 			voice->clock(ms);
@@ -469,7 +473,8 @@ startupId = 9999U;
 
 	delete voice;
 
-	localNetwork.close();
+	localNetwork->close();
+	delete localNetwork;
 
 	remoteNetwork.close();
 

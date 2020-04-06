@@ -159,6 +159,7 @@
     <ClInclude Include="NXDNNetwork.h" />
     <ClInclude Include="Reflectors.h" />
     <ClInclude Include="RingBuffer.h" />
+    <ClInclude Include="RptNetwork.h" />
     <ClInclude Include="StopWatch.h" />
     <ClInclude Include="TCPSocket.h" />
     <ClInclude Include="Thread.h" />
@@ -181,6 +182,7 @@
     <ClCompile Include="NXDNLookup.cpp" />
     <ClCompile Include="NXDNNetwork.cpp" />
     <ClCompile Include="Reflectors.cpp" />
+    <ClCompile Include="RptNetwork.cpp" />
     <ClCompile Include="StopWatch.cpp" />
     <ClCompile Include="TCPSocket.cpp" />
     <ClCompile Include="Thread.cpp" />

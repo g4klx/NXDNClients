@@ -16,36 +16,8 @@
  *   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-#ifndef	IcomNetwork_H
-#define	IcomNetwork_H
-
 #include "RptNetwork.h"
-#include "UDPSocket.h"
-#include "Timer.h"
 
-#include <cstdint>
-#include <string>
-
-class CIcomNetwork : public IRptNetwork {
-public:
-	CIcomNetwork(unsigned int localPort, bool debug);
-	virtual ~CIcomNetwork();
-
-	virtual bool open();
-
-	virtual bool write(const unsigned char* data, unsigned int length, const in_addr& address, unsigned int port);
-
-	virtual bool read(unsigned char* data, in_addr& address, unsigned int& port);
-
-	virtual void close();
-
-    virtual void clock(unsigned int ms);
-
-private:
-	CUDPSocket   m_socket;
-	in_addr      m_address;
-	unsigned int m_port;
-	bool         m_debug;
-};
-
-#endif
+IRptNetwork::~IRptNetwork()
+{
+}

@@ -5,7 +5,7 @@ LIBS    = -lpthread
 LDFLAGS = -g
 
 OBJECTS = APRSWriter.o APRSWriterThread.o Conf.o GPSHandler.o IcomNetwork.o Log.o Mutex.o NXDNCRC.o NXDNGateway.o NXDNLookup.o NXDNNetwork.o Reflectors.o \
-		  StopWatch.o TCPSocket.o Thread.o Timer.o UDPSocket.o Utils.o Voice.o
+		  RptNetwork.o StopWatch.o TCPSocket.o Thread.o Timer.o UDPSocket.o Utils.o Voice.o
 
 all:		NXDNGateway
 
