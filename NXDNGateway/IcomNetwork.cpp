@@ -26,10 +26,17 @@
 
 const unsigned int BUFFER_LENGTH = 200U;
 
-CIcomNetwork::CIcomNetwork(unsigned int localPort, bool debug) :
+CIcomNetwork::CIcomNetwork(unsigned int localPort, const std::string& rptAddress, unsigned int rptPort, bool debug) :
 m_socket(localPort),
+m_address(),
+m_port(rptPort),
 m_debug(debug)
 {
+	assert(localPort > 0U);
+	assert(!rptAddress.empty());
+	assert(rptPort > 0U);
+
+	m_address = CUDPSocket::lookup(rptAddress);
 }
 
 CIcomNetwork::~CIcomNetwork()
@@ -46,7 +53,7 @@ bool CIcomNetwork::open()
 	return m_socket.open();
 }
 
-bool CIcomNetwork::write(const unsigned char* data, unsigned int length, const in_addr& address, unsigned int port)
+bool CIcomNetwork::write(const unsigned char* data, unsigned int length)
 {
 	assert(data != NULL);
 
@@ -77,18 +84,25 @@ bool CIcomNetwork::write(const unsigned char* data, unsigned int length, const i
 	if (m_debug)
 		CUtils::dump(1U, "Icom Data Sent", buffer, 102U);
 
-	return m_socket.write(buffer, 102U, address, port);
+	return m_socket.write(buffer, 102U, m_address, m_port);
 }
 
-bool CIcomNetwork::read(unsigned char* data, in_addr& address, unsigned int& port)
+bool CIcomNetwork::read(unsigned char* data)
 {
 	assert(data != NULL);
 
 	unsigned char buffer[BUFFER_LENGTH];
+	in_addr address;
+	unsigned int port;
 
 	int length = m_socket.read(buffer, BUFFER_LENGTH, address, port);
 	if (length <= 0)
 		return false;
+
+	if (m_address.s_addr != address.s_addr || m_port != port) {
+		LogWarning("Icom Data received from an unknown address or port - %08X:%u", ntohl(address.s_addr), port);
+		return false;
+	}
 
 	// Invalid packet type?
 	if (::memcmp(buffer, "ICOM", 4U) != 0)

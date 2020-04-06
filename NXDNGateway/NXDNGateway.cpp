@@ -16,6 +16,7 @@
 *   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
+#include "KenwoodNetwork.h"
 #include "IcomNetwork.h"
 #include "NXDNNetwork.h"
 #include "NXDNGateway.h"
@@ -114,7 +115,8 @@ void CNXDNGateway::run()
 		if (pid == -1) {
 			::fprintf(stderr, "Couldn't fork() , exiting\n");
 			return;
-		} else if (pid != 0) {
+		}
+		else if (pid != 0) {
 			exit(EXIT_SUCCESS);
 		}
 
@@ -175,12 +177,16 @@ void CNXDNGateway::run()
 	}
 #endif
 
-	in_addr rptAddr = CUDPSocket::lookup(m_conf.getRptAddress());
-	unsigned int rptPort = m_conf.getRptPort();
-
 	createGPS();
 
-	IRptNetwork* localNetwork = new CIcomNetwork(m_conf.getMyPort(), m_conf.getRptDebug());
+	IRptNetwork* localNetwork = NULL;
+	std::string protocol = m_conf.getRptProtocol();
+
+	if (protocol == "Kenwood")
+		localNetwork = new CKenwoodNetwork(m_conf.getMyPort(), m_conf.getRptAddress(), m_conf.getRptPort(), m_conf.getRptDebug());
+	else
+		localNetwork = new CIcomNetwork(m_conf.getMyPort(), m_conf.getRptAddress(), m_conf.getRptPort(), m_conf.getRptDebug());
+
 	ret = localNetwork->open();
 	if (!ret) {
 		::LogFinalise();
@@ -274,7 +280,7 @@ startupId = 9999U;
 					bool grp = (buffer[9U] & 0x01U) == 0x01U;
 
 					if (grp && currentId == dstId)
-						localNetwork->write(buffer + 10U, len - 10U, rptAddr, rptPort);
+						localNetwork->write(buffer + 10U, len - 10U);
 				}
 
 				// Any network activity is proof that the reflector is alive
@@ -283,7 +289,7 @@ startupId = 9999U;
 		}
 
 		// From the MMDVM to the reflector or control data
-		len = localNetwork->read(buffer, address, port);
+		len = localNetwork->read(buffer);
 		if (len > 0U) {
 			// Only process the beginning and ending voice blocks here
 			if ((buffer[0U] == 0x81U || buffer[0U] == 0x83U) && (buffer[5U] == 0x01U || buffer[5U] == 0x08U)) {
@@ -383,7 +389,7 @@ startupId = 9999U;
 		if (voice != NULL) {
 			unsigned int length = voice->read(buffer);
 			if (length > 0U)
-				localNetwork->write(buffer, length, rptAddr, rptPort);
+				localNetwork->write(buffer, length);
 		}
 
 		unsigned int ms = stopWatch.elapsed();

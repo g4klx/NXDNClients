@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2015,2016,2017,2018 by Jonathan Naylor G4KLX
+ *   Copyright (C) 2015,2016,2017,2018,2020 by Jonathan Naylor G4KLX
  *
  *   This program is free software; you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -33,6 +33,7 @@ public:
   // The General section
   std::string  getCallsign() const;
   std::string  getSuffix() const;
+  std::string  getRptProtocol() const;
   std::string  getRptAddress() const;
   unsigned int getRptPort() const;
   unsigned int getMyPort() const;
@@ -92,6 +93,7 @@ private:
   std::string  m_file;
   std::string  m_callsign;
   std::string  m_suffix;
+  std::string  m_rptProtocol;
   std::string  m_rptAddress;
   unsigned int m_rptPort;
   unsigned int m_myPort;

@@ -41,9 +41,9 @@ public:
 
 	virtual bool open() = 0;
 
-	virtual bool write(const unsigned char* data, unsigned int length, const in_addr& address, unsigned int port) = 0;
+	virtual bool write(const unsigned char* data, unsigned int length) = 0;
 
-	virtual bool read(unsigned char* data, in_addr& address, unsigned int& port) = 0;
+	virtual bool read(unsigned char* data) = 0;
 
 	virtual void close() = 0;
 

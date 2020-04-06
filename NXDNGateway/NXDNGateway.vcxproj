@@ -151,6 +151,7 @@
     <ClInclude Include="Conf.h" />
     <ClInclude Include="GPSHandler.h" />
     <ClInclude Include="IcomNetwork.h" />
+    <ClInclude Include="KenwoodNetwork.h" />
     <ClInclude Include="Log.h" />
     <ClInclude Include="Mutex.h" />
     <ClInclude Include="NXDNCRC.h" />
@@ -175,6 +176,7 @@
     <ClCompile Include="Conf.cpp" />
     <ClCompile Include="GPSHandler.cpp" />
     <ClCompile Include="IcomNetwork.cpp" />
+    <ClCompile Include="KenwoodNetwork.cpp" />
     <ClCompile Include="Log.cpp" />
     <ClCompile Include="Mutex.cpp" />
     <ClCompile Include="NXDNCRC.cpp" />

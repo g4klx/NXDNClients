@@ -21,21 +21,20 @@
 
 #include "RptNetwork.h"
 #include "UDPSocket.h"
-#include "Timer.h"
 
 #include <cstdint>
 #include <string>
 
 class CIcomNetwork : public IRptNetwork {
 public:
-	CIcomNetwork(unsigned int localPort, bool debug);
+	CIcomNetwork(unsigned int localPort, const std::string& rptAddress, unsigned int rptPort, bool debug);
 	virtual ~CIcomNetwork();
 
 	virtual bool open();
 
-	virtual bool write(const unsigned char* data, unsigned int length, const in_addr& address, unsigned int port);
+	virtual bool write(const unsigned char* data, unsigned int length);
 
-	virtual bool read(unsigned char* data, in_addr& address, unsigned int& port);
+	virtual bool read(unsigned char* data);
 
 	virtual void close();
 
