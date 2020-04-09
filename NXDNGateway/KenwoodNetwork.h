@@ -63,7 +63,7 @@ private:
     bool writeRTPVoiceData(const unsigned char* data);
     bool writeRTPVoiceTrailer(const unsigned char* data);
     bool writeRTCPPing();
-    bool writeRTCPData(unsigned short src, unsigned short dst);
+    bool writeRTCPData(unsigned char type, unsigned short src, unsigned short dst);
     unsigned int readRTP(unsigned char* data);
     unsigned int readRTCP(unsigned char* data);
 };

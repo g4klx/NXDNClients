@@ -73,8 +73,6 @@ bool CKenwoodNetwork::open()
 		return false;
 	}
 
-	m_timer.start();
-
 	m_ssrc = ::rand();
 
 	return true;
@@ -119,14 +117,18 @@ bool CKenwoodNetwork::processIcomVoiceHeader(const unsigned char* inData)
 	outData[10U] = outData[20U] = inData[12U];
 	outData[11U] = outData[21U] = inData[11U];
 
-	switch (outData[5U] & 0x3FU) {
-	case 0x01U: {
-		// XXX
-		uint16_t uid = (outData[7U] << 8) + (outData[8U] << 0);
-		uint16_t gid = (outData[9U] << 8) + (outData[10U] << 0);
+	unsigned short src = (inData[8U] << 8) + (inData[9U] << 0);
+	unsigned short dst = (inData[10U] << 8) + (inData[11U] << 0);
+	unsigned char type = (inData[7U] >> 5) & 0x07U;
+
+	switch (inData[5U] & 0x3FU) {
+	case 0x01U:
+		m_timer.start();
+		writeRTCPData(type, src, dst);
 		return writeRTPVoiceHeader(outData);
-	}
 	case 0x08U:
+		m_timer.stop();
+		writeRTCPData(type, src, dst);
 		return writeRTPVoiceTrailer(outData);
 	default:
 		return false;
@@ -367,7 +369,7 @@ bool CKenwoodNetwork::writeRTCPPing()
 	return m_rtcpSocket.write(buffer, 28U, m_address, m_rtcpPort);
 }
 
-bool CKenwoodNetwork::writeRTCPData(unsigned short src, unsigned short dst)
+bool CKenwoodNetwork::writeRTCPData(unsigned char type, unsigned short src, unsigned short dst)
 {
 	unsigned char buffer[20U];
 	::memset(buffer, 0x00U, 20U);
@@ -393,7 +395,7 @@ bool CKenwoodNetwork::writeRTCPData(unsigned short src, unsigned short dst)
 	buffer[14U] = (dst >> 8) & 0xFFU;
 	buffer[15U] = (dst >> 0) & 0xFFU;
 
-	buffer[16U] = 0x01U;
+	buffer[16U] = type;
 
 	if (m_debug)
 		CUtils::dump(1U, "Kenwood Network RTCP Data Sent", buffer, 20U);
@@ -411,20 +413,18 @@ bool CKenwoodNetwork::read(unsigned char* data)
 	unsigned int len = readRTP(data);
 	if (len > 0U) {
 		switch (data[9U]) {
-		case 0x05U: { // Voice header or trailer
-			bool ret = processKenwoodVoiceHeader(data);
-			if (!ret)
-				return false;
-			return true;
-		}
+		case 0x05U:	// Voice header or trailer
+			return processKenwoodVoiceHeader(data);
 		case 0x08U:	// Voice data
 			processKenwoodVoiceData(data);
 			return true;
 		default:
-			CUtils::dump(5U, "Unknown data received from the Kenwood network", data, len);
-			return false;
+			break;
 		}
 	}
+
+	CUtils::dump(5U, "Unknown data received from the Kenwood network", data, len);
+	return false;
 }
 
 unsigned int CKenwoodNetwork::readRTP(unsigned char* data)
@@ -547,12 +547,7 @@ bool CKenwoodNetwork::processKenwoodVoiceHeader(unsigned char* inData)
 	::memcpy(outData + 19U, temp, 12U);
 
 	switch (outData[5U] & 0x3FU) {
-	case 0x01U: {
-		unsigned short uid = (outData[8U] << 8) + (outData[9U] << 0);
-		unsigned short gid = (outData[10U] << 8) + (outData[11U] << 0);
-		::memcpy(inData, outData, 33U);
-		return true;
-	}
+	case 0x01U:
 	case 0x08U:
 		::memcpy(inData, outData, 33U);
 		return true;
