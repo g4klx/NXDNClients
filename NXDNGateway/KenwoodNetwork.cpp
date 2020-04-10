@@ -505,7 +505,7 @@ void CKenwoodNetwork::close()
 void CKenwoodNetwork::clock(unsigned int ms)
 {
 	m_timer.clock(ms);
-	if (m_timer.hasExpired()) {
+	if (m_timer.isRunning() && m_timer.hasExpired()) {
 		writeRTCPPing();
 		m_timer.start();
 	}
