@@ -158,6 +158,12 @@
 # DX-LINK SYSTEM, 31777
 31777	8.9.4.102	41400
 
+# CW-Ops Academy, NXDN Reflector 32103
+32103 cwops.dyndns.org  41400
+
+# OMISS Group, NXDN Reflector 33581
+33581 omiss.dyndns.org  41400
+
 # Fusion Canada Fr /Wires-x /Ysf /Nxdn Network
 40721 38.110.97.161 41400
 
