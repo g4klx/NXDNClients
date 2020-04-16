@@ -89,6 +89,9 @@
 # 22245 IT PIEDMONT GDO
 22245 nxdngdo.duckdns.org 41400
 
+# 22825 Swiss NXDN Reflerctor
+22825 212.237.33.114 41400
+
 # NXDN Scotland, 23551
 23551 nxdnscotland.ddns.net 41400
 
