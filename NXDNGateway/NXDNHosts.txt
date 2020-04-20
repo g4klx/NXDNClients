@@ -26,6 +26,9 @@
 # RuralMN Reflector 707
 707 707nxdn.kd0ioe.com  41400
 
+# 911 Cop Talk, Multimode TG for Police and First Responders
+911 nxdn.k2cop.com 41400
+
 # 914 Latin America
 914 164.132.96.157 41400
 
@@ -88,6 +91,9 @@
 
 # 22245 IT PIEDMONT GDO
 22245 nxdngdo.duckdns.org 41400
+
+# 22825 Swiss NXDN Reflerctor
+22825 212.237.33.114 41400
 
 # NXDN Scotland, 23551
 23551 nxdnscotland.ddns.net 41400
@@ -161,6 +167,12 @@
 # DX-LINK SYSTEM, 31777
 31777	8.9.4.102	41400
 
+# CW-Ops Academy, NXDN Reflector 32103
+32103 cwops.dyndns.org  41400
+
+# OMISS Group, NXDN Reflector 33581
+33581 omiss.dyndns.org  41400
+
 # Fusion Canada Fr /Wires-x /Ysf /Nxdn Network
 40721 38.110.97.161 41400
 
@@ -184,6 +196,9 @@
 
 # French-Test, 65208
 65208	m55.evxonline.net  41400
+
+# NXDN - 2007DXGROUP
+68800 89.46.75.115 41400
 
 # NXDN SPAIN 21410
 21410 nxdn21410.nxdn.es 41400
