@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2015,2016,2018 by Jonathan Naylor G4KLX
+ *   Copyright (C) 2015,2016,2018,2020 by Jonathan Naylor G4KLX
  *
  *   This program is free software; you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -48,6 +48,7 @@ m_logFileRoot(),
 m_networkPort(0U),
 m_networkDebug(false),
 m_nxCoreEnabled(false),
+m_nxCoreProtocol("Icom"),
 m_nxCoreAddress(),
 m_nxCoreTGEnable(0U),
 m_nxCoreTGDisable(0U),
@@ -123,6 +124,8 @@ bool CConf::read()
 	  } else if (section == SECTION_NXCORE) {
 		  if (::strcmp(key, "Enabled") == 0)
 			  m_nxCoreEnabled = ::atoi(value) == 1;
+		  else if (::strcmp(key, "Protocol") == 0)
+			  m_nxCoreProtocol = value;
 		  else if (::strcmp(key, "Address") == 0)
 			  m_nxCoreAddress = value;
 		  else if (::strcmp(key, "TGEnable") == 0)
@@ -192,6 +195,11 @@ bool CConf::getNetworkDebug() const
 bool CConf::getNXCoreEnabled() const
 {
 	return m_nxCoreEnabled;
+}
+
+std::string CConf::getNXCoreProtocol() const
+{
+	return m_nxCoreProtocol;
 }
 
 std::string CConf::getNXCoreAddress() const

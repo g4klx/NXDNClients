@@ -20,7 +20,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Conf.h" />
-    <ClInclude Include="NXCoreNetwork.h" />
+    <ClInclude Include="CoreNetwork.h" />
+    <ClInclude Include="IcomNetwork.h" />
+    <ClInclude Include="KenwoodNetwork.h" />
+    <ClInclude Include="NXDNCRC.h" />
     <ClInclude Include="NXDNLookup.h" />
     <ClInclude Include="Log.h" />
     <ClInclude Include="Mutex.h" />
@@ -35,7 +38,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Conf.cpp" />
-    <ClCompile Include="NXCoreNetwork.cpp" />
+    <ClCompile Include="CoreNetwork.cpp" />
+    <ClCompile Include="IcomNetwork.cpp" />
+    <ClCompile Include="KenwoodNetwork.cpp" />
+    <ClCompile Include="NXDNCRC.cpp" />
     <ClCompile Include="NXDNLookup.cpp" />
     <ClCompile Include="Log.cpp" />
     <ClCompile Include="Mutex.cpp" />

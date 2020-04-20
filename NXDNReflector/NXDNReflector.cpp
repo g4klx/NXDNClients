@@ -1,5 +1,5 @@
 /*
-*   Copyright (C) 2016,2018 by Jonathan Naylor G4KLX
+*   Copyright (C) 2016,2018,2020 by Jonathan Naylor G4KLX
 *
 *   This program is free software; you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -16,8 +16,10 @@
 *   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
+#include "KenwoodNetwork.h"
 #include "NXDNReflector.h"
 #include "NXDNNetwork.h"
+#include "IcomNetwork.h"
 #include "NXDNLookup.h"
 #include "StopWatch.h"
 #include "Version.h"
@@ -410,6 +412,9 @@ void CNXDNReflector::run()
 			dumpTimer.start();
 		}
 
+		if (m_nxCoreNetwork != NULL)
+			m_nxCoreNetwork->clock(ms);
+
 		if (ms < 5U)
 			CThread::sleep(5U);
 	}
@@ -454,7 +459,11 @@ void CNXDNReflector::dumpRepeaters() const
 
 bool CNXDNReflector::openNXCore()
 {
-	m_nxCoreNetwork = new CNXCoreNetwork(m_conf.getNXCoreAddress(), m_conf.getNXCoreDebug());
+	std::string protocol = m_conf.getNXCoreProtocol();
+	if (protocol == "Kenwood")
+		m_nxCoreNetwork = new CKenwoodNetwork(m_conf.getNXCoreAddress(), m_conf.getNXCoreDebug());
+	else
+		m_nxCoreNetwork = new CIcomNetwork(m_conf.getNXCoreAddress(), m_conf.getNXCoreDebug());
 	bool ret = m_nxCoreNetwork->open();
 	if (!ret) {
 		delete m_nxCoreNetwork;

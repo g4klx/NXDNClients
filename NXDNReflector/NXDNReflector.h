@@ -1,5 +1,5 @@
 /*
-*   Copyright (C) 2016,2018 by Jonathan Naylor G4KLX
+*   Copyright (C) 2016,2018,2020 by Jonathan Naylor G4KLX
 *
 *   This program is free software; you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -19,7 +19,7 @@
 #if !defined(NXDNReflector_H)
 #define	NXDNReflector_H
 
-#include "NXCoreNetwork.h"
+#include "CoreNetwork.h"
 #include "Timer.h"
 #include "Conf.h"
 
@@ -65,7 +65,7 @@ public:
 
 private:
 	CConf                       m_conf;
-	CNXCoreNetwork*             m_nxCoreNetwork;
+	ICoreNetwork*               m_nxCoreNetwork;
 	std::vector<CNXDNRepeater*> m_repeaters;
 
 	CNXDNRepeater* findRepeater(const in_addr& address, unsigned int port) const;
