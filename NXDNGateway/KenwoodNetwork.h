@@ -59,6 +59,7 @@ private:
     bool processIcomVoiceData(const unsigned char* data);
     bool processKenwoodVoiceHeader(unsigned char* data);
     void processKenwoodVoiceData(unsigned char* data);
+    void processKenwoodData(unsigned char* data);
     bool writeRTPVoiceHeader(const unsigned char* data);
     bool writeRTPVoiceData(const unsigned char* data);
     bool writeRTPVoiceTrailer(const unsigned char* data);

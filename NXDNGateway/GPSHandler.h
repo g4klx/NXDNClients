@@ -43,7 +43,7 @@ private:
 	std::string    m_suffix;
 
 	bool processIcom();
-	void processKenwood();
+	bool processKenwood();
 	bool checkXOR() const;
 	void reset();
 };

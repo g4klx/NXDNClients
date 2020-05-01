@@ -411,20 +411,21 @@ bool CKenwoodNetwork::read(unsigned char* data)
 	readRTCP(dummy);
 
 	unsigned int len = readRTP(data);
-	if (len > 0U) {
-		switch (data[9U]) {
-		case 0x05U:	// Voice header or trailer
-			return processKenwoodVoiceHeader(data);
-		case 0x08U:	// Voice data
-			processKenwoodVoiceData(data);
-			return true;
-		default:
-			break;
-		}
+	switch (len) {
+	case 0U:	// Nothing received
+		return false;
+	case 35U:	// Voice header or trailer
+		return processKenwoodVoiceHeader(data);
+	case 47U:	// Voice data
+		processKenwoodVoiceData(data);
+		return true;
+	case 31U:	// Data
+		processKenwoodData(data);
+		return true;
+	default:
+		CUtils::dump(5U, "Unknown data received from the Kenwood network", data, len);
+		return false;
 	}
-
-	CUtils::dump(5U, "Unknown data received from the Kenwood network", data, len);
-	return false;
 }
 
 unsigned int CKenwoodNetwork::readRTP(unsigned char* data)
@@ -440,18 +441,13 @@ unsigned int CKenwoodNetwork::readRTP(unsigned char* data)
 		return 0U;
 
 	// Check if the data is for us
-	if (m_address.s_addr != address.s_addr || port != m_rtpPort) {
-		LogMessage("Kenwood RTP packet received from an invalid source, %08X != %08X and/or %u != %u", m_address.s_addr, address.s_addr, m_rtpPort, port);
+	if (m_address.s_addr != address.s_addr) {
+		LogMessage("Kenwood RTP packet received from an invalid source, %08X != %08X", m_address.s_addr, address.s_addr);
 		return 0U;
 	}
 
 	if (m_debug)
 		CUtils::dump(1U, "Kenwood Network RTP Data Received", buffer, length);
-
-	if (length != 47 && length != 59) {
-		LogError("Invalid RTP length of %d", length);
-		return 0U;
-	}
 
 	::memcpy(data, buffer + 12U, length - 12U);
 
@@ -471,18 +467,13 @@ unsigned int CKenwoodNetwork::readRTCP(unsigned char* data)
 		return 0U;
 
 	// Check if the data is for us
-	if (m_address.s_addr != address.s_addr || port != m_rtcpPort) {
-		LogMessage("Kenwood RTCP packet received from an invalid source, %08X != %08X and/or %u != %u", m_address.s_addr, address.s_addr, m_rtcpPort, port);
+	if (m_address.s_addr != address.s_addr) {
+		LogMessage("Kenwood RTCP packet received from an invalid source, %08X != %08X", m_address.s_addr, address.s_addr);
 		return 0U;
 	}
 
 	if (m_debug)
 		CUtils::dump(1U, "Kenwood Network RTCP Data Received", buffer, length);
-
-	if (length != 20 && length != 28) {
-		LogError("Invalid RTCP length of %d", length);
-		return 0U;
-	}
 
 	if (::memcmp(buffer + 8U, "KWNE", 4U) != 0) {
 		LogError("Missing RTCP KWNE signature");
@@ -548,6 +539,8 @@ bool CKenwoodNetwork::processKenwoodVoiceHeader(unsigned char* inData)
 
 	switch (outData[5U] & 0x3FU) {
 	case 0x01U:
+		::memcpy(inData, outData, 33U);
+		return true;
 	case 0x08U:
 		::memcpy(inData, outData, 33U);
 		return true;
@@ -638,4 +631,52 @@ void CKenwoodNetwork::processKenwoodVoiceData(unsigned char* inData)
 	}
 
 	::memcpy(inData, outData, 33U);
+}
+
+void CKenwoodNetwork::processKenwoodData(unsigned char* inData)
+{
+	if (inData[7U] != 0x09U && inData[7U] != 0x0BU && inData[7U] != 0x08U)
+		return;
+
+	unsigned char outData[50U];
+
+	if (inData[7U] == 0x09U || inData[7U] == 0x08U) {
+		outData[0U] = 0x90U;
+		outData[1U] = inData[8U];
+		outData[2U] = inData[7U];
+		outData[3U] = inData[10U];
+		outData[4U] = inData[9U];
+		outData[5U] = inData[12U];
+		outData[6U] = inData[11U];
+		::memcpy(inData, outData, 7U);
+		CUtils::dump(4U, "Outgoing Kenwood GPS Data Header/Trailer", inData, 7U);
+	} else {
+		CUtils::dump(4U, "Incoming Kenwood GPS Data", inData, 31U);
+		outData[0U]  = 0x90U;
+		outData[1U]  = inData[8U];
+		outData[2U]  = inData[7U];
+		outData[3U]  = inData[10U];
+		outData[4U]  = inData[9U];
+		outData[5U]  = inData[12U];
+		outData[6U]  = inData[11U];
+		outData[7U]  = inData[14U];
+		outData[8U]  = inData[13U];
+		outData[9U]  = inData[16U];
+		outData[10U] = inData[15U];
+		outData[11U] = inData[18U];
+		outData[12U] = inData[17U];
+		outData[13U] = inData[20U];
+		outData[14U] = inData[19U];
+		outData[15U] = inData[22U];
+		outData[16U] = inData[21U];
+		outData[17U] = inData[24U];
+		outData[18U] = inData[23U];
+		outData[19U] = inData[26U];
+		outData[20U] = inData[25U];
+		outData[21U] = inData[28U];
+		outData[22U] = inData[27U];
+		outData[23U] = inData[29U];
+		::memcpy(inData, outData, 24U);
+		CUtils::dump(4U, "Outgoing Kenwood GPS Data Body", inData, 24U);
+	}
 }

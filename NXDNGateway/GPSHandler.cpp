@@ -60,14 +60,17 @@ void CGPSHandler::processData(const unsigned char* data)
 {
 	assert(data != NULL);
 
+	CUtils::dump(4U, "processData GPS Data", data, 21U);
+
 	::memcpy(m_data + m_length, data + 1U, NXDN_DATA_LENGTH);
 	m_length += NXDN_DATA_LENGTH;
 
 	if (data[0U] == 0x00U) {
 		bool ret = processIcom();
 		if (!ret)
-			processKenwood();
-		reset();
+			ret = processKenwood();
+		if (ret)
+			reset();
 	}
 }
 
@@ -165,7 +168,7 @@ bool CGPSHandler::checkXOR() const
 	return ::memcmp(buffer, p2 + 1U, 2U) == 0;
 }
 
-void CGPSHandler::processKenwood()
+bool CGPSHandler::processKenwood()
 {
 	enum {
 		GPS_FULL,
@@ -175,17 +178,25 @@ void CGPSHandler::processKenwood()
 
 	switch (m_data[0U]) {
 	case 0x00U:
+		if (m_length < 38U)
+			return false;
 		type = GPS_FULL;
 		break;
 	case 0x01U:
+		if (m_length < 17U)
+			return false;
 		type = GPS_SHORT;
 		break;
 	case 0x02U:
+		if (m_length < 15U)
+			return false;
 		type = GPS_VERY_SHORT;
 		break;
 	default:
-		return;
+		return true;
 	}
+
+	CUtils::dump("Kenwood GPS Data", m_data, m_length);
 
 	unsigned char UTCss = m_data[1U] & 0x3FU;
 	unsigned char UTCmm = ((m_data[1U] & 0xC0U) >> 2) | (m_data[2U] & 0x0FU);
@@ -225,7 +236,7 @@ void CGPSHandler::processKenwood()
 	}
 
 	if (latAfter == 0x7FFFU || latBefore == 0xFFFFU || longAfter == 0x7FFFU || longBefore == 0xFFFFU)
-		return;
+		return true;
 
 	unsigned int course      = 0xFFFFU;
 	unsigned int speedBefore = 0x3FFU;
@@ -246,8 +257,7 @@ void CGPSHandler::processKenwood()
 	if (course != 0xFFFFU && speedBefore != 0x3FFU && speedAfter != 0x0FU) {
 		::sprintf(output, "%s>APDPRS,NXDN*,qAR,%s:!%07u.%02lu%c/%08u.%02u%cr%03d/%03d via MMDVM",
 			source.c_str(), m_callsign.c_str(), latBefore, latAfter, north, longBefore, longAfter, east, course / 10U, speedBefore);
-	}
-	else {
+	} else {
 		::sprintf(output, "%s>APDPRS,NXDN*,qAR,%s:!%07u.%02u%c/%08u.%02u%cr via MMDVM",
 			source.c_str(), m_callsign.c_str(), latBefore, latAfter, north, longBefore, longAfter, east);
 	}
@@ -255,4 +265,6 @@ void CGPSHandler::processKenwood()
 	LogMessage("Kenwood APRS message = %s", output);
 
 	// m_writer->write(output);
+
+	return true;
 }
