@@ -65,12 +65,13 @@ void CGPSHandler::processData(const unsigned char* data)
 	::memcpy(m_data + m_length, data + 1U, NXDN_DATA_LENGTH);
 	m_length += NXDN_DATA_LENGTH;
 
+	// The packet frame number and block number are zero to indicate the last section of the
+	// data transmission.
 	if (data[0U] == 0x00U) {
 		bool ret = processIcom();
 		if (!ret)
-			ret = processKenwood();
-		if (ret)
-			reset();
+			processKenwood();
+		reset();
 	}
 }
 
@@ -198,53 +199,60 @@ bool CGPSHandler::processKenwood()
 
 	CUtils::dump("Kenwood GPS Data", m_data, m_length);
 
-	unsigned char UTCss = m_data[1U] & 0x3FU;
-	unsigned char UTCmm = ((m_data[1U] & 0xC0U) >> 2) | (m_data[2U] & 0x0FU);
-	unsigned char UTChh = ((m_data[3U] & 0x01U) << 4) | (m_data[2U] & 0xF0U) >> 4;
+	unsigned char UTCss = m_data[3U] & 0x3FU;
+	unsigned char UTCmm = ((m_data[3U] & 0xC0U) >> 6) | ((m_data[4U] & 0x0FU) << 2);
+	unsigned char UTChh = ((m_data[5U] & 0x01U) << 4) | ((m_data[4U] & 0xF0U) >> 4);
+
+	LogMessage("UTC hh:%u mm:%u ss:%u", UTChh, UTCmm, UTCss);
 
 	unsigned char UTCday   = 0x1FU;
 	unsigned char UTCmonth = 0x0FU;
 	unsigned char UTCyear  = 0x7FU;
 	if (type == GPS_FULL) {
-		UTCday   = m_data[15U] & 0x1FU;
-		UTCmonth = ((m_data[15U] & 0xE0U) >> 3) | (m_data[16] & 0x01U);
-		UTCyear  = (m_data[16U] & 0xFEU) >> 1;
+		UTCday   = m_data[17U] & 0x1FU;
+		UTCmonth = ((m_data[17U] & 0xE0U) >> 5) | ((m_data[18U] & 0x01U) << 4);
+		UTCyear  = (m_data[18U] & 0xFEU) >> 1;
+
+		LogMessage("UTC dd:%u mm:%u yy:%u", UTCday, UTCmonth, UTCyear);
 	}
 
-	unsigned char north     = 'N';
-	unsigned int latAfter   = 0x7FFFU;
-	unsigned int latBefore  = 0xFFFFU;
-	unsigned char east      = 'E';
-	unsigned int longAfter  = 0x7FFFU;
-	unsigned int longBefore = 0xFFFFU;
+	unsigned char north    = 'N';
+	unsigned int latAfter  = 0x7FFFU;
+	unsigned int latBefore = 0xFFFFU;
+	unsigned char east     = 'E';
+	unsigned int lonAfter  = 0x7FFFU;
+	unsigned int lonBefore = 0xFFFFU;
 	if (type == GPS_VERY_SHORT) {
-		north     = (m_data[5U] & 0x01U) == 0x00U ? 'N' : 'S';
-		latAfter  = ((m_data[5U] & 0xFEU) >> 1) | (m_data[6U] << 7);
-		latBefore = (m_data[8U] << 8) | m_data[7U];
-
-		east       = (m_data[9U] & 0x01U) == 0x00U ? 'E' : 'W';
-		longAfter  = ((m_data[9U] & 0xFEU) >> 1) | (m_data[10U] << 7);
-		longBefore = (m_data[12U] << 8) | m_data[11U];
-	} else {
 		north     = (m_data[7U] & 0x01U) == 0x00U ? 'N' : 'S';
 		latAfter  = ((m_data[7U] & 0xFEU) >> 1) | (m_data[8U] << 7);
 		latBefore = (m_data[10U] << 8) | m_data[9U];
 
-		east       = (m_data[11U] & 0x01U) == 0x00U ? 'E' : 'W';
-		longAfter  = ((m_data[11U] & 0xFEU) >> 1) | (m_data[12U] << 7);
-		longBefore = (m_data[14U] << 8) | m_data[13U];
+		east      = (m_data[11U] & 0x01U) == 0x00U ? 'E' : 'W';
+		lonAfter  = ((m_data[11U] & 0xFEU) >> 1) | (m_data[12U] << 7);
+		lonBefore = (m_data[13U] << 8) | m_data[13U];
+	} else {
+		north     = (m_data[9U] & 0x01U) == 0x00U ? 'N' : 'S';
+		latAfter  = ((m_data[9U] & 0xFEU) >> 1) | (m_data[10U] << 7);
+		latBefore = (m_data[12U] << 8) | m_data[11U];
+
+		east      = (m_data[13U] & 0x01U) == 0x00U ? 'E' : 'W';
+		lonAfter  = ((m_data[13U] & 0xFEU) >> 1) | (m_data[14U] << 7);
+		lonBefore = (m_data[16U] << 8) | m_data[15U];
 	}
 
-	if (latAfter == 0x7FFFU || latBefore == 0xFFFFU || longAfter == 0x7FFFU || longBefore == 0xFFFFU)
+	LogMessage("Latitude: %u . %u %c", latBefore, latAfter, north);
+	LogMessage("Longitude: %u . %u %c", lonBefore, lonAfter, east);
+
+	if (latAfter == 0x7FFFU || latBefore == 0xFFFFU || lonAfter == 0x7FFFU || lonBefore == 0xFFFFU)
 		return true;
 
 	unsigned int course      = 0xFFFFU;
 	unsigned int speedBefore = 0x3FFU;
 	unsigned int speedAfter  = 0x0FU;
 	if (type == GPS_FULL) {
-		course      = (m_data[21U] << 4) | (m_data[22U] & 0x0FU);
-		speedBefore = ((m_data[23U] & 0xF0U) << 2) | (m_data[24U] & 0x3FU);
-		speedAfter  = m_data[23U] & 0x0FU;
+		course      = (m_data[23U] << 4) | (m_data[24U] & 0x0FU);
+		speedBefore = ((m_data[25U] & 0xF0U) << 2) | (m_data[26U] & 0x3FU);
+		speedAfter  = m_data[25U] & 0x0FU;
 	}
 
 	std::string source = m_source;
@@ -255,11 +263,11 @@ bool CGPSHandler::processKenwood()
 
 	char output[300U];
 	if (course != 0xFFFFU && speedBefore != 0x3FFU && speedAfter != 0x0FU) {
-		::sprintf(output, "%s>APDPRS,NXDN*,qAR,%s:!%07u.%02lu%c/%08u.%02u%cr%03d/%03d via MMDVM",
-			source.c_str(), m_callsign.c_str(), latBefore, latAfter, north, longBefore, longAfter, east, course / 10U, speedBefore);
+		::sprintf(output, "%s>APDPRS,NXDN*,qAR,%s:!%04u.%02u%c/%05u.%02u%cr%03d/%03d via MMDVM",
+			source.c_str(), m_callsign.c_str(), latBefore, latAfter / 100U, north, lonBefore, lonAfter / 100U, east, course / 10U, speedBefore);
 	} else {
-		::sprintf(output, "%s>APDPRS,NXDN*,qAR,%s:!%07u.%02u%c/%08u.%02u%cr via MMDVM",
-			source.c_str(), m_callsign.c_str(), latBefore, latAfter, north, longBefore, longAfter, east);
+		::sprintf(output, "%s>APDPRS,NXDN*,qAR,%s:!%04u.%02u%c/%05u.%02u%cr via MMDVM",
+			source.c_str(), m_callsign.c_str(), latBefore, latAfter / 100U, north, lonBefore, lonAfter / 100U, east);
 	}
 
 	LogMessage("Kenwood APRS message = %s", output);
