@@ -142,10 +142,10 @@ bool CGPSHandler::processIcom()
 		int bearing = ::atoi(pRMC[8U]);
 		int speed   = ::atoi(pRMC[7U]);
 
-		::sprintf(output, "%s>APDPRS,NXDN*,qAR,%s:!%07.2lf%s/%08.2lf%sr%03d/%03d via MMDVM",
+		::sprintf(output, "%s>APDPRS,NXDN*,qAR,%s:!%07.2lf%s/%08.2lf%sr%03d/%03d Icom IDAS via MMDVM",
 			source.c_str(), m_callsign.c_str(), latitude, pRMC[4U], longitude, pRMC[6U], bearing, speed);
 	} else {
-		::sprintf(output, "%s>APDPRS,NXDN*,qAR,%s:!%07.2lf%s/%08.2lf%sr via MMDVM",
+		::sprintf(output, "%s>APDPRS,NXDN*,qAR,%s:!%07.2lf%s/%08.2lf%sr Icom IDAS via MMDVM",
 			source.c_str(), m_callsign.c_str(), latitude, pRMC[4U], longitude, pRMC[6U]);
 	}
 
@@ -263,10 +263,10 @@ bool CGPSHandler::processKenwood()
 
 	char output[300U];
 	if (course != 0xFFFFU && speedBefore != 0x3FFU && speedAfter != 0x0FU) {
-		::sprintf(output, "%s>APDPRS,NXDN*,qAR,%s:!%04u.%02u%c/%05u.%02u%cr%03d/%03d via MMDVM",
+		::sprintf(output, "%s>APDPRS,NXDN*,qAR,%s:!%04u.%02u%c/%05u.%02u%cr%03d/%03d Kenwood NEXEDGE via MMDVM",
 			source.c_str(), m_callsign.c_str(), latBefore, latAfter / 100U, north, lonBefore, lonAfter / 100U, east, course / 10U, speedBefore);
 	} else {
-		::sprintf(output, "%s>APDPRS,NXDN*,qAR,%s:!%04u.%02u%c/%05u.%02u%cr via MMDVM",
+		::sprintf(output, "%s>APDPRS,NXDN*,qAR,%s:!%04u.%02u%c/%05u.%02u%cr Kenwood NEXEDGE via MMDVM",
 			source.c_str(), m_callsign.c_str(), latBefore, latAfter / 100U, north, lonBefore, lonAfter / 100U, east);
 	}
 
