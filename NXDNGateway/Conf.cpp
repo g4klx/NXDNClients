@@ -35,7 +35,8 @@ enum SECTION {
   SECTION_LOG,
   SECTION_APRS_FI,
   SECTION_NETWORK,
-  SECTION_MOBILE_GPS
+  SECTION_MOBILE_GPS,
+  SECTION_REMOTE_COMMANDS
 };
 
 CConf::CConf(const std::string& file) :
@@ -82,7 +83,9 @@ m_networkInactivityTimeout(0U),
 m_networkDebug(false),
 m_mobileGPSEnabled(false),
 m_mobileGPSAddress(),
-m_mobileGPSPort(0U)
+m_mobileGPSPort(0U),
+m_remoteCommandsEnabled(false),
+m_remoteCommandsPort(6075U)
 {
 }
 
@@ -122,6 +125,8 @@ bool CConf::read()
 			  section = SECTION_NETWORK;
 		  else if (::strncmp(buffer, "[Mobile GPS]", 12U) == 0)
 			  section = SECTION_MOBILE_GPS;
+		  else if (::strncmp(buffer, "[Remote Commands]", 17U) == 0)
+			  section = SECTION_REMOTE_COMMANDS;
 		  else
 			  section = SECTION_NONE;
 
@@ -233,6 +238,11 @@ bool CConf::read()
 			  m_mobileGPSAddress = value;
 		  else if (::strcmp(key, "Port") == 0)
 			  m_mobileGPSPort = (unsigned int)::atoi(value);
+	  } else if (section == SECTION_REMOTE_COMMANDS) {
+		  if (::strcmp(key, "Enable") == 0)
+			  m_remoteCommandsEnabled = ::atoi(value) == 1;
+		  else if (::strcmp(key, "Port") == 0)
+			  m_remoteCommandsPort = (unsigned int)::atoi(value);
 	  }
   }
 
@@ -456,3 +466,12 @@ unsigned int CConf::getMobileGPSPort() const
 	return m_mobileGPSPort;
 }
 
+bool CConf::getRemoteCommandsEnabled() const
+{
+	return m_remoteCommandsEnabled;
+}
+
+unsigned int CConf::getRemoteCommandsPort() const
+{
+	return m_remoteCommandsPort;
+}
