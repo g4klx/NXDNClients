@@ -60,8 +60,6 @@ void CGPSHandler::processData(const unsigned char* data)
 {
 	assert(data != NULL);
 
-	CUtils::dump(4U, "processData GPS Data", data, 21U);
-
 	::memcpy(m_data + m_length, data + 1U, NXDN_DATA_LENGTH);
 	m_length += NXDN_DATA_LENGTH;
 
@@ -197,25 +195,6 @@ bool CGPSHandler::processKenwood()
 		return true;
 	}
 
-	CUtils::dump("Kenwood GPS Data", m_data, m_length);
-
-	unsigned char UTCss = m_data[3U] & 0x3FU;
-	unsigned char UTCmm = ((m_data[3U] & 0xC0U) >> 6) | ((m_data[4U] & 0x0FU) << 2);
-	unsigned char UTChh = ((m_data[5U] & 0x01U) << 4) | ((m_data[4U] & 0xF0U) >> 4);
-
-	LogMessage("UTC hh:%u mm:%u ss:%u", UTChh, UTCmm, UTCss);
-
-	unsigned char UTCday   = 0x1FU;
-	unsigned char UTCmonth = 0x0FU;
-	unsigned char UTCyear  = 0x7FU;
-	if (type == GPS_FULL) {
-		UTCday   = m_data[17U] & 0x1FU;
-		UTCmonth = ((m_data[17U] & 0xE0U) >> 5) | ((m_data[18U] & 0x01U) << 4);
-		UTCyear  = (m_data[18U] & 0xFEU) >> 1;
-
-		LogMessage("UTC dd:%u mm:%u yy:%u", UTCday, UTCmonth, UTCyear);
-	}
-
 	unsigned char north    = 'N';
 	unsigned int latAfter  = 0x7FFFU;
 	unsigned int latBefore = 0xFFFFU;
@@ -239,9 +218,6 @@ bool CGPSHandler::processKenwood()
 		lonAfter  = ((m_data[13U] & 0xFEU) >> 1) | (m_data[14U] << 7);
 		lonBefore = (m_data[16U] << 8) | m_data[15U];
 	}
-
-	LogMessage("Latitude: %u . %u %c", latBefore, latAfter, north);
-	LogMessage("Longitude: %u . %u %c", lonBefore, lonAfter, east);
 
 	if (latAfter == 0x7FFFU || latBefore == 0xFFFFU || lonAfter == 0x7FFFU || lonBefore == 0xFFFFU)
 		return true;
@@ -270,9 +246,7 @@ bool CGPSHandler::processKenwood()
 			source.c_str(), m_callsign.c_str(), latBefore, latAfter / 100U, north, lonBefore, lonAfter / 100U, east);
 	}
 
-	LogMessage("Kenwood APRS message = %s", output);
-
-	// m_writer->write(output);
+	m_writer->write(output);
 
 	return true;
 }
