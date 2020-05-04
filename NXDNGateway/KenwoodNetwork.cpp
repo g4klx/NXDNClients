@@ -649,9 +649,7 @@ void CKenwoodNetwork::processKenwoodData(unsigned char* inData)
 		outData[5U] = inData[12U];
 		outData[6U] = inData[11U];
 		::memcpy(inData, outData, 7U);
-		CUtils::dump(4U, "Outgoing Kenwood GPS Data Header/Trailer", inData, 7U);
 	} else {
-		CUtils::dump(4U, "Incoming Kenwood GPS Data", inData, 31U);
 		outData[0U]  = 0x90U;
 		outData[1U]  = inData[8U];
 		outData[2U]  = inData[7U];
@@ -677,6 +675,5 @@ void CKenwoodNetwork::processKenwoodData(unsigned char* inData)
 		outData[22U] = inData[27U];
 		outData[23U] = inData[29U];
 		::memcpy(inData, outData, 24U);
-		CUtils::dump(4U, "Outgoing Kenwood GPS Data Body", inData, 24U);
 	}
 }
