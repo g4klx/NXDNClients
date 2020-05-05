@@ -49,11 +49,14 @@ private:
     in_addr        m_address;
 	unsigned int   m_rtcpPort;
     unsigned int   m_rtpPort;
-    unsigned short m_seqNo;
+    uint8_t        m_sessionId;
+    uint16_t       m_seqNo;
     unsigned long  m_timeStamp;
     unsigned int   m_ssrc;
     bool           m_debug;
     CTimer         m_timer;
+    uint32_t       m_startSecs;
+    uint32_t       m_startMSecs;
 
     bool processIcomVoiceHeader(const unsigned char* data);
     bool processIcomVoiceData(const unsigned char* data);
@@ -63,8 +66,9 @@ private:
     bool writeRTPVoiceHeader(const unsigned char* data);
     bool writeRTPVoiceData(const unsigned char* data);
     bool writeRTPVoiceTrailer(const unsigned char* data);
+    bool writeRTCPStart();
     bool writeRTCPPing();
-    bool writeRTCPData(unsigned char type, unsigned short src, unsigned short dst);
+    bool writeRTCPHang(unsigned char type, unsigned short src, unsigned short dst);
     unsigned int readRTP(unsigned char* data);
     unsigned int readRTCP(unsigned char* data);
 };

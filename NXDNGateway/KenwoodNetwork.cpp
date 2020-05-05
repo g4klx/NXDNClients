@@ -24,6 +24,7 @@
 #include <cstdio>
 #include <cassert>
 #include <cstring>
+#include <ctime>
 
 const unsigned char BIT_MASK_TABLE[] = { 0x80U, 0x40U, 0x20U, 0x10U, 0x08U, 0x04U, 0x02U, 0x01U };
 
@@ -39,11 +40,14 @@ m_stopWatch(),
 m_address(),
 m_rtcpPort(rptPort + 1U),
 m_rtpPort(rptPort + 0U),
+m_sessionId(0U),
 m_seqNo(0U),
 m_timeStamp(0U),
 m_ssrc(0U),
 m_debug(debug),
-m_timer(1000U, 0U, 200U)
+m_timer(1000U, 0U, 200U),
+m_startSecs(0U),
+m_startMSecs(0U)
 {
 	assert(localPort > 0U);
 	assert(!rptAddress.empty());
@@ -108,12 +112,12 @@ bool CKenwoodNetwork::processIcomVoiceHeader(const unsigned char* inData)
 	outData[3U] = inData[3U];
 
 	// FACCH 1+2
-	outData[4U] = outData[14U] = inData[6U];
-	outData[5U] = outData[15U] = inData[5U];
-	outData[6U] = outData[16U] = inData[8U];
-	outData[7U] = outData[17U] = inData[7U];
-	outData[8U] = outData[18U] = inData[10U];
-	outData[9U] = outData[19U] = inData[9U];
+	outData[4U]  = outData[14U] = inData[6U];
+	outData[5U]  = outData[15U] = inData[5U];
+	outData[6U]  = outData[16U] = inData[8U];
+	outData[7U]  = outData[17U] = inData[7U];
+	outData[8U]  = outData[18U] = inData[10U];
+	outData[9U]  = outData[19U] = inData[9U];
 	outData[10U] = outData[20U] = inData[12U];
 	outData[11U] = outData[21U] = inData[11U];
 
@@ -124,11 +128,11 @@ bool CKenwoodNetwork::processIcomVoiceHeader(const unsigned char* inData)
 	switch (inData[5U] & 0x3FU) {
 	case 0x01U:
 		m_timer.start();
-		writeRTCPData(type, src, dst);
+		writeRTCPStart();
 		return writeRTPVoiceHeader(outData);
 	case 0x08U:
 		m_timer.stop();
-		writeRTCPData(type, src, dst);
+		writeRTCPHang(type, src, dst);
 		return writeRTPVoiceTrailer(outData);
 	default:
 		return false;
@@ -225,23 +229,28 @@ bool CKenwoodNetwork::writeRTPVoiceHeader(const unsigned char* data)
 	buffer[0U] = 0x80U;
 	buffer[1U] = 0x66U;
 
+	m_seqNo++;
 	buffer[2U] = (m_seqNo >> 8) & 0xFFU;
 	buffer[3U] = (m_seqNo >> 0) & 0xFFU;
-	m_seqNo++;
 
 	m_timeStamp = (unsigned long)m_stopWatch.time();
 
 	buffer[4U] = (m_timeStamp >> 24) & 0xFFU;
 	buffer[5U] = (m_timeStamp >> 16) & 0xFFU;
-	buffer[6U] = (m_timeStamp >> 8) & 0xFFU;
-	buffer[7U] = (m_timeStamp >> 0) & 0xFFU;
-	m_timeStamp += 640U;
+	buffer[6U] = (m_timeStamp >> 8)  & 0xFFU;
+	buffer[7U] = (m_timeStamp >> 0)  & 0xFFU;
 
 	buffer[8U]  = (m_ssrc >> 24) & 0xFFU;
 	buffer[9U]  = (m_ssrc >> 16) & 0xFFU;
 	buffer[10U] = (m_ssrc >> 8) & 0xFFU;
 	buffer[11U] = (m_ssrc >> 0) & 0xFFU;
 
+	m_sessionId++;
+	buffer[12U] = m_sessionId;
+
+	buffer[13U] = 0x00U;
+	buffer[14U] = 0x00U;
+	buffer[15U] = 0x00U;
 	buffer[16U] = 0x03U;
 	buffer[17U] = 0x03U;
 	buffer[18U] = 0x04U;
@@ -268,9 +277,11 @@ bool CKenwoodNetwork::writeRTPVoiceTrailer(const unsigned char* data)
 	buffer[0U] = 0x80U;
 	buffer[1U] = 0x66U;
 
+	m_seqNo++;
 	buffer[2U] = (m_seqNo >> 8) & 0xFFU;
 	buffer[3U] = (m_seqNo >> 0) & 0xFFU;
 
+	m_timeStamp += 640U;
 	buffer[4U] = (m_timeStamp >> 24) & 0xFFU;
 	buffer[5U] = (m_timeStamp >> 16) & 0xFFU;
 	buffer[6U] = (m_timeStamp >> 8) & 0xFFU;
@@ -281,6 +292,11 @@ bool CKenwoodNetwork::writeRTPVoiceTrailer(const unsigned char* data)
 	buffer[10U] = (m_ssrc >> 8) & 0xFFU;
 	buffer[11U] = (m_ssrc >> 0) & 0xFFU;
 
+	buffer[12U] = m_sessionId;
+
+	buffer[13U] = 0x00U;
+	buffer[14U] = 0x00U;
+	buffer[15U] = 0x00U;
 	buffer[16U] = 0x03U;
 	buffer[17U] = 0x03U;
 	buffer[18U] = 0x04U;
@@ -307,21 +323,26 @@ bool CKenwoodNetwork::writeRTPVoiceData(const unsigned char* data)
 	buffer[0U] = 0x80U;
 	buffer[1U] = 0x66U;
 
+	m_seqNo++;
 	buffer[2U] = (m_seqNo >> 8) & 0xFFU;
 	buffer[3U] = (m_seqNo >> 0) & 0xFFU;
-	m_seqNo++;
 
+	m_timeStamp += 640U;
 	buffer[4U] = (m_timeStamp >> 24) & 0xFFU;
 	buffer[5U] = (m_timeStamp >> 16) & 0xFFU;
-	buffer[6U] = (m_timeStamp >> 8) & 0xFFU;
-	buffer[7U] = (m_timeStamp >> 0) & 0xFFU;
-	m_timeStamp += 640U;
+	buffer[6U] = (m_timeStamp >> 8)  & 0xFFU;
+	buffer[7U] = (m_timeStamp >> 0)  & 0xFFU;
 
 	buffer[8U]  = (m_ssrc >> 24) & 0xFFU;
 	buffer[9U]  = (m_ssrc >> 16) & 0xFFU;
-	buffer[10U] = (m_ssrc >> 8) & 0xFFU;
-	buffer[11U] = (m_ssrc >> 0) & 0xFFU;
+	buffer[10U] = (m_ssrc >> 8)  & 0xFFU;
+	buffer[11U] = (m_ssrc >> 0)  & 0xFFU;
 
+	buffer[12U] = m_sessionId;
+
+	buffer[13U] = 0x00U;
+	buffer[14U] = 0x00U;
+	buffer[15U] = 0x00U;
 	buffer[16U] = 0x03U;
 	buffer[17U] = 0x02U;
 	buffer[18U] = 0x04U;
@@ -338,30 +359,58 @@ bool CKenwoodNetwork::writeRTPVoiceData(const unsigned char* data)
 	return m_rtpSocket.write(buffer, 59U, m_address, m_rtpPort);
 }
 
-bool CKenwoodNetwork::writeRTCPPing()
+bool CKenwoodNetwork::writeRTCPStart()
 {
+	time_t now;
+	::time(&now);
+
+	m_startSecs = uint32_t(now);
+
+#if defined(_WIN32) || defined(_WIN64)
+	SYSTEMTIME st;
+	::GetSystemTime(&st);
+
+	m_startMSecs = st.wMilliseconds;
+#else
+	struct timeval tod;
+	::gettimeofday(&tod, NULL);
+
+	m_startMSecs = tod.tv_usec / 1000U;
+#endif
+
 	unsigned char buffer[30U];
 	::memset(buffer, 0x00U, 30U);
 
 	buffer[0U] = 0x8AU;
 	buffer[1U] = 0xCCU;
-
+	buffer[2U] = 0x00U;
 	buffer[3U] = 0x06U;
 
 	buffer[4U] = (m_ssrc >> 24) & 0xFFU;
 	buffer[5U] = (m_ssrc >> 16) & 0xFFU;
-	buffer[6U] = (m_ssrc >> 8) & 0xFFU;
-	buffer[7U] = (m_ssrc >> 0) & 0xFFU;
+	buffer[6U] = (m_ssrc >> 8)  & 0xFFU;
+	buffer[7U] = (m_ssrc >> 0)  & 0xFFU;
 
 	buffer[8U]  = 'K';
 	buffer[9U]  = 'W';
 	buffer[10U] = 'N';
 	buffer[11U] = 'E';
 
+	buffer[12U] = (m_startSecs >> 24) & 0xFFU;
+	buffer[13U] = (m_startSecs >> 16) & 0xFFU;
+	buffer[14U] = (m_startSecs >> 8)  & 0xFFU;
+	buffer[15U] = (m_startSecs >> 0)  & 0xFFU;
+
+	buffer[16U] = (m_startMSecs >> 24) & 0xFFU;
+	buffer[17U] = (m_startMSecs >> 16) & 0xFFU;
+	buffer[18U] = (m_startMSecs >> 8)  & 0xFFU;
+	buffer[19U] = (m_startMSecs >> 0)  & 0xFFU;
+
 	buffer[22U] = 0x02U;
 
 	buffer[24U] = 0x01U;
-	buffer[25U] = 0x01U;
+
+	buffer[27U] = 0x0AU;
 
 	if (m_debug)
 		CUtils::dump(1U, "Kenwood Network RTCP Data Sent", buffer, 28U);
@@ -369,20 +418,62 @@ bool CKenwoodNetwork::writeRTCPPing()
 	return m_rtcpSocket.write(buffer, 28U, m_address, m_rtcpPort);
 }
 
-bool CKenwoodNetwork::writeRTCPData(unsigned char type, unsigned short src, unsigned short dst)
+bool CKenwoodNetwork::writeRTCPPing()
 {
-	unsigned char buffer[20U];
-	::memset(buffer, 0x00U, 20U);
+	unsigned char buffer[30U];
+	::memset(buffer, 0x00U, 30U);
+
+	buffer[0U] = 0x8AU;
+	buffer[1U] = 0xCCU;
+	buffer[2U] = 0x00U;
+	buffer[3U] = 0x06U;
+
+	buffer[4U] = (m_ssrc >> 24) & 0xFFU;
+	buffer[5U] = (m_ssrc >> 16) & 0xFFU;
+	buffer[6U] = (m_ssrc >> 8)  & 0xFFU;
+	buffer[7U] = (m_ssrc >> 0)  & 0xFFU;
+
+	buffer[8U]  = 'K';
+	buffer[9U]  = 'W';
+	buffer[10U] = 'N';
+	buffer[11U] = 'E';
+
+	buffer[12U] = (m_startSecs >> 24) & 0xFFU;
+	buffer[13U] = (m_startSecs >> 16) & 0xFFU;
+	buffer[14U] = (m_startSecs >> 8)  & 0xFFU;
+	buffer[15U] = (m_startSecs >> 0)  & 0xFFU;
+
+	buffer[16U] = (m_startMSecs >> 24) & 0xFFU;
+	buffer[17U] = (m_startMSecs >> 16) & 0xFFU;
+	buffer[18U] = (m_startMSecs >> 8)  & 0xFFU;
+	buffer[19U] = (m_startMSecs >> 0)  & 0xFFU;
+
+	buffer[22U] = 0x02U;
+
+	buffer[24U] = 0x01U;
+
+	buffer[27U] = 0x7BU;
+
+	if (m_debug)
+		CUtils::dump(1U, "Kenwood Network RTCP Data Sent", buffer, 28U);
+
+	return m_rtcpSocket.write(buffer, 28U, m_address, m_rtcpPort);
+}
+
+bool CKenwoodNetwork::writeRTCPHang(unsigned char type, unsigned short src, unsigned short dst)
+{
+	unsigned char buffer[30U];
+	::memset(buffer, 0x00U, 30U);
 
 	buffer[0U] = 0x8BU;
 	buffer[1U] = 0xCCU;
-
+	buffer[2U] = 0x00U;
 	buffer[3U] = 0x04U;
 
 	buffer[4U] = (m_ssrc >> 24) & 0xFFU;
 	buffer[5U] = (m_ssrc >> 16) & 0xFFU;
-	buffer[6U] = (m_ssrc >> 8) & 0xFFU;
-	buffer[7U] = (m_ssrc >> 0) & 0xFFU;
+	buffer[6U] = (m_ssrc >> 8)  & 0xFFU;
+	buffer[7U] = (m_ssrc >> 0)  & 0xFFU;
 
 	buffer[8U]  = 'K';
 	buffer[9U]  = 'W';
@@ -396,6 +487,10 @@ bool CKenwoodNetwork::writeRTCPData(unsigned char type, unsigned short src, unsi
 	buffer[15U] = (dst >> 0) & 0xFFU;
 
 	buffer[16U] = type;
+
+	buffer[17U] = 0x00U;
+	buffer[18U] = 0x00U;
+	buffer[19U] = 0x00U;
 
 	if (m_debug)
 		CUtils::dump(1U, "Kenwood Network RTCP Data Sent", buffer, 20U);
