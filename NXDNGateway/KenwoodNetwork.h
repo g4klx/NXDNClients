@@ -54,9 +54,13 @@ private:
     unsigned long  m_timeStamp;
     unsigned int   m_ssrc;
     bool           m_debug;
-    CTimer         m_timer;
     uint32_t       m_startSecs;
     uint32_t       m_startMSecs;
+    CTimer         m_rtcpTimer;
+    CTimer         m_hangTimer;
+    unsigned char  m_hangType;
+    unsigned short m_hangSrc;
+    unsigned short m_hangDst;
 
     bool processIcomVoiceHeader(const unsigned char* data);
     bool processIcomVoiceData(const unsigned char* data);
@@ -69,6 +73,7 @@ private:
     bool writeRTCPStart();
     bool writeRTCPPing();
     bool writeRTCPHang(unsigned char type, unsigned short src, unsigned short dst);
+    bool writeRTCPHang();
     unsigned int readRTP(unsigned char* data);
     unsigned int readRTCP(unsigned char* data);
 };
