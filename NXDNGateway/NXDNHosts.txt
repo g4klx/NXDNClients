@@ -86,6 +86,9 @@
 # 22200 IT HBLINK ITALY
 22200 nxdn.hblink.it 41400
 
+# 22202 IT NXDN Sardegna
+22202 nxdn.is0hha.hblink.it 41400
+
 # 22220 IT ECHOLINK ITALY
 22220 dagobah.hblink.it 41400                                                                                                                                                                                                      
 
@@ -198,7 +201,7 @@
 65208	m55.evxonline.net  41400
 
 # NXDN - 2007DXGROUP
-68800 89.46.75.115 41400
+65100 89.46.75.115 41400
 
 # NXDN SPAIN 21410
 21410 nxdn21410.nxdn.es 41400
