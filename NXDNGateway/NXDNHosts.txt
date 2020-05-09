@@ -83,6 +83,9 @@
 # 22200 IT HBLINK ITALY
 22200 nxdn.hblink.it 41400
 
+# 22202 IT NXDN Sardegna
+22202 nxdn.is0hha.hblink.it 41400
+
 # 22220 IT ECHOLINK ITALY
 22220 dagobah.hblink.it 41400                                                                                                                                                                                                      
 
