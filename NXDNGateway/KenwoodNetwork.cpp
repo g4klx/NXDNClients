@@ -36,7 +36,6 @@ const unsigned int BUFFER_LENGTH = 200U;
 CKenwoodNetwork::CKenwoodNetwork(unsigned int localPort, const std::string& rptAddress, unsigned int rptPort, bool debug) :
 m_rtcpSocket(localPort + 1U),
 m_rtpSocket(localPort + 0U),
-m_stopWatch(),
 m_address(),
 m_rtcpPort(rptPort + 1U),
 m_rtpPort(rptPort + 0U),
@@ -240,6 +239,30 @@ bool CKenwoodNetwork::writeRTPVoiceHeader(const unsigned char* data)
 {
 	assert(data != NULL);
 
+#if defined(_WIN32) || defined(_WIN64)
+	SYSTEMTIME st;
+	::GetSystemTime(&st);
+
+	unsigned int hh = st.wHour;
+	unsigned int mm = st.wMinute;
+	unsigned int ss = st.wSecond;
+	unsigned int ms = st.wMilliseconds;
+
+	m_timeStamp  = hh * 3600U * 1000U * 80U;
+	m_timeStamp += mm * 60U * 1000U * 80U;
+	m_timeStamp += ss * 1000U * 80U;
+	m_timeStamp += ms * 80U;
+#else
+	struct timeval tod;
+	::gettimeofday(&tod, NULL);
+
+	unsigned int ss = tod.tv_sec;
+	unsigned int ms = tod.tv_usec / 1000U;
+
+	m_timeStamp  = ss * 1000U * 80U;
+	m_timeStamp += ms * 80U;
+#endif
+
 	unsigned char buffer[50U];
 	::memset(buffer, 0x00U, 50U);
 
@@ -249,8 +272,6 @@ bool CKenwoodNetwork::writeRTPVoiceHeader(const unsigned char* data)
 	m_seqNo++;
 	buffer[2U] = (m_seqNo >> 8) & 0xFFU;
 	buffer[3U] = (m_seqNo >> 0) & 0xFFU;
-
-	m_timeStamp = (unsigned long)m_stopWatch.time();
 
 	buffer[4U] = (m_timeStamp >> 24) & 0xFFU;
 	buffer[5U] = (m_timeStamp >> 16) & 0xFFU;

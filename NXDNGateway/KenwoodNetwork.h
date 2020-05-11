@@ -20,7 +20,6 @@
 #define	KenwoodNetwork_H
 
 #include "RptNetwork.h"
-#include "StopWatch.h"
 #include "UDPSocket.h"
 #include "Timer.h"
 
@@ -45,7 +44,6 @@ public:
 private:
 	CUDPSocket     m_rtpSocket;
     CUDPSocket     m_rtcpSocket;
-    CStopWatch     m_stopWatch;
     in_addr        m_address;
 	unsigned int   m_rtcpPort;
     unsigned int   m_rtpPort;
