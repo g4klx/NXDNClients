@@ -49,7 +49,6 @@ private:
     unsigned int   m_rtpPort;
     uint8_t        m_sessionId;
     uint16_t       m_seqNo;
-    unsigned long  m_timeStamp;
     unsigned int   m_ssrc;
     bool           m_debug;
     uint32_t       m_startSecs;
@@ -74,6 +73,7 @@ private:
     bool writeRTCPHang();
     unsigned int readRTP(unsigned char* data);
     unsigned int readRTCP(unsigned char* data);
+    unsigned long getTimeStamp() const;
 };
 
 #endif

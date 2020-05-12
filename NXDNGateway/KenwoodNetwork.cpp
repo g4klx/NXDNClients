@@ -41,7 +41,6 @@ m_rtcpPort(rptPort + 1U),
 m_rtpPort(rptPort + 0U),
 m_sessionId(0U),
 m_seqNo(0U),
-m_timeStamp(0U),
 m_ssrc(0U),
 m_debug(debug),
 m_startSecs(0U),
@@ -239,30 +238,6 @@ bool CKenwoodNetwork::writeRTPVoiceHeader(const unsigned char* data)
 {
 	assert(data != NULL);
 
-#if defined(_WIN32) || defined(_WIN64)
-	SYSTEMTIME st;
-	::GetSystemTime(&st);
-
-	unsigned int hh = st.wHour;
-	unsigned int mm = st.wMinute;
-	unsigned int ss = st.wSecond;
-	unsigned int ms = st.wMilliseconds;
-
-	m_timeStamp  = hh * 3600U * 1000U * 80U;
-	m_timeStamp += mm * 60U * 1000U * 80U;
-	m_timeStamp += ss * 1000U * 80U;
-	m_timeStamp += ms * 80U;
-#else
-	struct timeval tod;
-	::gettimeofday(&tod, NULL);
-
-	unsigned int ss = tod.tv_sec;
-	unsigned int ms = tod.tv_usec / 1000U;
-
-	m_timeStamp  = ss * 1000U * 80U;
-	m_timeStamp += ms * 80U;
-#endif
-
 	unsigned char buffer[50U];
 	::memset(buffer, 0x00U, 50U);
 
@@ -273,10 +248,11 @@ bool CKenwoodNetwork::writeRTPVoiceHeader(const unsigned char* data)
 	buffer[2U] = (m_seqNo >> 8) & 0xFFU;
 	buffer[3U] = (m_seqNo >> 0) & 0xFFU;
 
-	buffer[4U] = (m_timeStamp >> 24) & 0xFFU;
-	buffer[5U] = (m_timeStamp >> 16) & 0xFFU;
-	buffer[6U] = (m_timeStamp >> 8)  & 0xFFU;
-	buffer[7U] = (m_timeStamp >> 0)  & 0xFFU;
+	unsigned long timeStamp = getTimeStamp();
+	buffer[4U] = (timeStamp >> 24) & 0xFFU;
+	buffer[5U] = (timeStamp >> 16) & 0xFFU;
+	buffer[6U] = (timeStamp >> 8)  & 0xFFU;
+	buffer[7U] = (timeStamp >> 0)  & 0xFFU;
 
 	buffer[8U]  = (m_ssrc >> 24) & 0xFFU;
 	buffer[9U]  = (m_ssrc >> 16) & 0xFFU;
@@ -319,11 +295,11 @@ bool CKenwoodNetwork::writeRTPVoiceTrailer(const unsigned char* data)
 	buffer[2U] = (m_seqNo >> 8) & 0xFFU;
 	buffer[3U] = (m_seqNo >> 0) & 0xFFU;
 
-	m_timeStamp += 640U;
-	buffer[4U] = (m_timeStamp >> 24) & 0xFFU;
-	buffer[5U] = (m_timeStamp >> 16) & 0xFFU;
-	buffer[6U] = (m_timeStamp >> 8) & 0xFFU;
-	buffer[7U] = (m_timeStamp >> 0) & 0xFFU;
+	unsigned long timeStamp = getTimeStamp();
+	buffer[4U] = (timeStamp >> 24) & 0xFFU;
+	buffer[5U] = (timeStamp >> 16) & 0xFFU;
+	buffer[6U] = (timeStamp >> 8)  & 0xFFU;
+	buffer[7U] = (timeStamp >> 0)  & 0xFFU;
 
 	buffer[8U]  = (m_ssrc >> 24) & 0xFFU;
 	buffer[9U]  = (m_ssrc >> 16) & 0xFFU;
@@ -365,11 +341,11 @@ bool CKenwoodNetwork::writeRTPVoiceData(const unsigned char* data)
 	buffer[2U] = (m_seqNo >> 8) & 0xFFU;
 	buffer[3U] = (m_seqNo >> 0) & 0xFFU;
 
-	m_timeStamp += 640U;
-	buffer[4U] = (m_timeStamp >> 24) & 0xFFU;
-	buffer[5U] = (m_timeStamp >> 16) & 0xFFU;
-	buffer[6U] = (m_timeStamp >> 8)  & 0xFFU;
-	buffer[7U] = (m_timeStamp >> 0)  & 0xFFU;
+	unsigned long timeStamp = getTimeStamp();
+	buffer[4U] = (timeStamp >> 24) & 0xFFU;
+	buffer[5U] = (timeStamp >> 16) & 0xFFU;
+	buffer[6U] = (timeStamp >> 8)  & 0xFFU;
+	buffer[7U] = (timeStamp >> 0)  & 0xFFU;
 
 	buffer[8U]  = (m_ssrc >> 24) & 0xFFU;
 	buffer[9U]  = (m_ssrc >> 16) & 0xFFU;
@@ -841,4 +817,35 @@ void CKenwoodNetwork::processKenwoodData(unsigned char* inData)
 		outData[23U] = inData[29U];
 		::memcpy(inData, outData, 24U);
 	}
+}
+
+unsigned long CKenwoodNetwork::getTimeStamp() const
+{
+	unsigned long timeStamp = 0UL;
+
+#if defined(_WIN32) || defined(_WIN64)
+	SYSTEMTIME st;
+	::GetSystemTime(&st);
+
+	unsigned int hh = st.wHour;
+	unsigned int mm = st.wMinute;
+	unsigned int ss = st.wSecond;
+	unsigned int ms = st.wMilliseconds;
+
+	timeStamp += hh * 3600U * 1000U * 80U;
+	timeStamp += mm * 60U * 1000U * 80U;
+	timeStamp += ss * 1000U * 80U;
+	timeStamp += ms * 80U;
+#else
+	struct timeval tod;
+	::gettimeofday(&tod, NULL);
+
+	unsigned int ss = tod.tv_sec;
+	unsigned int ms = tod.tv_usec / 1000U;
+
+	timeStamp += ss * 1000U * 80U;
+	timeStamp += ms * 80U;
+#endif
+
+	return timeStamp;
 }
