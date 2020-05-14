@@ -375,12 +375,12 @@ bool CKenwoodNetwork::writeRTPVoiceData(const unsigned char* data)
 
 bool CKenwoodNetwork::writeRTCPStart()
 {
+#if defined(_WIN32) || defined(_WIN64)
 	time_t now;
 	::time(&now);
 
 	m_startSecs = uint32_t(now);
 
-#if defined(_WIN32) || defined(_WIN64)
 	SYSTEMTIME st;
 	::GetSystemTime(&st);
 
@@ -389,6 +389,7 @@ bool CKenwoodNetwork::writeRTCPStart()
 	struct timeval tod;
 	::gettimeofday(&tod, NULL);
 
+	m_startSecs  = tod.tv_sec;
 	m_startMSecs = tod.tv_usec / 1000U;
 #endif
 
