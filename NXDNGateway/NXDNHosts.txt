@@ -77,6 +77,9 @@
 # Europe, German speaking, 20000
 20000	89.185.97.38	41400
 
+# 20945 Deutschland DL1BH
+20945	dl1bh.ddns.net	41400
+
 # 21465 ADER Multimode
 21465 80.211.106.186 41400
 
@@ -88,7 +91,6 @@
 
 # 22220 IT ECHOLINK ITALY
 22220 dagobah.hblink.it 41400                                                                                                                                                                                                      
-
 # 22245 IT PIEDMONT GDO
 22245 nxdngdo.duckdns.org 41400
 
