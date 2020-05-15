@@ -59,7 +59,7 @@
 # North America, 10200
 10200   dvswitch.org    42400
 
-# Spanish speaking, 10301
+# HBLINK Espana, 10301
 10301	ea5gvk.duckdns.org	41400
 
 # NXDN 10302 Multimode BM 21461 EA Spain
