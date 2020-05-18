@@ -34,8 +34,8 @@ const unsigned char BIT_MASK_TABLE[] = { 0x80U, 0x40U, 0x20U, 0x10U, 0x08U, 0x04
 const unsigned int BUFFER_LENGTH = 200U;
 
 CKenwoodNetwork::CKenwoodNetwork(unsigned int localPort, const std::string& rptAddress, unsigned int rptPort, bool debug) :
-m_rtcpSocket(localPort + 1U),
 m_rtpSocket(localPort + 0U),
+m_rtcpSocket(localPort + 1U),
 m_address(),
 m_rtcpPort(rptPort + 1U),
 m_rtpPort(rptPort + 0U),
