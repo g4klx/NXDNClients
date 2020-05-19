@@ -50,7 +50,7 @@ m_seqNo(0U),
 m_ssrc(0U),
 m_debug(debug),
 m_startSecs(0U),
-m_startMSecs(0U),
+m_startUSecs(0U),
 m_rtcpTimer(1000U, 0U, 200U),
 m_hangTimer(1000U, 5U),
 m_hangType(0U),
@@ -381,13 +381,13 @@ bool CKenwoodNetwork::writeRTCPStart()
 	SYSTEMTIME st;
 	::GetSystemTime(&st);
 
-	m_startMSecs = st.wMilliseconds;
+	m_startUSecs = st.wMilliseconds * 1000U;
 #else
 	struct timeval tod;
 	::gettimeofday(&tod, NULL);
 
 	m_startSecs  = tod.tv_sec;
-	m_startMSecs = tod.tv_usec / 1000U;
+	m_startUSecs = tod.tv_usec;
 #endif
 
 	unsigned char buffer[30U];
@@ -413,10 +413,10 @@ bool CKenwoodNetwork::writeRTCPStart()
 	buffer[14U] = (m_startSecs >> 8)  & 0xFFU;
 	buffer[15U] = (m_startSecs >> 0)  & 0xFFU;
 
-	buffer[16U] = (m_startMSecs >> 24) & 0xFFU;
-	buffer[17U] = (m_startMSecs >> 16) & 0xFFU;
-	buffer[18U] = (m_startMSecs >> 8)  & 0xFFU;
-	buffer[19U] = (m_startMSecs >> 0)  & 0xFFU;
+	buffer[16U] = (m_startUSecs >> 24) & 0xFFU;
+	buffer[17U] = (m_startUSecs >> 16) & 0xFFU;
+	buffer[18U] = (m_startUSecs >> 8)  & 0xFFU;
+	buffer[19U] = (m_startUSecs >> 0)  & 0xFFU;
 
 	buffer[22U] = 0x02U;
 
@@ -455,10 +455,10 @@ bool CKenwoodNetwork::writeRTCPPing()
 	buffer[14U] = (m_startSecs >> 8)  & 0xFFU;
 	buffer[15U] = (m_startSecs >> 0)  & 0xFFU;
 
-	buffer[16U] = (m_startMSecs >> 24) & 0xFFU;
-	buffer[17U] = (m_startMSecs >> 16) & 0xFFU;
-	buffer[18U] = (m_startMSecs >> 8)  & 0xFFU;
-	buffer[19U] = (m_startMSecs >> 0)  & 0xFFU;
+	buffer[16U] = (m_startUSecs >> 24) & 0xFFU;
+	buffer[17U] = (m_startUSecs >> 16) & 0xFFU;
+	buffer[18U] = (m_startUSecs >> 8)  & 0xFFU;
+	buffer[19U] = (m_startUSecs >> 0)  & 0xFFU;
 
 	buffer[22U] = 0x02U;
 

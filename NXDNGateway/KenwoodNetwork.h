@@ -58,7 +58,7 @@ private:
     unsigned int   m_ssrc;
     bool           m_debug;
     uint32_t       m_startSecs;
-    uint32_t       m_startMSecs;
+    uint32_t       m_startUSecs;
     CTimer         m_rtcpTimer;
     CTimer         m_hangTimer;
     unsigned char  m_hangType;
