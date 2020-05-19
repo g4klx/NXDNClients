@@ -509,10 +509,6 @@ bool CKenwoodNetwork::writeRTCPHang()
 
 	buffer[16U] = m_hangType;
 
-	buffer[17U] = 0x00U;
-	buffer[18U] = 0x00U;
-	buffer[19U] = 0x00U;
-
 	if (m_debug)
 		CUtils::dump(1U, "Kenwood Network RTCP Data Sent", buffer, 20U);
 
@@ -905,8 +901,6 @@ unsigned int CKenwoodNetwork::processKenwoodVoiceLateEntry(unsigned char* inData
 	if (!m_seen1 || !m_seen2 || !m_seen3 || !m_seen4)
 		return 0U;
 
-	m_headerSeen = true;
-
 	// Create a dummy header
 	// Header SACCH
 	inData[11U] = 0x10U;
@@ -914,6 +908,7 @@ unsigned int CKenwoodNetwork::processKenwoodVoiceLateEntry(unsigned char* inData
 	inData[13U] = 0x00U;
 	inData[14U] = 0x00U;
 
+	// Header FACCH
 	inData[15U] = m_sacch[1U];
 	inData[16U] = m_sacch[0U];
 	inData[17U] = m_sacch[3U];
