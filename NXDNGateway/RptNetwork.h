@@ -43,7 +43,7 @@ public:
 
 	virtual bool write(const unsigned char* data, unsigned int length) = 0;
 
-	virtual bool read(unsigned char* data) = 0;
+	virtual unsigned int read(unsigned char* data) = 0;
 
 	virtual void close() = 0;
 

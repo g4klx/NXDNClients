@@ -34,7 +34,7 @@ public:
 
 	virtual bool write(const unsigned char* data, unsigned int length);
 
-	virtual bool read(unsigned char* data);
+	virtual unsigned int read(unsigned char* data);
 
 	virtual void close();
 

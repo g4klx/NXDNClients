@@ -35,7 +35,7 @@ public:
 
 	virtual bool write(const unsigned char* data, unsigned int length);
 
-	virtual bool read(unsigned char* data);
+	virtual unsigned int read(unsigned char* data);
 
 	virtual void close();
 
@@ -47,6 +47,12 @@ private:
     in_addr        m_address;
 	unsigned int   m_rtcpPort;
     unsigned int   m_rtpPort;
+    bool           m_headerSeen;
+    bool           m_seen1;
+    bool           m_seen2;
+    bool           m_seen3;
+    bool           m_seen4;
+    unsigned char* m_sacch;
     uint8_t        m_sessionId;
     uint16_t       m_seqNo;
     unsigned int   m_ssrc;
@@ -61,9 +67,10 @@ private:
 
     bool processIcomVoiceHeader(const unsigned char* data);
     bool processIcomVoiceData(const unsigned char* data);
-    bool processKenwoodVoiceHeader(unsigned char* data);
-    void processKenwoodVoiceData(unsigned char* data);
-    void processKenwoodData(unsigned char* data);
+    unsigned int processKenwoodVoiceHeader(unsigned char* data);
+    unsigned int processKenwoodVoiceData(unsigned char* data);
+    unsigned int processKenwoodVoiceLateEntry(unsigned char* data);
+    unsigned int processKenwoodData(unsigned char* data);
     bool writeRTPVoiceHeader(const unsigned char* data);
     bool writeRTPVoiceData(const unsigned char* data);
     bool writeRTPVoiceTrailer(const unsigned char* data);

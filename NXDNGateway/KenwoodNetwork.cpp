@@ -39,7 +39,13 @@ m_rtcpSocket(localPort + 1U),
 m_address(),
 m_rtcpPort(rptPort + 1U),
 m_rtpPort(rptPort + 0U),
-m_sessionId(0U),
+m_headerSeen(false),
+m_seen1(false),
+m_seen2(false),
+m_seen3(false),
+m_seen4(false),
+m_sacch(NULL),
+m_sessionId(1U),
 m_seqNo(0U),
 m_ssrc(0U),
 m_debug(debug),
@@ -55,11 +61,14 @@ m_hangDst(0U)
 	assert(!rptAddress.empty());
 	assert(rptPort > 0U);
 
+	m_sacch = new unsigned char[10U];
+
 	m_address = CUDPSocket::lookup(rptAddress);
 }
 
 CKenwoodNetwork::~CKenwoodNetwork()
 {
+	delete[] m_sacch;
 }
 
 bool CKenwoodNetwork::open()
@@ -131,10 +140,12 @@ bool CKenwoodNetwork::processIcomVoiceHeader(const unsigned char* inData)
 		m_rtcpTimer.start();
 		writeRTCPStart();
 		return writeRTPVoiceHeader(outData);
-	case 0x08U:
+	case 0x08U: {
 		m_hangTimer.start();
+		bool ret = writeRTPVoiceTrailer(outData);
 		writeRTCPHang(type, src, dst);
-		return writeRTPVoiceTrailer(outData);
+		return ret;
+	}
 	default:
 		return false;
 	}
@@ -153,10 +164,6 @@ bool CKenwoodNetwork::processIcomVoiceData(const unsigned char* inData)
 	outData[2U] = inData[4U] & 0xC0U;
 	outData[3U] = inData[3U];
 
-	CUtils::dump(4U, "Icom Audio 1 + 2 + 3 + 4", inData + 5U, 28U);
-
-	CUtils::dump(4U, "Icom Audio 1 + 2", inData + 5U, 14U);
-
 	// Audio 1
 	::memset(temp, 0x00U, 10U);
 	for (unsigned int i = 0U; i < 49U; i++) {
@@ -172,8 +179,6 @@ bool CKenwoodNetwork::processIcomVoiceData(const unsigned char* inData)
 	outData[9U] = temp[4U];
 	outData[10U] = temp[7U];
 	outData[11U] = temp[6U];
-
-	CUtils::dump(4U, "Kenwood unswapped Audio 1", temp, 8U);
 
 	// Audio 2
 	::memset(temp, 0x00U, 10U);
@@ -191,10 +196,6 @@ bool CKenwoodNetwork::processIcomVoiceData(const unsigned char* inData)
 	outData[18U] = temp[7U];
 	outData[19U] = temp[6U];
 
-	CUtils::dump(4U, "Kenwood unswapped Audio 2", temp, 8U);
-
-	CUtils::dump(4U, "Icom Audio 3 + 4", inData + 19U, 14U);
-
 	// Audio 3
 	::memset(temp, 0x00U, 10U);
 	for (unsigned int i = 0U; i < 49U; i++) {
@@ -211,8 +212,6 @@ bool CKenwoodNetwork::processIcomVoiceData(const unsigned char* inData)
 	outData[26U] = temp[7U];
 	outData[27U] = temp[6U];
 
-	CUtils::dump(4U, "Kenwood unswapped Audio 3", temp, 8U);
-
 	// Audio 4
 	::memset(temp, 0x00U, 10U);
 	for (unsigned int i = 0U; i < 49U; i++) {
@@ -228,8 +227,6 @@ bool CKenwoodNetwork::processIcomVoiceData(const unsigned char* inData)
 	outData[33U] = temp[4U];
 	outData[34U] = temp[7U];
 	outData[35U] = temp[6U];
-
-	CUtils::dump(4U, "Kenwood unswapped Audio 4", temp, 8U);
 
 	return writeRTPVoiceData(outData);
 }
@@ -522,7 +519,7 @@ bool CKenwoodNetwork::writeRTCPHang()
 	return m_rtcpSocket.write(buffer, 20U, m_address, m_rtcpPort);
 }
 
-bool CKenwoodNetwork::read(unsigned char* data)
+unsigned int CKenwoodNetwork::read(unsigned char* data)
 {
 	assert(data != NULL);
 
@@ -532,18 +529,19 @@ bool CKenwoodNetwork::read(unsigned char* data)
 	unsigned int len = readRTP(data);
 	switch (len) {
 	case 0U:	// Nothing received
-		return false;
+		return 0U;
 	case 35U:	// Voice header or trailer
 		return processKenwoodVoiceHeader(data);
 	case 47U:	// Voice data
-		processKenwoodVoiceData(data);
-		return true;
+		if (m_headerSeen)
+			return processKenwoodVoiceData(data);
+		else
+			return processKenwoodVoiceLateEntry(data);
 	case 31U:	// Data
-		processKenwoodData(data);
-		return true;
+		return processKenwoodData(data);
 	default:
 		CUtils::dump(5U, "Unknown data received from the Kenwood network", data, len);
-		return false;
+		return 0U;
 	}
 }
 
@@ -630,7 +628,7 @@ void CKenwoodNetwork::clock(unsigned int ms)
 	}
 }
 
-bool CKenwoodNetwork::processKenwoodVoiceHeader(unsigned char* inData)
+unsigned int CKenwoodNetwork::processKenwoodVoiceHeader(unsigned char* inData)
 {
 	assert(inData != NULL);
 
@@ -668,16 +666,26 @@ bool CKenwoodNetwork::processKenwoodVoiceHeader(unsigned char* inData)
 	switch (outData[5U] & 0x3FU) {
 	case 0x01U:
 		::memcpy(inData, outData, 33U);
-		return true;
+		m_headerSeen = true;
+		m_seen1 = false;
+		m_seen2 = false;
+		m_seen3 = false;
+		m_seen4 = false;
+		return 33U;
 	case 0x08U:
 		::memcpy(inData, outData, 33U);
-		return true;
+		m_headerSeen = false;
+		m_seen1 = false;
+		m_seen2 = false;
+		m_seen3 = false;
+		m_seen4 = false;
+		return 33U;
 	default:
-		return false;
+		return 0U;
 	}
 }
 
-void CKenwoodNetwork::processKenwoodVoiceData(unsigned char* inData)
+unsigned int CKenwoodNetwork::processKenwoodVoiceData(unsigned char* inData)
 {
 	assert(inData != NULL);
 
@@ -708,8 +716,6 @@ void CKenwoodNetwork::processKenwoodVoiceData(unsigned char* inData)
 	temp[6U] = inData[22U];
 	temp[7U] = inData[21U];
 
-	CUtils::dump(4U, "Kenwood unswapped Audio 1", temp, 8U);
-
 	for (unsigned int i = 0U; i < 49U; i++, n++) {
 		bool b = READ_BIT(temp, i);
 		WRITE_BIT(outData, n, b);
@@ -724,14 +730,10 @@ void CKenwoodNetwork::processKenwoodVoiceData(unsigned char* inData)
 	temp[6U] = inData[30U];
 	temp[7U] = inData[29U];
 
-	CUtils::dump(4U, "Kenwood unswapped Audio 2", temp, 8U);
-
 	for (unsigned int i = 0U; i < 49U; i++, n++) {
 		bool b = READ_BIT(temp, i);
 		WRITE_BIT(outData, n, b);
 	}
-
-	CUtils::dump(4U, "Icom Audio 1 + 2", outData + 5U, 14U);
 
 	// AMBE 3+4
 	n = 19U * 8U;
@@ -744,8 +746,6 @@ void CKenwoodNetwork::processKenwoodVoiceData(unsigned char* inData)
 	temp[5U] = inData[35U];
 	temp[6U] = inData[38U];
 	temp[7U] = inData[37U];
-
-	CUtils::dump(4U, "Kenwood unswapped Audio 3", temp, 8U);
 
 	for (unsigned int i = 0U; i < 49U; i++, n++) {
 		bool b = READ_BIT(temp, i);
@@ -761,24 +761,20 @@ void CKenwoodNetwork::processKenwoodVoiceData(unsigned char* inData)
 	temp[6U] = inData[46U];
 	temp[7U] = inData[45U];
 
-	CUtils::dump(4U, "Kenwood unswapped Audio 4", temp, 8U);
-
 	for (unsigned int i = 0U; i < 49U; i++, n++) {
 		bool b = READ_BIT(temp, i);
 		WRITE_BIT(outData, n, b);
 	}
 
-	CUtils::dump(4U, "Icom Audio 3 + 4", outData + 19U, 14U);
-
-	CUtils::dump(4U, "Icom Audio 1 + 2 + 3 + 4", outData + 5U, 28U);
-
 	::memcpy(inData, outData, 33U);
+
+	return 33U;
 }
 
-void CKenwoodNetwork::processKenwoodData(unsigned char* inData)
+unsigned int CKenwoodNetwork::processKenwoodData(unsigned char* inData)
 {
 	if (inData[7U] != 0x09U && inData[7U] != 0x0BU && inData[7U] != 0x08U)
-		return;
+		return 0U;
 
 	unsigned char outData[50U];
 
@@ -791,6 +787,7 @@ void CKenwoodNetwork::processKenwoodData(unsigned char* inData)
 		outData[5U] = inData[12U];
 		outData[6U] = inData[11U];
 		::memcpy(inData, outData, 7U);
+		return 7U;
 	} else {
 		outData[0U]  = 0x90U;
 		outData[1U]  = inData[8U];
@@ -817,6 +814,7 @@ void CKenwoodNetwork::processKenwoodData(unsigned char* inData)
 		outData[22U] = inData[27U];
 		outData[23U] = inData[29U];
 		::memcpy(inData, outData, 24U);
+		return 24U;
 	}
 }
 
@@ -849,4 +847,83 @@ unsigned long CKenwoodNetwork::getTimeStamp() const
 #endif
 
 	return timeStamp;
+}
+
+unsigned int CKenwoodNetwork::processKenwoodVoiceLateEntry(unsigned char* inData)
+{
+	assert(inData != NULL);
+
+	unsigned char sacch[4U];
+	sacch[0U] = inData[12U];
+	sacch[1U] = inData[11U];
+	sacch[2U] = inData[14U];
+	sacch[3U] = inData[13U];
+
+	switch (sacch[0U] & 0xC0U) {
+	case 0xC0U:
+		if (!m_seen1) {
+			unsigned int offset = 0U;
+			for (unsigned int i = 8U; i < 26U; i++, offset++) {
+				bool b = READ_BIT(sacch, i) != 0U;
+				WRITE_BIT(m_sacch, offset, b);
+			}
+			m_seen1 = true;
+		}
+		break;
+	case 0x80U:
+		if (!m_seen2) {
+			unsigned int offset = 18U;
+			for (unsigned int i = 8U; i < 26U; i++, offset++) {
+				bool b = READ_BIT(sacch, i) != 0U;
+				WRITE_BIT(m_sacch, offset, b);
+			}
+			m_seen2 = true;
+		}
+		break;
+	case 0x40U:
+		if (!m_seen3) {
+			unsigned int offset = 36U;
+			for (unsigned int i = 8U; i < 26U; i++, offset++) {
+				bool b = READ_BIT(sacch, i) != 0U;
+				WRITE_BIT(m_sacch, offset, b);
+			}
+			m_seen3 = true;
+		}
+		break;
+	case 0x00U:
+		if (!m_seen4) {
+			unsigned int offset = 54U;
+			for (unsigned int i = 8U; i < 26U; i++, offset++) {
+				bool b = READ_BIT(sacch, i) != 0U;
+				WRITE_BIT(m_sacch, offset, b);
+			}
+			m_seen4 = true;
+		}
+		break;
+	}
+
+	if (!m_seen1 || !m_seen2 || !m_seen3 || !m_seen4)
+		return 0U;
+
+	m_headerSeen = true;
+
+	// Create a dummy header
+	// Header SACCH
+	inData[11U] = 0x10U;
+	inData[12U] = 0x01U;
+	inData[13U] = 0x00U;
+	inData[14U] = 0x00U;
+
+	inData[15U] = m_sacch[1U];
+	inData[16U] = m_sacch[0U];
+	inData[17U] = m_sacch[3U];
+	inData[18U] = m_sacch[2U];
+	inData[19U] = m_sacch[5U];
+	inData[20U] = m_sacch[4U];
+	inData[21U] = m_sacch[7U];
+	inData[22U] = m_sacch[6U];
+	inData[23U] = 0x00U;
+	inData[24U] = m_sacch[8U];
+
+	return processKenwoodVoiceHeader(inData);
 }

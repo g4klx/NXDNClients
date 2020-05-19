@@ -87,7 +87,7 @@ bool CIcomNetwork::write(const unsigned char* data, unsigned int length)
 	return m_socket.write(buffer, 102U, m_address, m_port);
 }
 
-bool CIcomNetwork::read(unsigned char* data)
+unsigned int CIcomNetwork::read(unsigned char* data)
 {
 	assert(data != NULL);
 
@@ -97,16 +97,16 @@ bool CIcomNetwork::read(unsigned char* data)
 
 	int length = m_socket.read(buffer, BUFFER_LENGTH, address, port);
 	if (length <= 0)
-		return false;
+		return 0U;
 
 	if (m_address.s_addr != address.s_addr || m_port != port) {
 		LogWarning("Icom Data received from an unknown address or port - %08X:%u", ntohl(address.s_addr), port);
-		return false;
+		return 0U;
 	}
 
 	// Invalid packet type?
 	if (::memcmp(buffer, "ICOM", 4U) != 0)
-		return false;
+		return 0U;
 
 	// An Icom repeater connect request
 	if (buffer[4U] == 0x01U && buffer[5U] == 0x61U) {
@@ -115,18 +115,18 @@ bool CIcomNetwork::read(unsigned char* data)
 		buffer[38U] = 0x4FU;
 		buffer[39U] = 0x4BU;
 		m_socket.write(buffer, length, address, port);
-		return false;
+		return 0U;
 	}
 
 	if (length != 102)
-		return false;
+		return 0U;
 
 	if (m_debug)
 		CUtils::dump(1U, "Icom Data Received", buffer, length);
 
 	::memcpy(data, buffer + 40U, 33U);
 
-	return true;
+	return 33U;
 }
 
 void CIcomNetwork::close()
