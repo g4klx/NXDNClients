@@ -20,7 +20,6 @@
 #define	KenwoodNetwork_H
 
 #include "CoreNetwork.h"
-#include "StopWatch.h"
 #include "UDPSocket.h"
 #include "Timer.h"
 
@@ -45,25 +44,41 @@ public:
 private:
 	CUDPSocket     m_rtpSocket;
     CUDPSocket     m_rtcpSocket;
-    CStopWatch     m_stopWatch;
     in_addr        m_address;
-    unsigned short m_seqNo;
-    unsigned long  m_timeStamp;
+    bool           m_headerSeen;
+    bool           m_seen1;
+    bool           m_seen2;
+    bool           m_seen3;
+    bool           m_seen4;
+    unsigned char* m_sacch;
+    uint8_t        m_sessionId;
+    uint16_t       m_seqNo;
     unsigned int   m_ssrc;
     bool           m_debug;
-    CTimer         m_timer;
+    uint32_t       m_startSecs;
+    uint32_t       m_startUSecs;
+    CTimer         m_rtcpTimer;
+    CTimer         m_hangTimer;
+    unsigned char  m_hangType;
+    unsigned short m_hangSrc;
+    unsigned short m_hangDst;
 
     bool processIcomVoiceHeader(const unsigned char* data);
     bool processIcomVoiceData(const unsigned char* data);
-    bool processKenwoodVoiceHeader(unsigned char* data);
-    void processKenwoodVoiceData(unsigned char* data);
+    unsigned int processKenwoodVoiceHeader(unsigned char* data);
+    unsigned int processKenwoodVoiceData(unsigned char* data);
+    unsigned int processKenwoodVoiceLateEntry(unsigned char* data);
+    unsigned int processKenwoodData(unsigned char* data);
     bool writeRTPVoiceHeader(const unsigned char* data);
     bool writeRTPVoiceData(const unsigned char* data);
     bool writeRTPVoiceTrailer(const unsigned char* data);
+    bool writeRTCPStart();
     bool writeRTCPPing();
-    bool writeRTCPData(unsigned char type, unsigned short src, unsigned short dst);
+    bool writeRTCPHang(unsigned char type, unsigned short src, unsigned short dst);
+    bool writeRTCPHang();
     unsigned int readRTP(unsigned char* data);
     unsigned int readRTCP(unsigned char* data);
+    unsigned long getTimeStamp() const;
 };
 
 #endif
