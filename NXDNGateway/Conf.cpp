@@ -33,7 +33,7 @@ enum SECTION {
   SECTION_ID_LOOKUP,
   SECTION_VOICE,
   SECTION_LOG,
-  SECTION_APRS_FI,
+  SECTION_APRS,
   SECTION_NETWORK,
   SECTION_MOBILE_GPS,
   SECTION_REMOTE_COMMANDS
@@ -65,9 +65,8 @@ m_voiceDirectory(),
 m_logFilePath(),
 m_logFileRoot(),
 m_aprsEnabled(false),
-m_aprsServer(),
-m_aprsPort(0U),
-m_aprsPassword(),
+m_aprsAddress("127.0.0.1"),
+m_aprsPort(8673U),
 m_aprsSuffix(),
 m_aprsDescription(),
 m_networkPort(0U),
@@ -119,8 +118,8 @@ bool CConf::read()
 			  section = SECTION_VOICE;
 		  else if (::strncmp(buffer, "[Log]", 5U) == 0)
 			  section = SECTION_LOG;
-		  else if (::strncmp(buffer, "[aprs.fi]", 9U) == 0)
-			  section = SECTION_APRS_FI;
+		  else if (::strncmp(buffer, "[APRS]", 6U) == 0)
+			  section = SECTION_APRS;
 		  else if (::strncmp(buffer, "[Network]", 9U) == 0)
 			  section = SECTION_NETWORK;
 		  else if (::strncmp(buffer, "[Mobile GPS]", 12U) == 0)
@@ -195,15 +194,13 @@ bool CConf::read()
 			  m_logFilePath = value;
 		  else if (::strcmp(key, "FileRoot") == 0)
 			  m_logFileRoot = value;
-	  } else if (section == SECTION_APRS_FI) {
+	  } else if (section == SECTION_APRS) {
 		  if (::strcmp(key, "Enable") == 0)
 			  m_aprsEnabled = ::atoi(value) == 1;
-		  else if (::strcmp(key, "Server") == 0)
-			  m_aprsServer = value;
+		  else if (::strcmp(key, "Address") == 0)
+			  m_aprsAddress = value;
 		  else if (::strcmp(key, "Port") == 0)
 			  m_aprsPort = (unsigned int)::atoi(value);
-		  else if (::strcmp(key, "Password") == 0)
-			  m_aprsPassword = value;
 		  else if (::strcmp(key, "Suffix") == 0)
 			  m_aprsSuffix = value;
 		  else if (::strcmp(key, "Description") == 0)
@@ -366,19 +363,14 @@ bool CConf::getAPRSEnabled() const
 	return m_aprsEnabled;
 }
 
-std::string CConf::getAPRSServer() const
+std::string CConf::getAPRSAddress() const
 {
-	return m_aprsServer;
+	return m_aprsAddress;
 }
 
 unsigned int CConf::getAPRSPort() const
 {
 	return m_aprsPort;
-}
-
-std::string CConf::getAPRSPassword() const
-{
-	return m_aprsPassword;
 }
 
 std::string CConf::getAPRSSuffix() const

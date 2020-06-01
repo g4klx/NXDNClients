@@ -147,7 +147,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="APRSWriter.h" />
-    <ClInclude Include="APRSWriterThread.h" />
     <ClInclude Include="Conf.h" />
     <ClInclude Include="GPSHandler.h" />
     <ClInclude Include="IcomNetwork.h" />
@@ -162,7 +161,6 @@
     <ClInclude Include="RingBuffer.h" />
     <ClInclude Include="RptNetwork.h" />
     <ClInclude Include="StopWatch.h" />
-    <ClInclude Include="TCPSocket.h" />
     <ClInclude Include="Thread.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="UDPSocket.h" />
@@ -172,7 +170,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="APRSWriter.cpp" />
-    <ClCompile Include="APRSWriterThread.cpp" />
     <ClCompile Include="Conf.cpp" />
     <ClCompile Include="GPSHandler.cpp" />
     <ClCompile Include="IcomNetwork.cpp" />
@@ -186,7 +183,6 @@
     <ClCompile Include="Reflectors.cpp" />
     <ClCompile Include="RptNetwork.cpp" />
     <ClCompile Include="StopWatch.cpp" />
-    <ClCompile Include="TCPSocket.cpp" />
     <ClCompile Include="Thread.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="UDPSocket.cpp" />

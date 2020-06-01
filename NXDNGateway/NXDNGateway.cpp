@@ -591,12 +591,11 @@ void CNXDNGateway::createGPS()
 
 	std::string callsign  = m_conf.getCallsign();
 	std::string rptSuffix = m_conf.getSuffix();
-	std::string hostname  = m_conf.getAPRSServer();
+	std::string address   = m_conf.getAPRSAddress();
 	unsigned int port     = m_conf.getAPRSPort();
-	std::string password  = m_conf.getAPRSPassword();
 	std::string suffix    = m_conf.getAPRSSuffix();
 
-	m_writer = new CAPRSWriter(callsign, rptSuffix, password, hostname, port);
+	m_writer = new CAPRSWriter(callsign, rptSuffix, address, port);
 
 	unsigned int txFrequency = m_conf.getTxFrequency();
 	unsigned int rxFrequency = m_conf.getRxFrequency();
