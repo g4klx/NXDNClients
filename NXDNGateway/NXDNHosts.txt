@@ -8,6 +8,9 @@
 # RED NXDN SPAIN
 214 nxdn214.xreflector.es 41400
 
+# HBLink  Poland ,TG260
+260 nxdn.hblink.pl 41400
+
 # 302, P25 Canada
 302	p25canada.hopto.org	41400
 
