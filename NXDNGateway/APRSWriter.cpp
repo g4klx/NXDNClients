@@ -103,8 +103,9 @@ bool CAPRSWriter::open()
 	} else {
 		m_idTimer.setTimeout(20U * 60U);
 	}
+#else
+	m_idTimer.setTimeout(20U * 60U);
 #endif
-
 	m_idTimer.start();
 
 	return m_aprsSocket.open();
