@@ -35,7 +35,7 @@ enum SECTION {
   SECTION_LOG,
   SECTION_APRS,
   SECTION_NETWORK,
-  SECTION_MOBILE_GPS,
+  SECTION_GPSD,
   SECTION_REMOTE_COMMANDS
 };
 
@@ -80,9 +80,9 @@ m_networkNXDN2DMRPort(0U),
 m_networkStartup(9999U),
 m_networkInactivityTimeout(0U),
 m_networkDebug(false),
-m_mobileGPSEnabled(false),
-m_mobileGPSAddress(),
-m_mobileGPSPort(0U),
+m_gpsdEnabled(false),
+m_gpsdAddress(),
+m_gpsdPort(),
 m_remoteCommandsEnabled(false),
 m_remoteCommandsPort(6075U)
 {
@@ -122,8 +122,8 @@ bool CConf::read()
 			  section = SECTION_APRS;
 		  else if (::strncmp(buffer, "[Network]", 9U) == 0)
 			  section = SECTION_NETWORK;
-		  else if (::strncmp(buffer, "[Mobile GPS]", 12U) == 0)
-			  section = SECTION_MOBILE_GPS;
+		  else if (::strncmp(buffer, "[GPSD]", 6U) == 0)
+			  section = SECTION_GPSD;
 		  else if (::strncmp(buffer, "[Remote Commands]", 17U) == 0)
 			  section = SECTION_REMOTE_COMMANDS;
 		  else
@@ -228,13 +228,13 @@ bool CConf::read()
 			  m_networkInactivityTimeout = (unsigned int)::atoi(value);
 		  else if (::strcmp(key, "Debug") == 0)
 			  m_networkDebug = ::atoi(value) == 1;
-	  } else if (section == SECTION_MOBILE_GPS) {
+	  } else if (section == SECTION_GPSD) {
 		  if (::strcmp(key, "Enable") == 0)
-			  m_mobileGPSEnabled = ::atoi(value) == 1;
+			  m_gpsdEnabled = ::atoi(value) == 1;
 		  else if (::strcmp(key, "Address") == 0)
-			  m_mobileGPSAddress = value;
+			  m_gpsdAddress = value;
 		  else if (::strcmp(key, "Port") == 0)
-			  m_mobileGPSPort = (unsigned int)::atoi(value);
+			  m_gpsdPort = value;
 	  } else if (section == SECTION_REMOTE_COMMANDS) {
 		  if (::strcmp(key, "Enable") == 0)
 			  m_remoteCommandsEnabled = ::atoi(value) == 1;
@@ -443,19 +443,19 @@ bool CConf::getNetworkDebug() const
 	return m_networkDebug;
 }
 
-bool CConf::getMobileGPSEnabled() const
+bool CConf::getGPSDEnabled() const
 {
-	return m_mobileGPSEnabled;
+	return m_gpsdEnabled;
 }
 
-std::string CConf::getMobileGPSAddress() const
+std::string CConf::getGPSDAddress() const
 {
-	return m_mobileGPSAddress;
+	return m_gpsdAddress;
 }
 
-unsigned int CConf::getMobileGPSPort() const
+std::string CConf::getGPSDPort() const
 {
-	return m_mobileGPSPort;
+	return m_gpsdPort;
 }
 
 bool CConf::getRemoteCommandsEnabled() const

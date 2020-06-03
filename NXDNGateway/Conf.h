@@ -83,10 +83,10 @@ public:
   unsigned int   getNetworkInactivityTimeout() const;
   bool           getNetworkDebug() const;
 
-  // The Mobile GPS section
-  bool           getMobileGPSEnabled() const;
-  std::string    getMobileGPSAddress() const;
-  unsigned int   getMobileGPSPort() const;
+  // The GPSD section
+  bool           getGPSDEnabled() const;
+  std::string    getGPSDAddress() const;
+  std::string    getGPSDPort() const;
 
   // The Remote Commands section
   bool           getRemoteCommandsEnabled() const;
@@ -140,9 +140,9 @@ private:
   unsigned int   m_networkInactivityTimeout;
   bool           m_networkDebug;
 
-  bool         m_mobileGPSEnabled;
-  std::string  m_mobileGPSAddress;
-  unsigned int m_mobileGPSPort;
+  bool         m_gpsdEnabled;
+  std::string  m_gpsdAddress;
+  std::string  m_gpsdPort;
 
   bool         m_remoteCommandsEnabled;
   unsigned int m_remoteCommandsPort;
