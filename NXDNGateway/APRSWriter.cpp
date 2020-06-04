@@ -40,7 +40,7 @@ m_aprsSocket()
 #if !defined(_WIN32) && !defined(_WIN64)
 ,m_gpsdEnabled(false),
 m_gpsdAddress(),
-m_gpsdPort(0U),
+m_gpsdPort(),
 m_gpsdData()
 #endif
 {
@@ -98,6 +98,8 @@ bool CAPRSWriter::open()
 
 		::gps_stream(&m_gpsdData, WATCH_ENABLE | WATCH_JSON, NULL);
 
+		LogMessage("Connected to GPSD");
+
 		// Poll the GPS every minute
 		m_idTimer.setTimeout(60U);
 	} else {
@@ -108,7 +110,13 @@ bool CAPRSWriter::open()
 #endif
 	m_idTimer.start();
 
-	return m_aprsSocket.open();
+	bool ret = m_aprsSocket.open();
+	if (!ret)
+		return false;
+
+	LogMessage("Opened connection to the APRS Gateway");
+
+	return true;
 }
 
 void CAPRSWriter::write(const char* data)
