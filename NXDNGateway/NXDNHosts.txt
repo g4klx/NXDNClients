@@ -175,6 +175,9 @@
 # DX-LINK SYSTEM, 31777
 31777	8.9.4.102	41400
 
+# K8JTK Hub Multimode ILS/DVMIS (K8JTK.org), 31983
+31983	NXDNReflector31983.K8JTK.org	41400
+
 # CW-Ops Academy, NXDN Reflector 32103
 32103 cwops.dyndns.org  41400
 
