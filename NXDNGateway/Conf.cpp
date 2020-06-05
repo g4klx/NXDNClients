@@ -47,7 +47,7 @@ m_rptProtocol("Icom"),
 m_rptAddress(),
 m_rptPort(0U),
 m_myPort(0U),
-m_rptDebug(false),
+m_debug(false),
 m_daemon(false),
 m_rxFrequency(0U),
 m_txFrequency(0U),
@@ -157,7 +157,7 @@ bool CConf::read()
 		  else if (::strcmp(key, "LocalPort") == 0)
 			  m_myPort = (unsigned int)::atoi(value);
 		  else if (::strcmp(key, "Debug") == 0)
-			  m_rptDebug = ::atoi(value) == 1;
+			  m_debug = ::atoi(value) == 1;
 		  else if (::strcmp(key, "Daemon") == 0)
 			  m_daemon = ::atoi(value) == 1;
 	  } else if (section == SECTION_INFO) {
@@ -278,9 +278,9 @@ unsigned int CConf::getMyPort() const
 	return m_myPort;
 }
 
-bool CConf::getRptDebug() const
+bool CConf::getDebug() const
 {
-	return m_rptDebug;
+	return m_debug;
 }
 
 bool CConf::getDaemon() const

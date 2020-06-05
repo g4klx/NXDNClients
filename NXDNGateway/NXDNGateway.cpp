@@ -184,9 +184,9 @@ void CNXDNGateway::run()
 	std::string protocol = m_conf.getRptProtocol();
 
 	if (protocol == "Kenwood")
-		localNetwork = new CKenwoodNetwork(m_conf.getMyPort(), m_conf.getRptAddress(), m_conf.getRptPort(), m_conf.getRptDebug());
+		localNetwork = new CKenwoodNetwork(m_conf.getMyPort(), m_conf.getRptAddress(), m_conf.getRptPort(), m_conf.getDebug());
 	else
-		localNetwork = new CIcomNetwork(m_conf.getMyPort(), m_conf.getRptAddress(), m_conf.getRptPort(), m_conf.getRptDebug());
+		localNetwork = new CIcomNetwork(m_conf.getMyPort(), m_conf.getRptAddress(), m_conf.getRptPort(), m_conf.getDebug());
 
 	ret = localNetwork->open();
 	if (!ret) {
@@ -594,8 +594,9 @@ void CNXDNGateway::createGPS()
 	std::string address   = m_conf.getAPRSAddress();
 	unsigned int port     = m_conf.getAPRSPort();
 	std::string suffix    = m_conf.getAPRSSuffix();
+	bool debug            = m_conf.getDebug();
 
-	m_writer = new CAPRSWriter(callsign, rptSuffix, address, port);
+	m_writer = new CAPRSWriter(callsign, rptSuffix, address, port, debug);
 
 	unsigned int txFrequency = m_conf.getTxFrequency();
 	unsigned int rxFrequency = m_conf.getRxFrequency();

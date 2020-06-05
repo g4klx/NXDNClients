@@ -37,7 +37,7 @@ public:
   std::string  getRptAddress() const;
   unsigned int getRptPort() const;
   unsigned int getMyPort() const;
-  bool         getRptDebug() const;
+  bool         getDebug() const;
   bool         getDaemon() const;
 
   // The Info section
@@ -100,7 +100,7 @@ private:
   std::string  m_rptAddress;
   unsigned int m_rptPort;
   unsigned int m_myPort;
-  bool         m_rptDebug;
+  bool         m_debug;
   bool         m_daemon;
 
   unsigned int m_rxFrequency;
