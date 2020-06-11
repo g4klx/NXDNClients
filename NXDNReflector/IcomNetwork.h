@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2015,2016,2018,2020 by Jonathan Naylor G4KLX
+ *   Copyright (C) 2009-2014,2016,2018,2020 by Jonathan Naylor G4KLX
  *
  *   This program is free software; you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -16,9 +16,35 @@
  *   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-#if !defined(VERSION_H)
-#define	VERSION_H
+#ifndef	IcomNetwork_H
+#define	IcomNetwork_H
 
-const char* VERSION = "20200427";
+#include "CoreNetwork.h"
+#include "UDPSocket.h"
+#include "Timer.h"
+
+#include <cstdint>
+#include <string>
+
+class CIcomNetwork :  public ICoreNetwork {
+public:
+	CIcomNetwork(const std::string& address, bool debug);
+	virtual ~CIcomNetwork();
+
+	virtual bool open();
+
+	virtual bool write(const unsigned char* data, unsigned int len);
+
+	virtual unsigned int read(unsigned char* data);
+
+	virtual void close();
+
+    virtual void clock(unsigned int ms);
+
+private:
+	CUDPSocket m_socket;
+	in_addr    m_address;
+	bool       m_debug;
+};
 
 #endif

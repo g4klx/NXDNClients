@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2010-2014,2016,2017,2018 by Jonathan Naylor G4KLX
+ *   Copyright (C) 2010-2014,2016,2017,2018,2020 by Jonathan Naylor G4KLX
  *
  *   This program is free software; you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -111,6 +111,8 @@ void CAPRSWriter::write(const char* data)
 void CAPRSWriter::clock(unsigned int ms)
 {
 	m_idTimer.clock(ms);
+
+	m_thread->clock(ms);
 
 	if (m_socket != NULL) {
 		if (m_idTimer.hasExpired()) {

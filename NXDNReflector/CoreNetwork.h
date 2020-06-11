@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2015,2016,2018,2020 by Jonathan Naylor G4KLX
+ *   Copyright (C) 2009-2014,2016,2018,2020 by Jonathan Naylor G4KLX
  *
  *   This program is free software; you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -16,9 +16,40 @@
  *   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-#if !defined(VERSION_H)
-#define	VERSION_H
+#ifndef	CoreNetwork_H
+#define	CoreNetwork_H
 
-const char* VERSION = "20200427";
+#if !defined(_WIN32) && !defined(_WIN64)
+#include <netdb.h>
+#include <sys/time.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <unistd.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <errno.h>
+#else
+#include <winsock.h>
+#endif
+
+#include <cstdint>
+#include <string>
+
+class ICoreNetwork {
+public:
+	virtual ~ICoreNetwork() = 0;
+
+	virtual bool open() = 0;
+
+	virtual bool write(const unsigned char* data, unsigned int length) = 0;
+
+	virtual unsigned int read(unsigned char* data) = 0;
+
+	virtual void close() = 0;
+
+    virtual void clock(unsigned int ms) = 0;
+
+private:
+};
 
 #endif

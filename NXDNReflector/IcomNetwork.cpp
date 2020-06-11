@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2009-2014,2016,2018 by Jonathan Naylor G4KLX
+ *   Copyright (C) 2009-2014,2016,2018,2020 by Jonathan Naylor G4KLX
  *
  *   This program is free software; you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -16,7 +16,7 @@
  *   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-#include "NXCoreNetwork.h"
+#include "IcomNetwork.h"
 #include "Utils.h"
 #include "Log.h"
 
@@ -26,10 +26,10 @@
 
 const unsigned int BUFFER_LENGTH = 200U;
 
-const unsigned int NXCORE_PORT = 41300U;
+const unsigned int ICOM_PORT = 41300U;
 
-CNXCoreNetwork::CNXCoreNetwork(const std::string& address, bool debug) :
-m_socket(NXCORE_PORT),
+CIcomNetwork::CIcomNetwork(const std::string& address, bool debug) :
+m_socket(ICOM_PORT),
 m_address(),
 m_debug(debug)
 {
@@ -38,13 +38,13 @@ m_debug(debug)
 	m_address = CUDPSocket::lookup(address);
 }
 
-CNXCoreNetwork::~CNXCoreNetwork()
+CIcomNetwork::~CIcomNetwork()
 {
 }
 
-bool CNXCoreNetwork::open()
+bool CIcomNetwork::open()
 {
-	LogMessage("Opening NXCore network connection");
+	LogMessage("Opening Icom network connection");
 
 	if (m_address.s_addr == INADDR_NONE)
 		return false;
@@ -52,7 +52,7 @@ bool CNXCoreNetwork::open()
 	return m_socket.open();
 }
 
-bool CNXCoreNetwork::write(const unsigned char* data, unsigned int len)
+bool CIcomNetwork::write(const unsigned char* data, unsigned int len)
 {
 	assert(data != NULL);
 
@@ -81,12 +81,12 @@ bool CNXCoreNetwork::write(const unsigned char* data, unsigned int len)
 	::memcpy(buffer + 40U, data + 10U, 33U);
 
 	if (m_debug)
-		CUtils::dump(1U, "NXCore Network Data Sent", buffer, 102U);
+		CUtils::dump(1U, "Icom Network Data Sent", buffer, 102U);
 
-	return m_socket.write(buffer, 102U, m_address, NXCORE_PORT);
+	return m_socket.write(buffer, 102U, m_address, ICOM_PORT);
 }
 
-unsigned int CNXCoreNetwork::read(unsigned char* data)
+unsigned int CIcomNetwork::read(unsigned char* data)
 {
 	unsigned char buffer[BUFFER_LENGTH];
 
@@ -97,8 +97,8 @@ unsigned int CNXCoreNetwork::read(unsigned char* data)
 		return 0U;
 
 	// Check if the data is for us
-	if (m_address.s_addr != address.s_addr || port != NXCORE_PORT) {
-		LogMessage("NXCore packet received from an invalid source, %08X != %08X and/or %u != %u", m_address.s_addr, address.s_addr, NXCORE_PORT, port);
+	if (m_address.s_addr != address.s_addr || port != ICOM_PORT) {
+		LogMessage("Icom packet received from an invalid source, %08X != %08X and/or %u != %u", m_address.s_addr, address.s_addr, ICOM_PORT, port);
 		return 0U;
 	}
 
@@ -110,16 +110,20 @@ unsigned int CNXCoreNetwork::read(unsigned char* data)
 		return 0U;
 
 	if (m_debug)
-		CUtils::dump(1U, "NXCore Network Data Received", buffer, length);
+		CUtils::dump(1U, "Icom Network Data Received", buffer, length);
 
 	::memcpy(data, buffer + 40U, 33U);
 
 	return 33U;
 }
 
-void CNXCoreNetwork::close()
+void CIcomNetwork::clock(unsigned int ms)
+{
+}
+
+void CIcomNetwork::close()
 {
 	m_socket.close();
 
-	LogMessage("Closing NXCore network connection");
+	LogMessage("Closing Icom network connection");
 }

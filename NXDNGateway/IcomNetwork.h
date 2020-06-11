@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2009-2014,2016,2018 by Jonathan Naylor G4KLX
+ *   Copyright (C) 2009-2014,2016,2018,2020 by Jonathan Naylor G4KLX
  *
  *   This program is free software; you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -19,24 +19,26 @@
 #ifndef	IcomNetwork_H
 #define	IcomNetwork_H
 
+#include "RptNetwork.h"
 #include "UDPSocket.h"
-#include "Timer.h"
 
 #include <cstdint>
 #include <string>
 
-class CIcomNetwork {
+class CIcomNetwork : public IRptNetwork {
 public:
-	CIcomNetwork(unsigned int localPort, bool debug);
-	~CIcomNetwork();
+	CIcomNetwork(unsigned int localPort, const std::string& rptAddress, unsigned int rptPort, bool debug);
+	virtual ~CIcomNetwork();
 
-	bool open();
+	virtual bool open();
 
-	bool write(const unsigned char* data, unsigned int length, const in_addr& address, unsigned int port);
+	virtual bool write(const unsigned char* data, unsigned int length);
 
-	bool read(unsigned char* data, in_addr& address, unsigned int& port);
+	virtual unsigned int read(unsigned char* data);
 
-	void close();
+	virtual void close();
+
+    virtual void clock(unsigned int ms);
 
 private:
 	CUDPSocket   m_socket;

@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2009-2014,2016,2018 by Jonathan Naylor G4KLX
+ *   Copyright (C) 2009-2014,2016,2018,2020 by Jonathan Naylor G4KLX
  *
  *   This program is free software; you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -26,10 +26,17 @@
 
 const unsigned int BUFFER_LENGTH = 200U;
 
-CIcomNetwork::CIcomNetwork(unsigned int localPort, bool debug) :
+CIcomNetwork::CIcomNetwork(unsigned int localPort, const std::string& rptAddress, unsigned int rptPort, bool debug) :
 m_socket(localPort),
+m_address(),
+m_port(rptPort),
 m_debug(debug)
 {
+	assert(localPort > 0U);
+	assert(!rptAddress.empty());
+	assert(rptPort > 0U);
+
+	m_address = CUDPSocket::lookup(rptAddress);
 }
 
 CIcomNetwork::~CIcomNetwork()
@@ -46,7 +53,7 @@ bool CIcomNetwork::open()
 	return m_socket.open();
 }
 
-bool CIcomNetwork::write(const unsigned char* data, unsigned int length, const in_addr& address, unsigned int port)
+bool CIcomNetwork::write(const unsigned char* data, unsigned int length)
 {
 	assert(data != NULL);
 
@@ -77,22 +84,29 @@ bool CIcomNetwork::write(const unsigned char* data, unsigned int length, const i
 	if (m_debug)
 		CUtils::dump(1U, "Icom Data Sent", buffer, 102U);
 
-	return m_socket.write(buffer, 102U, address, port);
+	return m_socket.write(buffer, 102U, m_address, m_port);
 }
 
-bool CIcomNetwork::read(unsigned char* data, in_addr& address, unsigned int& port)
+unsigned int CIcomNetwork::read(unsigned char* data)
 {
 	assert(data != NULL);
 
 	unsigned char buffer[BUFFER_LENGTH];
+	in_addr address;
+	unsigned int port;
 
 	int length = m_socket.read(buffer, BUFFER_LENGTH, address, port);
 	if (length <= 0)
-		return false;
+		return 0U;
+
+	if (m_address.s_addr != address.s_addr || m_port != port) {
+		LogWarning("Icom Data received from an unknown address or port - %08X:%u", ntohl(address.s_addr), port);
+		return 0U;
+	}
 
 	// Invalid packet type?
 	if (::memcmp(buffer, "ICOM", 4U) != 0)
-		return false;
+		return 0U;
 
 	// An Icom repeater connect request
 	if (buffer[4U] == 0x01U && buffer[5U] == 0x61U) {
@@ -101,18 +115,18 @@ bool CIcomNetwork::read(unsigned char* data, in_addr& address, unsigned int& por
 		buffer[38U] = 0x4FU;
 		buffer[39U] = 0x4BU;
 		m_socket.write(buffer, length, address, port);
-		return false;
+		return 0U;
 	}
 
 	if (length != 102)
-		return false;
+		return 0U;
 
 	if (m_debug)
 		CUtils::dump(1U, "Icom Data Received", buffer, length);
 
 	::memcpy(data, buffer + 40U, 33U);
 
-	return true;
+	return 33U;
 }
 
 void CIcomNetwork::close()
@@ -120,4 +134,8 @@ void CIcomNetwork::close()
 	m_socket.close();
 
 	LogMessage("Closing Icom connection");
+}
+
+void CIcomNetwork::clock(unsigned int ms)
+{
 }

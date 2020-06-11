@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2015,2016,2018 by Jonathan Naylor G4KLX
+ *   Copyright (C) 2015,2016,2018,2020 by Jonathan Naylor G4KLX
  *
  *   This program is free software; you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -50,6 +50,7 @@ public:
 
   // The NXCore section
   bool           getNXCoreEnabled() const;
+  std::string    getNXCoreProtocol() const;
   std::string    getNXCoreAddress() const;
   unsigned short getNXCoreTGEnable() const;
   unsigned short getNXCoreTGDisable() const;
@@ -72,6 +73,7 @@ private:
   bool           m_networkDebug;
 
   bool           m_nxCoreEnabled;
+  std::string    m_nxCoreProtocol;
   std::string    m_nxCoreAddress;
   unsigned short m_nxCoreTGEnable;
   unsigned short m_nxCoreTGDisable;

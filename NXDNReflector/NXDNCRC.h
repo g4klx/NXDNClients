@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2009-2014,2016,2018 by Jonathan Naylor G4KLX
+ *   Copyright (C) 2018 by Jonathan Naylor G4KLX
  *
  *   This program is free software; you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -16,32 +16,27 @@
  *   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-#ifndef	NXCoreNetwork_H
-#define	NXCoreNetwork_H
-
-#include "UDPSocket.h"
-#include "Timer.h"
+#if !defined(NXDNCRC_H)
+#define	NXDNCRC_H
 
 #include <cstdint>
-#include <string>
 
-class CNXCoreNetwork {
+class CNXDNCRC
+{
 public:
-	CNXCoreNetwork(const std::string& address, bool debug);
-	~CNXCoreNetwork();
+	static bool checkCRC6(const unsigned char* in, unsigned int length);
+	static void encodeCRC6(unsigned char* in, unsigned int length);
 
-	bool open();
+	static bool checkCRC12(const unsigned char* in, unsigned int length);
+	static void encodeCRC12(unsigned char* in, unsigned int length);
 
-	bool write(const unsigned char* data, unsigned int len);
-
-	unsigned int read(unsigned char* data);
-
-	void close();
+	static bool checkCRC15(const unsigned char* in, unsigned int length);
+	static void encodeCRC15(unsigned char* in, unsigned int length);
 
 private:
-	CUDPSocket m_socket;
-	in_addr    m_address;
-	bool       m_debug;
+	static uint8_t  createCRC6(const unsigned char* in, unsigned int length);
+	static uint16_t createCRC12(const unsigned char* in, unsigned int length);
+	static uint16_t createCRC15(const unsigned char* in, unsigned int length);
 };
 
 #endif
