@@ -95,8 +95,9 @@
 # 22202 IT NXDN Sardegna
 22202 nxdn.is0hha.hblink.it 41400
 
-# 22220 IT ECHOLINK ITALY
-22220 dagobah.hblink.it 41400                                                                                                                                                                                                      
+# 22221 HBLINK IT-DMR REGIONALE LOMBARDIA
+22221 dagobah.hblink.it 41400
+
 # 22245 IT PIEDMONT GDO
 22245 nxdngdo.duckdns.org 41400
 
@@ -113,7 +114,7 @@
 25641	194.182.85.217	41400
 
 # Poland, 26000
-26000	31.0.161.238	41400
+26000	80.211.249.221	41400
 
 # Deutschland, 26200
 26200 26200.ham-nxdn.de 41400
