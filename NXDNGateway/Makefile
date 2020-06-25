@@ -22,6 +22,9 @@ NXDNGateway:	$(OBJECTS)
 %.o: %.cpp
 		$(CXX) $(CFLAGS) -c -o $@ $<
 
+install:
+		install -m 755 NXDNGateway /usr/local/bin/
+
 clean:
 		$(RM) NXDNGateway *.o *.d *.bak *~
  

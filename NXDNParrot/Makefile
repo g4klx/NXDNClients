@@ -14,5 +14,8 @@ NXDNParrot:	$(OBJECTS)
 %.o: %.cpp
 		$(CXX) $(CFLAGS) -c -o $@ $<
 
+install:
+		install -m 755 NXDNParrot /usr/local/bin/
+
 clean:
 		$(RM) NXDNParrot *.o *.d *.bak *~
