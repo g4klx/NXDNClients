@@ -2,31 +2,32 @@
 #
 # The format of this file is the number of the Talk Group followed by the host name or address and port
 #
-# HELLAS Zone TG202
+
+# 202 HELLAS Zone
 202 hellaszone.com 41400
 
-# RED NXDN SPAIN
+# 214 RED SPAIN
 214 nxdn214.xreflector.es 41400
 
-# HBLink  Poland ,TG260
+# 260 HBLink  Poland
 260 nxdn.hblink.pl 41400
 
-# 302, P25 Canada
+# 302 P25 Canada
 302	p25canada.hopto.org	41400
 
-# Super Freq 420
+# 420 Super Freq
 420 hb.superfreqdigital.com 41400
 
-# VKCore, 505
+# 505 VKCore
 505	43.229.63.42	41450
 
-# New Zealand, 530
+# 530 New Zealand
 530 zldigitalreflectors.hopto.org 41400
 
-# XLX545E PA NXDN
+# XLX545E PA
 545 70.44.20.24 41401
 
-# RuralMN Reflector 707
+# 707 RuralMN Reflector
 707 707nxdn.kd0ioe.com  41400
 
 # 911 Cop Talk, Multimode TG for Police and First Responders
@@ -35,7 +36,10 @@
 # 914 Latin America
 914 164.132.96.157 41400
 
-# Florida, 1200
+# 1080 RayNet UK
+1080	51.91.78.118	41400
+
+# 1200 Florida
 1200	florida.nxref.org	41400
 
 # 2140 DMRplus BM Multi
@@ -50,7 +54,7 @@
 # 2249 IT SICILIA
 2249 nxdn.digitalsicilia.it 41400
 
-# RU DMR TG2503
+# 2503 RU DMR
 2503 nxdn.r1ik.ru 41400
 
 # 3023 Ontario Crosslink
@@ -59,31 +63,31 @@
 # 3142 Pennsylvania
 3142 3.215.215.169 41402
 
-# VK7 TAS, 5057
+# 5057 VK7 TAS
 5057    45.248.50.37    41400
 
-# Multiprotocolo Argentina
+# 7225 Multiprotocolo Argentina
 7225  ysfarg.ddns.net 41400
 
-# North America, 10200
+# 10200 North America
 10200   dvswitch.org    42400
 
-# HBLINK Espana, 10301
+# 10301 HBLINK Espana
 10301	ea5gvk.duckdns.org	41400
 
-# NXDN 10302 Multimode BM 21461 EA Spain
+# 10302 Multimode BM 21461 EA Spain
 10302	93.186.254.219	41400
 
-# Italian speaking, 10303
+# 10303 Italian speaking
 10303	185.203.118.8	41400
 
-# REM-ADER Spain Group, 10304
+# 10304 REM-ADER Spain Group
 10304	176.31.161.9	41400
 
 # Pacific, 10400
 10400	pacific.nxref.org	41400
 
-# Europe, German speaking, 20000
+# 20000 Europe, German speaking
 20000	89.185.97.38	41400
 
 # 20945 Deutschland DL1BH
@@ -107,113 +111,113 @@
 # 22825 Swiss NXDN Reflerctor
 22825 212.237.33.114 41400
 
-# NXDN Scotland, 23551
+# 23551 NXDN Scotland
 23551 nxdnscotland.ddns.net 41400
 
-# NX Core, 25000
+# 25000 NX Core
 25000 173.166.94.77 41400
 
-# Russia NXDN Net, 25641
+# 25641 Russia NXDN Net
 25641	194.182.85.217	41400
 
-# Poland, 26000
+# 26000 Poland
 26000	80.211.249.221	41400
 
-# Deutschland, 26200
+# 26200 Deutschland
 26200 26200.ham-nxdn.de 41400
 
-# Portuguese speaking test, 10268
+# 26810 Portuguese speaking test
 26810	84.90.7.110	41400
 
-# America-Ragchew, 28299
+# 28299 America-Ragchew
 28299	65.101.7.52	41400
 
-# NorCal-Bridge / Multimode-NXDN, 30639
+# 30639 NorCal-Bridge / Multimode-NXDN
 30639	wiresxdigi.dyndns.org	41400
 
-# Alabama-Link, 31010
+# 31010 Alabama-Link
 31010	nxdn.alabamalink.info	41400
 
-# Colorado Fun Machine WE0FUN Bridge to C4FM, DMR, DStar, P25 and AllStarLink (Analog) http://www.we0fun.com
+# 31081 Colorado Fun Machine WE0FUN Bridge to C4FM, DMR, DStar, P25 and AllStarLink (Analog) http://www.we0fun.com
 31081	nxdn.we0fun.com	41400
 
-# Colorado HD, 31088
+# 31088 Colorado HD
 31088	54.191.50.212	41400
 
-# Connecticut Chat, 31092
+# 31092 Connecticut Chat
 31092 nxdn.alecwasserman.com  41400
 
-# Kingsland Digital Link
+# 31137 Kingsland Digital Link
 31137   74.91.119.94    41400
 
-# Illinois, 31171
+# 31171 Illinois
 31171	74.208.235.115	41400
 
-# Southern Indiana, 31188
+# 31188 Southern Indiana
 31188	w9windigital.org	41400
 
 # 31264 XLX625 The BROniverse www.wa8bro.com
 31264 nxdn.dudetronics.com  41400
 
-# Central New Jersey, 31340
+# 31340 Central New Jersey
 31340 cnjham.msmts.com 41400
 
-# Oklahoma Link, 31403
+# 31403 Oklahoma Link
 31403	3.208.70.29	41400
 
-# XLX545A Pennsylvania Cross Mode, 31425
+# 31425 XLX545A Pennsylvania Cross Mode
 31425 70.44.20.24 41400
 
-# XLX545A Pennsylvania Cross Mode (alt), 31426
+# 31426 XLX545A Pennsylvania Cross Mode (alt)
 31426 3.215.215.169 41400
 
-# Rhode Island Digital Link, 31444
+# 31444 Rhode Island Digital Link
 31444	18.219.32.21	41400
 
-# TGIF Network, 31665
+# 31665 TGIF Network
 31665	tgif.network	41400
 
-# Pi-Star NXDN Reflector, 31672
+# 31672 Pi-Star
 31672	nxdn-31672.pistar.uk	41400
 
-# DX-LINK SYSTEM, 31777
+# 31777 DX-LINK SYSTEM,
 31777	8.9.4.102	41400
 
-# K8JTK Hub Multimode ILS/DVMIS (K8JTK.org), 31983
+# 31983 K8JTK Hub Multimode ILS/DVMIS (K8JTK.org)
 31983	NXDNReflector31983.K8JTK.org	41400
 
-# CW-Ops Academy, NXDN Reflector 32103
+# 32103 CW-Ops Academy
 32103 cwops.dyndns.org  41400
 
-# OMISS Group, NXDN Reflector 33581
+# 33581 OMISS Group
 33581 omiss.dyndns.org  41400
 
-# Fusion Canada Fr /Wires-x /Ysf /Nxdn Network
+# 40721 Fusion Canada Fr /Wires-x /Ysf /Nxdn Network
 40721 38.110.97.161 41400
 
-# China, 46000
+# 46000 China
 46000	120.234.41.144	41400
 
-# DMR TG50525 bridge, 50525
+# 50525 DMR TG50525 bridge
 50525	50525.nxref.org	41400
 
-# BM NXCore bridge, 50599
+# 50599 BM NXCore bridge
 50599	nxdn.duckdns.org	41490
 
-# Thailand DTDXA XLX520N, 52000
+# 52000 Thailand DTDXA XLX520N
 52000 nxdn.dtdxa.com 41400
 
-# New Zealand, 53099 linked to BM TG 53099
+# 53099 New Zealand, 53099 linked to BM TG 53099
 53099	203.86.206.49	41400
 
-# World Wide, 65000
+# 65000 World Wide
 65000	176.9.1.168 41400
 
-# French-Test, 65208
+# 65208 French-Test
 65208	m55.evxonline.net  41400
 
-# NXDN - 2007DXGROUP
+# 65100 NXDN - 2007DXGROUP
 65100 89.46.75.115 41400
 
-# NXDN SPAIN 21410
+# 21410 NXDN SPAIN
 21410 nxdn21410.nxdn.es 41400
