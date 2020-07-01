@@ -36,9 +36,6 @@
 # 914 Latin America
 914 164.132.96.157 41400
 
-# 1080 RayNet UK
-1080	51.91.78.118	41400
-
 # 1200 Florida
 1200	florida.nxref.org	41400
 
@@ -110,6 +107,9 @@
 
 # 22825 Swiss NXDN Reflerctor
 22825 212.237.33.114 41400
+
+# 23531 RayNet UK
+23531	51.91.78.118	41400
 
 # 23551 NXDN Scotland
 23551 nxdnscotland.ddns.net 41400
