@@ -25,6 +25,7 @@
 
 #include <cstdint>
 #include <string>
+#include <random>
 
 class CKenwoodNetwork : public IRptNetwork {
 public:
@@ -64,6 +65,7 @@ private:
     unsigned char  m_hangType;
     unsigned short m_hangSrc;
     unsigned short m_hangDst;
+    std::mt19937   m_random;
 
     bool processIcomVoiceHeader(const unsigned char* data);
     bool processIcomVoiceData(const unsigned char* data);
