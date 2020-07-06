@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2010,2011,2012,2016,2017,2018 by Jonathan Naylor G4KLX
+ *   Copyright (C) 2010,2011,2012,2016,2017,2018,2020 by Jonathan Naylor G4KLX
  *
  *   This program is free software; you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -19,7 +19,6 @@
 #ifndef	APRSWriter_H
 #define	APRSWriter_H
 
-#include "APRSWriterThread.h"
 #include "UDPSocket.h"
 #include "Timer.h"
 
@@ -34,13 +33,16 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <errno.h>
+#if defined(USE_GPSD)
+#include <gps.h>
+#endif
 #else
 #include <winsock.h>
 #endif
 
 class CAPRSWriter {
 public:
-	CAPRSWriter(const std::string& callsign, const std::string& suffix, const std::string& password, const std::string& address, unsigned int port);
+	CAPRSWriter(const std::string& callsign, const std::string& suffix, const std::string& address, unsigned int port, bool debug);
 	~CAPRSWriter();
 
 	bool open();
@@ -49,7 +51,7 @@ public:
 
 	void setStaticLocation(float latitude, float longitude, int height);
 
-	void setMobileLocation(const std::string& address, unsigned int port);
+	void setGPSDLocation(const std::string& address, const std::string& port);
 
 	void write(const char* data);
 
@@ -58,21 +60,25 @@ public:
 	void close();
 
 private:
-	CAPRSWriterThread* m_thread;
-	bool               m_enabled;
-	CTimer             m_idTimer;
-	std::string        m_callsign;
-	unsigned int       m_txFrequency;
-	unsigned int       m_rxFrequency;
-	float              m_latitude;
-	float              m_longitude;
-	int                m_height;
-	std::string        m_desc;
-	in_addr            m_mobileGPSAddress;
-	unsigned int       m_mobileGPSPort;
-	CUDPSocket*        m_socket;
+	CTimer            m_idTimer;
+	std::string       m_callsign;
+	bool              m_debug;
+	unsigned int      m_txFrequency;
+	unsigned int      m_rxFrequency;
+	float             m_latitude;
+	float             m_longitude;
+	int               m_height;
+	std::string       m_desc;
+	in_addr           m_aprsAddress;
+	unsigned int      m_aprsPort;
+	CUDPSocket        m_aprsSocket;
+#if defined(USE_GPSD)
+	bool              m_gpsdEnabled;
+	std::string       m_gpsdAddress;
+	std::string       m_gpsdPort;
+	struct gps_data_t m_gpsdData;
+#endif
 
-	bool pollGPS();
 	void sendIdFrameFixed();
 	void sendIdFrameMobile();
 };

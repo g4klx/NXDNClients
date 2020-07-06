@@ -47,7 +47,7 @@ public:
 
 	void close();
 
-	static in_addr lookup(const std::string& hostName);
+    static in_addr lookup(const std::string& hostName);
 
 private:
 	std::string    m_address;

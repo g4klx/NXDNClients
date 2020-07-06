@@ -17,29 +17,34 @@
  */
 
 #include "APRSWriter.h"
+#include "Log.h"
 
 #include <cstdio>
 #include <cassert>
 #include <cstring>
 #include <cmath>
 
-CAPRSWriter::CAPRSWriter(const std::string& callsign, const std::string& suffix, const std::string& password, const std::string& address, unsigned int port) :
-m_thread(NULL),
-m_enabled(false),
+CAPRSWriter::CAPRSWriter(const std::string& callsign, const std::string& suffix, const std::string& address, unsigned int port, bool debug) :
 m_idTimer(1000U),
 m_callsign(callsign),
+m_debug(debug),
 m_txFrequency(0U),
 m_rxFrequency(0U),
 m_latitude(0.0F),
 m_longitude(0.0F),
 m_height(0),
 m_desc(),
-m_mobileGPSAddress(),
-m_mobileGPSPort(0U),
-m_socket(NULL)
+m_aprsAddress(),
+m_aprsPort(port),
+m_aprsSocket()
+#if defined(USE_GPSD)
+,m_gpsdEnabled(false),
+m_gpsdAddress(),
+m_gpsdPort(),
+m_gpsdData()
+#endif
 {
 	assert(!callsign.empty());
-	assert(!password.empty());
 	assert(!address.empty());
 	assert(port > 0U);
 
@@ -48,7 +53,7 @@ m_socket(NULL)
 		m_callsign.append(suffix.substr(0U, 1U));
 	}
 
-	m_thread = new CAPRSWriterThread(m_callsign, password, address, port);
+	m_aprsAddress = CUDPSocket::lookup(address);
 }
 
 CAPRSWriter::~CAPRSWriter()
@@ -69,88 +74,92 @@ void CAPRSWriter::setStaticLocation(float latitude, float longitude, int height)
 	m_height    = height;
 }
 
-void CAPRSWriter::setMobileLocation(const std::string& address, unsigned int port)
+void CAPRSWriter::setGPSDLocation(const std::string& address, const std::string& port)
 {
+#if defined(USE_GPSD)
 	assert(!address.empty());
-	assert(port > 0U);
+	assert(!port.empty());
 
-	m_mobileGPSAddress = CUDPSocket::lookup(address);
-	m_mobileGPSPort    = port;
-
-	m_socket = new CUDPSocket;
+	m_gpsdEnabled = true;
+	m_gpsdAddress = address;
+	m_gpsdPort    = port;
+#endif
 }
 
 bool CAPRSWriter::open()
 {
-	if (m_socket != NULL) {
-		bool ret = m_socket->open();
-		if (!ret) {
-			delete m_socket;
-			m_socket = NULL;
+#if defined(USE_GPSD)
+	if (m_gpsdEnabled) {
+		int ret = ::gps_open(m_gpsdAddress.c_str(), m_gpsdPort.c_str(), &m_gpsdData);
+		if (ret != 0) {
+			LogError("Error when opening access to gpsd - %d - %s", errno, ::gps_errstr(errno));
 			return false;
 		}
 
-		// Poll the GPS every minute
-		m_idTimer.setTimeout(60U);
-	} else {
-		m_idTimer.setTimeout(20U * 60U);
-	}
+		::gps_stream(&m_gpsdData, WATCH_ENABLE | WATCH_JSON, NULL);
 
+		LogMessage("Connected to GPSD");
+	}
+#endif
+	bool ret = m_aprsSocket.open();
+	if (!ret)
+		return false;
+
+	LogMessage("Opened connection to the APRS Gateway");
+
+	m_idTimer.setTimeout(60U);
 	m_idTimer.start();
 
-	return m_thread->start();
+	return true;
 }
 
 void CAPRSWriter::write(const char* data)
 {
 	assert(data != NULL);
 
-	m_thread->write(data);
+	if (m_debug)
+		LogDebug("APRS ==> %s", data);
+
+	m_aprsSocket.write((unsigned char*)data, (unsigned int)::strlen(data), m_aprsAddress, m_aprsPort);
 }
 
 void CAPRSWriter::clock(unsigned int ms)
 {
 	m_idTimer.clock(ms);
 
-	m_thread->clock(ms);
-
-	if (m_socket != NULL) {
+#if defined(USE_GPSD)
+	if (m_gpsdEnabled) {
 		if (m_idTimer.hasExpired()) {
-			pollGPS();
+			sendIdFrameMobile();
 			m_idTimer.start();
 		}
 
-		sendIdFrameMobile();
 	} else {
+#endif
 		if (m_idTimer.hasExpired()) {
 			sendIdFrameFixed();
+			m_idTimer.setTimeout(20U * 60U);
 			m_idTimer.start();
 		}
+#if defined(USE_GPSD)
 	}
+#endif
 }
 
 void CAPRSWriter::close()
 {
-	if (m_socket != NULL) {
-		m_socket->close();
-		delete m_socket;
+	m_aprsSocket.close();
+
+#if defined(USE_GPSD)
+	if (m_gpsdEnabled) {
+		::gps_stream(&m_gpsdData, WATCH_DISABLE, NULL);
+		::gps_close(&m_gpsdData);
 	}
-
-	m_thread->stop();
-}
-
-bool CAPRSWriter::pollGPS()
-{
-	assert(m_socket != NULL);
-
-	return m_socket->write((unsigned char*)"NXDNGateway", 11U, m_mobileGPSAddress, m_mobileGPSPort);
+#endif
 }
 
 void CAPRSWriter::sendIdFrameFixed()
 {
-	if (!m_thread->isConnected())
-		return;
-
 	// Default values aren't passed on
 	if (m_latitude == 0.0F && m_longitude == 0.0F)
 		return;
@@ -201,43 +210,52 @@ void CAPRSWriter::sendIdFrameFixed()
 		server.append("S");
 
 	char output[500U];
-	::sprintf(output, "%s>APDG04,TCPIP*,qAC,%s:!%s%cD%s%c&/A=%06.0f%s %s",
+	::sprintf(output, "%s>APDG04,TCPIP*,qAC,%s:!%s%cD%s%c&/A=%06.0f%s %s\r\n",
 		m_callsign.c_str(), server.c_str(),
 		lat, (m_latitude < 0.0F)  ? 'S' : 'N',
 		lon, (m_longitude < 0.0F) ? 'W' : 'E',
 		float(m_height) * 3.28F, band, desc);
 
-	m_thread->write(output);
+	if (m_debug)
+		LogDebug("APRS ==> %s", output);
+
+	write(output);
 }
 
+#if defined(USE_GPSD)
 void CAPRSWriter::sendIdFrameMobile()
 {
-	// Grab GPS data if it's available
-	unsigned char buffer[200U];
-	in_addr address;
-	unsigned int port;
-	int ret = m_socket->read(buffer, 200U, address, port);
-	if (ret <= 0)
+	if (!::gps_waiting(&m_gpsdData, 0))
 		return;
 
-	if (!m_thread->isConnected())
+#if GPSD_API_MAJOR_VERSION >= 7
+	if (::gps_read(&m_gpsdData, NULL, 0) <= 0)
+		return;
+#else
+	if (::gps_read(&m_gpsdData) <= 0)
+		return;
+#endif
+
+	if (m_gpsdData.status != STATUS_FIX)
 		return;
 
-	buffer[ret] = '\0';
+	bool latlonSet   = (m_gpsdData.set & LATLON_SET) == LATLON_SET;
+	bool altitudeSet = (m_gpsdData.set & ALTITUDE_SET) == ALTITUDE_SET;
+	bool velocitySet = (m_gpsdData.set & SPEED_SET) == SPEED_SET;
+	bool bearingSet  = (m_gpsdData.set & TRACK_SET) == TRACK_SET;
 
-	// Parse the GPS data
-	char* pLatitude  = ::strtok((char*)buffer, ",\n");	// Latitude
-	char* pLongitude = ::strtok(NULL, ",\n");		// Longitude
-	char* pAltitude  = ::strtok(NULL, ",\n");		// Altitude (m)
-	char* pVelocity  = ::strtok(NULL, ",\n");		// Velocity (kms/h)
-	char* pBearing   = ::strtok(NULL, "\n");		// Bearing
-
-	if (pLatitude == NULL || pLongitude == NULL || pAltitude == NULL)
+	if (!latlonSet)
 		return;
 
-	float rawLatitude  = float(::atof(pLatitude));
-	float rawLongitude = float(::atof(pLongitude));
-	float rawAltitude  = float(::atof(pAltitude));
+	float rawLatitude  = float(m_gpsdData.fix.latitude);
+	float rawLongitude = float(m_gpsdData.fix.longitude);
+#if GPSD_API_MAJOR_VERSION >= 9
+	float rawAltitude  = float(m_gpsdData.fix.altMSL);
+#else
+	float rawAltitude  = float(m_gpsdData.fix.altitude);
+#endif
+	float rawVelocity  = float(m_gpsdData.fix.speed);
+	float rawBearing   = float(m_gpsdData.fix.track);
 
 	char desc[200U];
 	if (m_txFrequency != 0U) {
@@ -290,15 +308,17 @@ void CAPRSWriter::sendIdFrameMobile()
 		lat, (rawLatitude < 0.0F)  ? 'S' : 'N',
 		lon, (rawLongitude < 0.0F) ? 'W' : 'E');
 
-	if (pBearing != NULL && pVelocity != NULL) {
-		float rawBearing   = float(::atof(pBearing));
-		float rawVelocity  = float(::atof(pVelocity));
-
+	if (bearingSet && velocitySet)
 		::sprintf(output + ::strlen(output), "%03.0f/%03.0f", rawBearing, rawVelocity * 0.539957F);
-	}
 
-	::sprintf(output + ::strlen(output), "/A=%06.0f%s %s", float(rawAltitude) * 3.28F, band, desc);
+	if (altitudeSet)
+		::sprintf(output + ::strlen(output), "/A=%06.0f", float(rawAltitude) * 3.28F);
 
-	m_thread->write(output);
+	::sprintf(output + ::strlen(output), "%s %s\r\n", band, desc);
+
+	if (m_debug)
+		LogDebug("APRS ==> %s", output);
+
+	write(output);
 }
-
+#endif

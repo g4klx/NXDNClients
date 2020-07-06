@@ -14,6 +14,9 @@ NXDNReflector:	$(OBJECTS)
 %.o: %.cpp
 		$(CXX) $(CFLAGS) -c -o $@ $<
 
+install:
+		install -m 755 NXDNReflector /usr/local/bin/
+
 clean:
 		$(RM) NXDNReflector *.o *.d *.bak *~
  

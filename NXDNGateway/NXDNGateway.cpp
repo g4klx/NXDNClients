@@ -184,9 +184,9 @@ void CNXDNGateway::run()
 	std::string protocol = m_conf.getRptProtocol();
 
 	if (protocol == "Kenwood")
-		localNetwork = new CKenwoodNetwork(m_conf.getMyPort(), m_conf.getRptAddress(), m_conf.getRptPort(), m_conf.getRptDebug());
+		localNetwork = new CKenwoodNetwork(m_conf.getMyPort(), m_conf.getRptAddress(), m_conf.getRptPort(), m_conf.getDebug());
 	else
-		localNetwork = new CIcomNetwork(m_conf.getMyPort(), m_conf.getRptAddress(), m_conf.getRptPort(), m_conf.getRptDebug());
+		localNetwork = new CIcomNetwork(m_conf.getMyPort(), m_conf.getRptAddress(), m_conf.getRptPort(), m_conf.getDebug());
 
 	ret = localNetwork->open();
 	if (!ret) {
@@ -591,12 +591,12 @@ void CNXDNGateway::createGPS()
 
 	std::string callsign  = m_conf.getCallsign();
 	std::string rptSuffix = m_conf.getSuffix();
-	std::string hostname  = m_conf.getAPRSServer();
+	std::string address   = m_conf.getAPRSAddress();
 	unsigned int port     = m_conf.getAPRSPort();
-	std::string password  = m_conf.getAPRSPassword();
 	std::string suffix    = m_conf.getAPRSSuffix();
+	bool debug            = m_conf.getDebug();
 
-	m_writer = new CAPRSWriter(callsign, rptSuffix, password, hostname, port);
+	m_writer = new CAPRSWriter(callsign, rptSuffix, address, port, debug);
 
 	unsigned int txFrequency = m_conf.getTxFrequency();
 	unsigned int rxFrequency = m_conf.getRxFrequency();
@@ -604,12 +604,12 @@ void CNXDNGateway::createGPS()
 
 	m_writer->setInfo(txFrequency, rxFrequency, desc);
 
-	bool enabled = m_conf.getMobileGPSEnabled();
+	bool enabled = m_conf.getGPSDEnabled();
 	if (enabled) {
-	        std::string address = m_conf.getMobileGPSAddress();
-	        unsigned int port   = m_conf.getMobileGPSPort();
+	        std::string address = m_conf.getGPSDAddress();
+	        std::string port    = m_conf.getGPSDPort();
 
-	        m_writer->setMobileLocation(address, port);
+	        m_writer->setGPSDLocation(address, port);
 	} else {
 	        float latitude  = m_conf.getLatitude();
                 float longitude = m_conf.getLongitude();
