@@ -90,6 +90,9 @@
 # 20945 Deutschland DL1BH
 20945	dl1bh.ddns.net	41400
 
+# 21410 NXDN SPAIN
+21410 nxdn21410.nxdn.es 41400
+
 # 21465 ADER Multimode
 21465 80.211.106.186 41400
 
@@ -213,11 +216,11 @@
 # 65000 World Wide
 65000	176.9.1.168 41400
 
-# 65208 French-Test
-65208	m55.evxonline.net  41400
-
 # 65100 NXDN - 2007DXGROUP
 65100 89.46.75.115 41400
 
-# 21410 NXDN SPAIN
-21410 nxdn21410.nxdn.es 41400
+# 65208 French-Test
+65208	m55.evxonline.net  41400
+
+
+
