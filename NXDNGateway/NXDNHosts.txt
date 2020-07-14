@@ -87,6 +87,9 @@
 # 20000 Europe, German speaking
 20000	89.185.97.38	41400
 
+# 20201 NXDN Athens GR HBLink
+20201 stargate-dmr.net  41400
+
 # 20945 Deutschland DL1BH
 20945	dl1bh.ddns.net	41400
 
@@ -221,6 +224,3 @@
 
 # 65208 French-Test
 65208	m55.evxonline.net  41400
-
-
-
