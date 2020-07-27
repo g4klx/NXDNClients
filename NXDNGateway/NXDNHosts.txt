@@ -15,6 +15,9 @@
 # 302 P25 Canada
 302	p25canada.hopto.org	41400
 
+# 395 IT GRF Cluster
+395 80.211.99.134 41455
+
 # 420 Super Freq
 420 hb.superfreqdigital.com 41400
 
