@@ -9,6 +9,9 @@
 # 214 RED SPAIN
 214 nxdn214.xreflector.es 41400
 
+# 226 Romania YO NXDN Network
+226	nxdn.dstar-yo.ro	41000
+
 # 260 HBLink  Poland
 260 nxdn.hblink.pl 41400
 
@@ -53,6 +56,9 @@
 
 # 2249 IT SICILIA
 2249 nxdn.digitalsicilia.it 41400
+
+# 2263 Bucharest YO3 NXDN Network
+2263	nxdn.dstar-yo.ro	41000
 
 # 2503 RU DMR
 2503 nxdn.r1ik.ru 41400
