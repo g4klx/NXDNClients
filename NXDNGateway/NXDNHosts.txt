@@ -219,6 +219,9 @@
 # 46000 China
 46000	120.234.41.144	41400
 
+# 43389 SouthEast Link
+43389 selink.lmarc.net  41400
+
 # 50525 DMR TG50525 bridge
 50525	50525.nxref.org	41400
 
