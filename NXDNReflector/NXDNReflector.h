@@ -19,7 +19,8 @@
 #if !defined(NXDNReflector_H)
 #define	NXDNReflector_H
 
-#include "CoreNetwork.h"
+#include "KenwoodNetwork.h"
+#include "IcomNetwork.h"
 #include "Timer.h"
 #include "Conf.h"
 
@@ -65,14 +66,17 @@ public:
 
 private:
 	CConf                       m_conf;
-	ICoreNetwork*               m_nxCoreNetwork;
+	CIcomNetwork*               m_icomNetwork;
+	CKenwoodNetwork*            m_kenwoodNetwork;
 	std::vector<CNXDNRepeater*> m_repeaters;
 
 	CNXDNRepeater* findRepeater(const in_addr& address, unsigned int port) const;
 	void dumpRepeaters() const;
 
-	bool openNXCore();
-	void closeNXCore();
+	bool openIcomNetwork();
+	bool openKenwoodNetwork();
+	void closeIcomNetwork();
+	void closeKenwoodNetwork();
 };
 
 #endif

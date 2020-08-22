@@ -31,8 +31,9 @@ enum SECTION {
   SECTION_GENERAL,
   SECTION_ID_LOOKUP,
   SECTION_LOG,
-  SECTION_NETWORK,
-  SECTION_NXCORE
+  SECTION_YSF_NETWORK,
+  SECTION_ICOM_NETWORK,
+  SECTION_KENWOOD_NETWORK
 };
 
 CConf::CConf(const std::string& file) :
@@ -45,14 +46,18 @@ m_logDisplayLevel(0U),
 m_logFileLevel(0U),
 m_logFilePath(),
 m_logFileRoot(),
-m_networkPort(0U),
-m_networkDebug(false),
-m_nxCoreEnabled(false),
-m_nxCoreProtocol("Icom"),
-m_nxCoreAddress(),
-m_nxCoreTGEnable(0U),
-m_nxCoreTGDisable(0U),
-m_nxCoreDebug(false)
+m_ysfPort(0U),
+m_ysfDebug(false),
+m_icomEnabled(false),
+m_icomAddress(),
+m_icomTGEnable(0U),
+m_icomTGDisable(0U),
+m_icomDebug(false),
+m_kenwoodEnabled(false),
+m_kenwoodAddress(),
+m_kenwoodTGEnable(0U),
+m_kenwoodTGDisable(0U),
+m_kenwoodDebug(false)
 {
 }
 
@@ -82,10 +87,12 @@ bool CConf::read()
 			  section = SECTION_ID_LOOKUP;
 		  else if (::strncmp(buffer, "[Log]", 5U) == 0)
 			  section = SECTION_LOG;
-		  else if (::strncmp(buffer, "[Network]", 9U) == 0)
-			  section = SECTION_NETWORK;
-		  else if (::strncmp(buffer, "[NXCore]", 8U) == 0)
-			  section = SECTION_NXCORE;
+		  else if (::strncmp(buffer, "[YSF Network]", 13U) == 0)
+			  section = SECTION_YSF_NETWORK;
+		  else if (::strncmp(buffer, "[Icom Network]", 14U) == 0)
+			  section = SECTION_ICOM_NETWORK;
+		  else if (::strncmp(buffer, "[Kenwood Network]", 17U) == 0)
+			  section = SECTION_KENWOOD_NETWORK;
 		  else
 			  section = SECTION_NONE;
 
@@ -116,24 +123,33 @@ bool CConf::read()
 			  m_logFileLevel = (unsigned int)::atoi(value);
 		  else if (::strcmp(key, "DisplayLevel") == 0)
 			  m_logDisplayLevel = (unsigned int)::atoi(value);
-	  } else if (section == SECTION_NETWORK) {
+	  } else if (section == SECTION_YSF_NETWORK) {
 		  if (::strcmp(key, "Port") == 0)
-			  m_networkPort = (unsigned int)::atoi(value);
+			  m_ysfPort = (unsigned int)::atoi(value);
 		  else if (::strcmp(key, "Debug") == 0)
-			  m_networkDebug = ::atoi(value) == 1;
-	  } else if (section == SECTION_NXCORE) {
+			  m_ysfDebug = ::atoi(value) == 1;
+	  } else if (section == SECTION_ICOM_NETWORK) {
 		  if (::strcmp(key, "Enabled") == 0)
-			  m_nxCoreEnabled = ::atoi(value) == 1;
-		  else if (::strcmp(key, "Protocol") == 0)
-			  m_nxCoreProtocol = value;
+			  m_icomEnabled = ::atoi(value) == 1;
 		  else if (::strcmp(key, "Address") == 0)
-			  m_nxCoreAddress = value;
+			  m_icomAddress = value;
 		  else if (::strcmp(key, "TGEnable") == 0)
-			  m_nxCoreTGEnable = (unsigned short)::atoi(value);
+			  m_icomTGEnable = (unsigned short)::atoi(value);
 		  else if (::strcmp(key, "TGDisable") == 0)
-			  m_nxCoreTGDisable = (unsigned short)::atoi(value);
+			  m_icomTGDisable = (unsigned short)::atoi(value);
 		  else if (::strcmp(key, "Debug") == 0)
-			  m_nxCoreDebug = ::atoi(value) == 1;
+			  m_icomDebug = ::atoi(value) == 1;
+	  } else if (section == SECTION_KENWOOD_NETWORK) {
+		  if (::strcmp(key, "Enabled") == 0)
+			  m_kenwoodEnabled = ::atoi(value) == 1;
+		  else if (::strcmp(key, "Address") == 0)
+			  m_kenwoodAddress = value;
+		  else if (::strcmp(key, "TGEnable") == 0)
+			  m_kenwoodTGEnable = (unsigned short)::atoi(value);
+		  else if (::strcmp(key, "TGDisable") == 0)
+			  m_kenwoodTGDisable = (unsigned short)::atoi(value);
+		  else if (::strcmp(key, "Debug") == 0)
+			  m_kenwoodDebug = ::atoi(value) == 1;
 	  }
   }
 
@@ -182,42 +198,62 @@ std::string CConf::getLogFileRoot() const
   return m_logFileRoot;
 }
 
-unsigned int CConf::getNetworkPort() const
+unsigned int CConf::getYSFPort() const
 {
-	return m_networkPort;
+	return m_ysfPort;
 }
 
-bool CConf::getNetworkDebug() const
+bool CConf::getYSFDebug() const
 {
-	return m_networkDebug;
+	return m_ysfDebug;
 }
 
-bool CConf::getNXCoreEnabled() const
+bool CConf::getIcomEnabled() const
 {
-	return m_nxCoreEnabled;
+	return m_icomEnabled;
 }
 
-std::string CConf::getNXCoreProtocol() const
+std::string CConf::getIcomAddress() const
 {
-	return m_nxCoreProtocol;
+	return m_icomAddress;
 }
 
-std::string CConf::getNXCoreAddress() const
+unsigned short CConf::getIcomTGEnable() const
 {
-	return m_nxCoreAddress;
+	return m_icomTGEnable;
 }
 
-unsigned short CConf::getNXCoreTGEnable() const
+unsigned short CConf::getIcomTGDisable() const
 {
-	return m_nxCoreTGEnable;
+	return m_icomTGDisable;
 }
 
-unsigned short CConf::getNXCoreTGDisable() const
+bool CConf::getIcomDebug() const
 {
-	return m_nxCoreTGDisable;
+	return m_icomDebug;
 }
 
-bool CConf::getNXCoreDebug() const
+bool CConf::getKenwoodEnabled() const
 {
-	return m_nxCoreDebug;
+	return m_kenwoodEnabled;
+}
+
+std::string CConf::getKenwoodAddress() const
+{
+	return m_kenwoodAddress;
+}
+
+unsigned short CConf::getKenwoodTGEnable() const
+{
+	return m_kenwoodTGEnable;
+}
+
+unsigned short CConf::getKenwoodTGDisable() const
+{
+	return m_kenwoodTGDisable;
+}
+
+bool CConf::getKenwoodDebug() const
+{
+	return m_kenwoodDebug;
 }

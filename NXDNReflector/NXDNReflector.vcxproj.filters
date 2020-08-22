@@ -53,9 +53,6 @@
     <ClInclude Include="KenwoodNetwork.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CoreNetwork.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="NXDNCRC.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -98,9 +95,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="KenwoodNetwork.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CoreNetwork.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="NXDNCRC.cpp">

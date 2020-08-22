@@ -19,27 +19,26 @@
 #ifndef	IcomNetwork_H
 #define	IcomNetwork_H
 
-#include "CoreNetwork.h"
 #include "UDPSocket.h"
 #include "Timer.h"
 
 #include <cstdint>
 #include <string>
 
-class CIcomNetwork :  public ICoreNetwork {
+class CIcomNetwork {
 public:
 	CIcomNetwork(const std::string& address, bool debug);
-	virtual ~CIcomNetwork();
+	~CIcomNetwork();
 
-	virtual bool open();
+	bool open();
 
-	virtual bool write(const unsigned char* data, unsigned int len);
+	bool write(const unsigned char* data, unsigned int len);
 
-	virtual unsigned int read(unsigned char* data);
+	unsigned int read(unsigned char* data);
 
-	virtual void close();
+	void close();
 
-    virtual void clock(unsigned int ms);
+    void clock(unsigned int ms);
 
 private:
 	CUDPSocket m_socket;

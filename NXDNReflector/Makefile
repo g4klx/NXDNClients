@@ -4,7 +4,7 @@ CFLAGS  = -g -O3 -Wall -std=c++0x -pthread
 LIBS    = -lpthread
 LDFLAGS = -g
 
-OBJECTS = Conf.o CoreNetwork.o IcomNetwork.o KenwoodNetwork.o Log.o Mutex.o NXDNCRC.o NXDNLookup.o NXDNNetwork.o NXDNReflector.o StopWatch.o Thread.o Timer.o UDPSocket.o Utils.o
+OBJECTS = Conf.o IcomNetwork.o KenwoodNetwork.o Log.o Mutex.o NXDNCRC.o NXDNLookup.o NXDNNetwork.o NXDNReflector.o StopWatch.o Thread.o Timer.o UDPSocket.o Utils.o
 
 all:		NXDNReflector
 

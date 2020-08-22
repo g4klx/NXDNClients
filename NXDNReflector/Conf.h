@@ -44,17 +44,23 @@ public:
   std::string    getLogFilePath() const;
   std::string    getLogFileRoot() const;
 
-  // The Network section
-  unsigned int   getNetworkPort() const;
-  bool           getNetworkDebug() const;
+  // The YSF Network section
+  unsigned int   getYSFPort() const;
+  bool           getYSFDebug() const;
 
-  // The NXCore section
-  bool           getNXCoreEnabled() const;
-  std::string    getNXCoreProtocol() const;
-  std::string    getNXCoreAddress() const;
-  unsigned short getNXCoreTGEnable() const;
-  unsigned short getNXCoreTGDisable() const;
-  bool           getNXCoreDebug() const;
+  // The Icom Network section
+  bool           getIcomEnabled() const;
+  std::string    getIcomAddress() const;
+  unsigned short getIcomTGEnable() const;
+  unsigned short getIcomTGDisable() const;
+  bool           getIcomDebug() const;
+
+  // The Kenwood Network section
+  bool           getKenwoodEnabled() const;
+  std::string    getKenwoodAddress() const;
+  unsigned short getKenwoodTGEnable() const;
+  unsigned short getKenwoodTGDisable() const;
+  bool           getKenwoodDebug() const;
 
 private:
   std::string    m_file;
@@ -69,15 +75,20 @@ private:
   std::string    m_logFilePath;
   std::string    m_logFileRoot;
 
-  unsigned int   m_networkPort;
-  bool           m_networkDebug;
+  unsigned int   m_ysfPort;
+  bool           m_ysfDebug;
 
-  bool           m_nxCoreEnabled;
-  std::string    m_nxCoreProtocol;
-  std::string    m_nxCoreAddress;
-  unsigned short m_nxCoreTGEnable;
-  unsigned short m_nxCoreTGDisable;
-  bool           m_nxCoreDebug;
+  bool           m_icomEnabled;
+  std::string    m_icomAddress;
+  unsigned short m_icomTGEnable;
+  unsigned short m_icomTGDisable;
+  bool           m_icomDebug;
+
+  bool           m_kenwoodEnabled;
+  std::string    m_kenwoodAddress;
+  unsigned short m_kenwoodTGEnable;
+  unsigned short m_kenwoodTGDisable;
+  bool           m_kenwoodDebug;
 };
 
 #endif

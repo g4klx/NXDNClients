@@ -16,10 +16,8 @@
 *   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#include "KenwoodNetwork.h"
 #include "NXDNReflector.h"
 #include "NXDNNetwork.h"
-#include "IcomNetwork.h"
 #include "NXDNLookup.h"
 #include "StopWatch.h"
 #include "Version.h"
@@ -81,7 +79,8 @@ int main(int argc, char** argv)
 
 CNXDNReflector::CNXDNReflector(const std::string& file) :
 m_conf(file),
-m_nxCoreNetwork(NULL),
+m_icomNetwork(NULL),
+m_kenwoodNetwork(NULL),
 m_repeaters()
 {
 }
@@ -169,26 +168,41 @@ void CNXDNReflector::run()
 
 	unsigned short tg = m_conf.getTG();
 
-	CNXDNNetwork nxdnNetwork(m_conf.getNetworkPort(), m_conf.getNetworkDebug());
+	CNXDNNetwork nxdnNetwork(m_conf.getYSFPort(), m_conf.getYSFDebug());
 	ret = nxdnNetwork.open();
 	if (!ret) {
 		::LogFinalise();
 		return;
 	}
 
-	unsigned short nxCoreTGEnable = 0U;
-	unsigned short nxCoreTGDisable = 0U;
+	unsigned short icomTGEnable = 0U;
+	unsigned short icomTGDisable = 0U;
 
-	if (m_conf.getNXCoreEnabled()) {
-		ret = openNXCore();
+	if (m_conf.getIcomEnabled()) {
+		ret = openIcomNetwork();
 		if (!ret) {
 			nxdnNetwork.close();
 			::LogFinalise();
 			return;
 		}
 
-		nxCoreTGEnable  = m_conf.getNXCoreTGEnable();
-		nxCoreTGDisable = m_conf.getNXCoreTGDisable();
+		icomTGEnable  = m_conf.getIcomTGEnable();
+		icomTGDisable = m_conf.getIcomTGDisable();
+	}
+
+	unsigned short kenwoodTGEnable = 0U;
+	unsigned short kenwoodTGDisable = 0U;
+
+	if (m_conf.getKenwoodEnabled()) {
+		ret = openKenwoodNetwork();
+		if (!ret) {
+			nxdnNetwork.close();
+			::LogFinalise();
+			return;
+		}
+
+		kenwoodTGEnable  = m_conf.getKenwoodTGEnable();
+		kenwoodTGDisable = m_conf.getKenwoodTGDisable();
 	}
 
 	CNXDNLookup* lookup = new CNXDNLookup(m_conf.getLookupName(), m_conf.getLookupTime());
@@ -203,7 +217,8 @@ void CNXDNReflector::run()
 	LogMessage("Starting NXDNReflector-%s", VERSION);
 
 	CNXDNRepeater* current = NULL;
-	bool nxCoreActive = false;
+	bool icomActive = false;
+	bool kenwoodActive = false;
 
 	unsigned short srcId = 0U;
 	unsigned short dstId = 0U;
@@ -262,24 +277,46 @@ void CNXDNReflector::run()
 					unsigned short dstId = (buffer[7U] << 8) | buffer[8U];
 					bool grp = (buffer[9U] & 0x01U) == 0x01U;
 
-					if (nxCoreTGEnable != 0U && grp && dstId == nxCoreTGEnable) {
-						if (m_nxCoreNetwork == NULL) {
+					if (icomTGEnable != 0U && grp && dstId == icomTGEnable) {
+						if (m_icomNetwork == NULL) {
 							std::string callsign = lookup->find(srcId);
-							LogMessage("NXCore link enabled by %s at %s", callsign.c_str(), current->m_callsign.c_str());
-							bool ok = openNXCore();
+							LogMessage("Icom Network link enabled by %s at %s", callsign.c_str(), current->m_callsign.c_str());
+							bool ok = openIcomNetwork();
 							if (!ok)
-								LogWarning("Unable to open the NXCore link");
+								LogWarning("Unable to open the Icom Network link");
 						}
-					} else if (nxCoreTGDisable != 0U && grp && dstId == nxCoreTGDisable) {
-						if (m_nxCoreNetwork != NULL) {
+					}
+
+					if (kenwoodTGEnable != 0U && grp && dstId == kenwoodTGEnable) {
+						if (m_kenwoodNetwork == NULL) {
 							std::string callsign = lookup->find(srcId);
-							LogMessage("NXCore link disabled by %s at %s", callsign.c_str(), current->m_callsign.c_str());
-							closeNXCore();
+							LogMessage("Kenwood Network link enabled by %s at %s", callsign.c_str(), current->m_callsign.c_str());
+							bool ok = openKenwoodNetwork();
+							if (!ok)
+								LogWarning("Unable to open the Kenwood Network link");
 						}
-					} else if (grp && dstId == tg) {
+					}
+
+					if (icomTGDisable != 0U && grp && dstId == icomTGDisable) {
+						if (m_icomNetwork != NULL) {
+							std::string callsign = lookup->find(srcId);
+							LogMessage("Icom Network link disabled by %s at %s", callsign.c_str(), current->m_callsign.c_str());
+							closeIcomNetwork();
+						}
+					}
+
+					if (kenwoodTGDisable != 0U && grp && dstId == kenwoodTGDisable) {
+						if (m_kenwoodNetwork != NULL) {
+							std::string callsign = lookup->find(srcId);
+							LogMessage("Kenwood Network link disabled by %s at %s", callsign.c_str(), current->m_callsign.c_str());
+							closeKenwoodNetwork();
+						}
+					}
+
+					if (grp && dstId == tg) {
 						rpt->m_timer.start();
 
-						if (current == NULL && !nxCoreActive) {
+						if (current == NULL && !(icomActive || kenwoodActive)) {
 							current = rpt;
 
 							std::string callsign = lookup->find(srcId);
@@ -296,8 +333,11 @@ void CNXDNReflector::run()
 									nxdnNetwork.write(buffer, len, addr, prt);
 							}
 
-							if (m_nxCoreNetwork != NULL)
-								m_nxCoreNetwork->write(buffer, len);
+							if (m_icomNetwork != NULL)
+								m_icomNetwork->write(buffer, len);
+
+							if (m_kenwoodNetwork != NULL)
+								m_kenwoodNetwork->write(buffer, len);
 
 							if ((buffer[9U] & 0x08U) == 0x08U) {
 								LogMessage("Received end of transmission");
@@ -313,11 +353,11 @@ void CNXDNReflector::run()
 			}
 		}
 
-		if (m_nxCoreNetwork != NULL) {
-			len = m_nxCoreNetwork->read(buffer);
+		if (m_icomNetwork != NULL) {
+			len = m_icomNetwork->read(buffer);
 			if (len > 0U) {
 				if (current == NULL) {
-					if (!nxCoreActive) {
+					if (!icomActive) {
 						if ((buffer[0U] == 0x81U || buffer[0U] == 0x83U) && buffer[5U] == 0x01U) {
 							bool           tempGrp   = (buffer[7U] & 0x20U) == 0x20U;
 							unsigned short tempSrcId = (buffer[8U]  << 8) | buffer[9U];
@@ -330,9 +370,9 @@ void CNXDNReflector::run()
 								dstId = tempDstId;
 
 								std::string callsign = lookup->find(srcId);
-								LogMessage("Transmission from %s at NXCore to %s%u", callsign.c_str(), grp ? "TG " : "", dstId);
+								LogMessage("Transmission from %s on Icom Network to %s%u", callsign.c_str(), grp ? "TG " : "", dstId);
 
-								nxCoreActive = true;
+								icomActive = true;
 							}
 						}
 						if ((buffer[0U] & 0xF0U) == 0x90U && buffer[2U] == 0x09U) {
@@ -347,14 +387,14 @@ void CNXDNReflector::run()
 								dstId = tempDstId;
 
 								std::string callsign = lookup->find(srcId);
-								LogMessage("Transmission from %s at NXCore to %s%u", callsign.c_str(), grp ? "TG " : "", dstId);
+								LogMessage("Transmission from %s on Icom Network to %s%u", callsign.c_str(), grp ? "TG " : "", dstId);
 
-								nxCoreActive = true;
+								icomActive = true;
 							}
 						}
 					}
 
-					if (nxCoreActive) {
+					if (icomActive) {
 						watchdogTimer.start();
 
 						for (std::vector<CNXDNRepeater*>::const_iterator it = m_repeaters.begin(); it != m_repeaters.end(); ++it) {
@@ -363,14 +403,85 @@ void CNXDNReflector::run()
 							nxdnNetwork.write(buffer, len, srcId, dstId, grp, addr, prt);
 						}
 
+						if (m_kenwoodNetwork != NULL)
+							m_kenwoodNetwork->write(buffer, len);
+
 						if ((buffer[0U] == 0x81U || buffer[0U] == 0x83U) && buffer[5U] == 0x08U) {
 							LogMessage("Received end of transmission");
-							nxCoreActive = false;
+							icomActive = false;
 							watchdogTimer.stop();
 						}
 						if ((buffer[0U] & 0xF0U) == 0x90U && buffer[2U] == 0x08U) {
 							LogMessage("Received end of transmission");
-							nxCoreActive = false;
+							icomActive = false;
+							watchdogTimer.stop();
+						}
+					}
+				}
+			}
+		}
+
+		if (m_kenwoodNetwork != NULL) {
+			len = m_kenwoodNetwork->read(buffer);
+			if (len > 0U) {
+				if (current == NULL) {
+					if (!kenwoodActive) {
+						if ((buffer[0U] == 0x81U || buffer[0U] == 0x83U) && buffer[5U] == 0x01U) {
+							bool           tempGrp   = (buffer[7U] & 0x20U) == 0x20U;
+							unsigned short tempSrcId = (buffer[8U] << 8) | buffer[9U];
+							unsigned short tempDstId = (buffer[10U] << 8) | buffer[11U];
+
+							if (tempGrp && tempDstId == tg) {
+								// Save the grp, src and dest for use in the NXDN Protocol messages
+								grp = tempGrp;
+								srcId = tempSrcId;
+								dstId = tempDstId;
+
+								std::string callsign = lookup->find(srcId);
+								LogMessage("Transmission from %s on Kenwood Network to %s%u", callsign.c_str(), grp ? "TG " : "", dstId);
+
+								kenwoodActive = true;
+							}
+						}
+						if ((buffer[0U] & 0xF0U) == 0x90U && buffer[2U] == 0x09U) {
+							bool           tempGrp   = (buffer[4U] & 0x20U) == 0x20U;
+							unsigned short tempSrcId = (buffer[5U] << 8) | buffer[6U];
+							unsigned short tempDstId = (buffer[7U] << 8) | buffer[8U];
+
+							if (tempGrp && tempDstId == tg) {
+								// Save the grp, src and dest for use in the NXDN Protocol messages
+								grp = tempGrp;
+								srcId = tempSrcId;
+								dstId = tempDstId;
+
+								std::string callsign = lookup->find(srcId);
+								LogMessage("Transmission from %s on Kenwood Network to %s%u", callsign.c_str(), grp ? "TG " : "", dstId);
+
+								kenwoodActive = true;
+							}
+						}
+					}
+
+					if (kenwoodActive) {
+						watchdogTimer.start();
+
+						for (std::vector<CNXDNRepeater*>::const_iterator it = m_repeaters.begin(); it != m_repeaters.end(); ++it) {
+							in_addr addr = (*it)->m_address;
+							unsigned int prt = (*it)->m_port;
+							nxdnNetwork.write(buffer, len, srcId, dstId, grp, addr, prt);
+						}
+
+						if (m_icomNetwork != NULL)
+							m_icomNetwork->write(buffer, len);
+
+						if ((buffer[0U] == 0x81U || buffer[0U] == 0x83U) && buffer[5U] == 0x08U) {
+							LogMessage("Received end of transmission");
+							kenwoodActive = false;
+							watchdogTimer.stop();
+						}
+						if ((buffer[0U] & 0xF0U) == 0x90U && buffer[2U] == 0x08U) {
+							LogMessage("Received end of transmission");
+							kenwoodActive = false;
 							watchdogTimer.stop();
 						}
 					}
@@ -403,7 +514,8 @@ void CNXDNReflector::run()
 			LogMessage("Network watchdog has expired");
 			watchdogTimer.stop();
 			current = NULL;
-			nxCoreActive = false;
+			icomActive = false;
+			kenwoodActive = false;
 		}
 
 		dumpTimer.clock(ms);
@@ -412,8 +524,11 @@ void CNXDNReflector::run()
 			dumpTimer.start();
 		}
 
-		if (m_nxCoreNetwork != NULL)
-			m_nxCoreNetwork->clock(ms);
+		if (m_icomNetwork != NULL)
+			m_icomNetwork->clock(ms);
+
+		if (m_kenwoodNetwork != NULL)
+			m_kenwoodNetwork->clock(ms);
 
 		if (ms < 5U)
 			CThread::sleep(5U);
@@ -421,7 +536,9 @@ void CNXDNReflector::run()
 
 	nxdnNetwork.close();
 
-	closeNXCore();
+	closeIcomNetwork();
+
+	closeKenwoodNetwork();
 
 	lookup->stop();
 
@@ -457,28 +574,46 @@ void CNXDNReflector::dumpRepeaters() const
 	}
 }
 
-bool CNXDNReflector::openNXCore()
+bool CNXDNReflector::openIcomNetwork()
 {
-	std::string protocol = m_conf.getNXCoreProtocol();
-	if (protocol == "Kenwood")
-		m_nxCoreNetwork = new CKenwoodNetwork(m_conf.getNXCoreAddress(), m_conf.getNXCoreDebug());
-	else
-		m_nxCoreNetwork = new CIcomNetwork(m_conf.getNXCoreAddress(), m_conf.getNXCoreDebug());
-	bool ret = m_nxCoreNetwork->open();
+	m_icomNetwork = new CIcomNetwork(m_conf.getIcomAddress(), m_conf.getIcomDebug());
+	bool ret = m_icomNetwork->open();
 	if (!ret) {
-		delete m_nxCoreNetwork;
-		m_nxCoreNetwork = NULL;
+		delete m_icomNetwork;
+		m_icomNetwork = NULL;
 		return false;
 	}
 
 	return true;
 }
 
-void CNXDNReflector::closeNXCore()
+bool CNXDNReflector::openKenwoodNetwork()
 {
-	if (m_nxCoreNetwork != NULL) {
-		m_nxCoreNetwork->close();
-		delete m_nxCoreNetwork;
-		m_nxCoreNetwork = NULL;
+	m_kenwoodNetwork = new CKenwoodNetwork(m_conf.getKenwoodAddress(), m_conf.getKenwoodDebug());
+	bool ret = m_kenwoodNetwork->open();
+	if (!ret) {
+		delete m_kenwoodNetwork;
+		m_kenwoodNetwork = NULL;
+		return false;
+	}
+
+	return true;
+}
+
+void CNXDNReflector::closeIcomNetwork()
+{
+	if (m_icomNetwork != NULL) {
+		m_icomNetwork->close();
+		delete m_icomNetwork;
+		m_icomNetwork = NULL;
+	}
+}
+
+void CNXDNReflector::closeKenwoodNetwork()
+{
+	if (m_kenwoodNetwork != NULL) {
+		m_kenwoodNetwork->close();
+		delete m_kenwoodNetwork;
+		m_kenwoodNetwork = NULL;
 	}
 }
