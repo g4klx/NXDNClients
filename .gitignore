@@ -13,3 +13,7 @@ x64
 *.user
 *.VC.db
 .vs
+NXDNGateway/NXDNGateway
+NXDNParrot/NXDNParrot
+NXDNReflector/NXDNReflector
+

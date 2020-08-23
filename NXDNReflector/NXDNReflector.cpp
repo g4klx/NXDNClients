@@ -216,9 +216,14 @@ void CNXDNReflector::run()
 
 	LogMessage("Starting NXDNReflector-%s", VERSION);
 
+	enum {
+		ACTIVE_NONE,
+		ACTIVE_YSF,
+		ACTIVE_ICOM,
+		ACTIVE_KENWOOD
+	} active = ACTIVE_NONE;
+
 	CNXDNRepeater* current = NULL;
-	bool icomActive = false;
-	bool kenwoodActive = false;
 
 	unsigned short srcId = 0U;
 	unsigned short dstId = 0U;
@@ -316,14 +321,16 @@ void CNXDNReflector::run()
 					if (grp && dstId == tg) {
 						rpt->m_timer.start();
 
-						if (current == NULL && !(icomActive || kenwoodActive)) {
+						if (current == NULL && active == ACTIVE_NONE) {
 							current = rpt;
 
 							std::string callsign = lookup->find(srcId);
 							LogMessage("Transmission from %s at %s to %s%u", callsign.c_str(), current->m_callsign.c_str(), grp ? "TG " : "", dstId);
+
+							active = ACTIVE_YSF;
 						}
 
-						if (current == rpt) {
+						if (active == ACTIVE_YSF) {
 							watchdogTimer.start();
 
 							for (std::vector<CNXDNRepeater*>::const_iterator it = m_repeaters.begin(); it != m_repeaters.end(); ++it) {
@@ -341,8 +348,9 @@ void CNXDNReflector::run()
 
 							if ((buffer[9U] & 0x08U) == 0x08U) {
 								LogMessage("Received end of transmission");
-								watchdogTimer.stop();
 								current = NULL;
+								active = ACTIVE_NONE;
+								watchdogTimer.stop();
 							}
 						}
 					}
@@ -357,7 +365,7 @@ void CNXDNReflector::run()
 			len = m_icomNetwork->read(buffer);
 			if (len > 0U) {
 				if (current == NULL) {
-					if (!icomActive) {
+					if (active == ACTIVE_NONE) {
 						if ((buffer[0U] == 0x81U || buffer[0U] == 0x83U) && buffer[5U] == 0x01U) {
 							bool           tempGrp   = (buffer[7U] & 0x20U) == 0x20U;
 							unsigned short tempSrcId = (buffer[8U]  << 8) | buffer[9U];
@@ -372,7 +380,7 @@ void CNXDNReflector::run()
 								std::string callsign = lookup->find(srcId);
 								LogMessage("Transmission from %s on Icom Network to %s%u", callsign.c_str(), grp ? "TG " : "", dstId);
 
-								icomActive = true;
+								active = ACTIVE_ICOM;
 							}
 						}
 						if ((buffer[0U] & 0xF0U) == 0x90U && buffer[2U] == 0x09U) {
@@ -389,12 +397,12 @@ void CNXDNReflector::run()
 								std::string callsign = lookup->find(srcId);
 								LogMessage("Transmission from %s on Icom Network to %s%u", callsign.c_str(), grp ? "TG " : "", dstId);
 
-								icomActive = true;
+								active = ACTIVE_ICOM;
 							}
 						}
 					}
 
-					if (icomActive) {
+					if (active == ACTIVE_ICOM) {
 						watchdogTimer.start();
 
 						for (std::vector<CNXDNRepeater*>::const_iterator it = m_repeaters.begin(); it != m_repeaters.end(); ++it) {
@@ -408,12 +416,12 @@ void CNXDNReflector::run()
 
 						if ((buffer[0U] == 0x81U || buffer[0U] == 0x83U) && buffer[5U] == 0x08U) {
 							LogMessage("Received end of transmission");
-							icomActive = false;
+							active = ACTIVE_NONE;
 							watchdogTimer.stop();
 						}
 						if ((buffer[0U] & 0xF0U) == 0x90U && buffer[2U] == 0x08U) {
 							LogMessage("Received end of transmission");
-							icomActive = false;
+							active = ACTIVE_NONE;
 							watchdogTimer.stop();
 						}
 					}
@@ -425,7 +433,7 @@ void CNXDNReflector::run()
 			len = m_kenwoodNetwork->read(buffer);
 			if (len > 0U) {
 				if (current == NULL) {
-					if (!kenwoodActive) {
+					if (active == ACTIVE_NONE) {
 						if ((buffer[0U] == 0x81U || buffer[0U] == 0x83U) && buffer[5U] == 0x01U) {
 							bool           tempGrp   = (buffer[7U] & 0x20U) == 0x20U;
 							unsigned short tempSrcId = (buffer[8U] << 8) | buffer[9U];
@@ -440,7 +448,7 @@ void CNXDNReflector::run()
 								std::string callsign = lookup->find(srcId);
 								LogMessage("Transmission from %s on Kenwood Network to %s%u", callsign.c_str(), grp ? "TG " : "", dstId);
 
-								kenwoodActive = true;
+								active = ACTIVE_KENWOOD;
 							}
 						}
 						if ((buffer[0U] & 0xF0U) == 0x90U && buffer[2U] == 0x09U) {
@@ -457,12 +465,12 @@ void CNXDNReflector::run()
 								std::string callsign = lookup->find(srcId);
 								LogMessage("Transmission from %s on Kenwood Network to %s%u", callsign.c_str(), grp ? "TG " : "", dstId);
 
-								kenwoodActive = true;
+								active = ACTIVE_KENWOOD;
 							}
 						}
 					}
 
-					if (kenwoodActive) {
+					if (active == ACTIVE_KENWOOD) {
 						watchdogTimer.start();
 
 						for (std::vector<CNXDNRepeater*>::const_iterator it = m_repeaters.begin(); it != m_repeaters.end(); ++it) {
@@ -476,12 +484,12 @@ void CNXDNReflector::run()
 
 						if ((buffer[0U] == 0x81U || buffer[0U] == 0x83U) && buffer[5U] == 0x08U) {
 							LogMessage("Received end of transmission");
-							kenwoodActive = false;
+							active = ACTIVE_NONE;
 							watchdogTimer.stop();
 						}
 						if ((buffer[0U] & 0xF0U) == 0x90U && buffer[2U] == 0x08U) {
 							LogMessage("Received end of transmission");
-							kenwoodActive = false;
+							active = ACTIVE_NONE;
 							watchdogTimer.stop();
 						}
 					}
@@ -514,8 +522,7 @@ void CNXDNReflector::run()
 			LogMessage("Network watchdog has expired");
 			watchdogTimer.stop();
 			current = NULL;
-			icomActive = false;
-			kenwoodActive = false;
+			active = ACTIVE_NONE;
 		}
 
 		dumpTimer.clock(ms);
