@@ -62,6 +62,8 @@ m_lookupTime(0U),
 m_voiceEnabled(true),
 m_voiceLanguage("en_GB"),
 m_voiceDirectory(),
+m_logDisplayLevel(0U),
+m_logFileLevel(0U),
 m_logFilePath(),
 m_logFileRoot(),
 m_aprsEnabled(false),
@@ -194,6 +196,10 @@ bool CConf::read()
 			  m_logFilePath = value;
 		  else if (::strcmp(key, "FileRoot") == 0)
 			  m_logFileRoot = value;
+		  else if (::strcmp(key, "FileLevel") == 0)
+			  m_logFileLevel = (unsigned int)::atoi(value);
+		  else if (::strcmp(key, "DisplayLevel") == 0)
+			  m_logDisplayLevel = (unsigned int)::atoi(value);
 	  } else if (section == SECTION_APRS) {
 		  if (::strcmp(key, "Enable") == 0)
 			  m_aprsEnabled = ::atoi(value) == 1;
@@ -353,11 +359,6 @@ std::string CConf::getVoiceDirectory() const
 	return m_voiceDirectory;
 }
 
-std::string CConf::getLogFilePath() const
-{
-  return m_logFilePath;
-}
-
 bool CConf::getAPRSEnabled() const
 {
 	return m_aprsEnabled;
@@ -383,9 +384,24 @@ std::string CConf::getAPRSDescription() const
 	return m_aprsDescription;
 }
 
+unsigned int CConf::getLogDisplayLevel() const
+{
+	return m_logDisplayLevel;
+}
+
+unsigned int CConf::getLogFileLevel() const
+{
+	return m_logFileLevel;
+}
+
+std::string CConf::getLogFilePath() const
+{
+	return m_logFilePath;
+}
+
 std::string CConf::getLogFileRoot() const
 {
-  return m_logFileRoot;
+	return m_logFileRoot;
 }
 
 unsigned int CConf::getNetworkPort() const

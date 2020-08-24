@@ -67,6 +67,8 @@ public:
   std::string  getAPRSDescription() const;
 
   // The Log section
+  unsigned int getLogDisplayLevel() const;
+  unsigned int getLogFileLevel() const;
   std::string  getLogFilePath() const;
   std::string  getLogFileRoot() const;
 
@@ -119,6 +121,8 @@ private:
   std::string  m_voiceLanguage;
   std::string  m_voiceDirectory;
 
+  unsigned int m_logDisplayLevel;
+  unsigned int m_logFileLevel;
   std::string  m_logFilePath;
   std::string  m_logFileRoot;
 
