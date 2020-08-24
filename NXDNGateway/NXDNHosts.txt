@@ -106,7 +106,7 @@
 21410 nxdn21410.nxdn.es 41400
 
 # 21465 ADER Multimode
-21465 80.211.106.186 41400
+21465 aderdigital.ddns.net 41400
 
 # 22200 IT HBLINK ITALY
 22200 nxdn.hblink.it 41400
