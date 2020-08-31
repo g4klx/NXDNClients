@@ -99,6 +99,9 @@
 # 20201 NXDN Athens GR HBLink
 20201 stargate-dmr.net  41400
 
+# 20421 DL-Nordwest (dl-nordwest.com) by 9V1LH/DG1BGS and DK5BS
+20421 9v1lh.spdns.org 41400
+
 # 20945 Deutschland DL1BH
 20945	dl1bh.ddns.net	41400
 
