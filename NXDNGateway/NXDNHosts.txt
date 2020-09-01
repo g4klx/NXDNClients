@@ -48,6 +48,9 @@
 # 2140 DMRplus BM Multi
 2140  94.177.235.81 41400
 
+# 21418 RC Veleta GR
+21418  rcveleta.xreflector.es 41400
+
 # 2225  IT Tuscany
 2225  80.211.99.134 41400
 
@@ -107,6 +110,9 @@
 
 # 21410 NXDN SPAIN
 21410 nxdn21410.nxdn.es 41400
+
+# 21418 NXDN RC Veleta
+21418 rcveleta.xreflector.es 41400
 
 # 21465 ADER Multimode
 21465 aderdigital.ddns.net 41400
