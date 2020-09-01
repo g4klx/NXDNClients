@@ -111,6 +111,9 @@
 # 21410 NXDN SPAIN
 21410 nxdn21410.nxdn.es 41400
 
+# 21418 NXDN RC Veleta
+21418 rcveleta.xreflector.es 41400
+
 # 21465 ADER Multimode
 21465 aderdigital.ddns.net 41400
 
