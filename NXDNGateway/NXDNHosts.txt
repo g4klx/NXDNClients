@@ -157,7 +157,7 @@
 28299	65.101.7.52	41400
 
 # 30639 NorCal-Bridge / Multimode-NXDN
-30639	wiresxdigi.dyndns.org	41400
+30639	nfonorcalnxdn.dyndns.org	41400
 
 # 31010 Alabama-Link
 31010	nxdn.alabamalink.info	41400
