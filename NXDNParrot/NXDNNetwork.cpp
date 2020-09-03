@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2009-2014,2016,2018 by Jonathan Naylor G4KLX
+ *   Copyright (C) 2009-2014,2016,2018,2020 by Jonathan Naylor G4KLX
  *
  *   This program is free software; you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -24,8 +24,8 @@
 
 CNXDNNetwork::CNXDNNetwork(unsigned int port) :
 m_socket(port),
-m_address(),
-m_port(0U)
+m_addr(),
+m_addrLen(0U)
 {
 }
 
@@ -42,24 +42,24 @@ bool CNXDNNetwork::open()
 
 bool CNXDNNetwork::write(const unsigned char* data, unsigned int length)
 {
-	if (m_port == 0U)
+	if (m_addrLen == 0U)
 		return true;
 
 	assert(data != NULL);
 
-	return m_socket.write(data, length, m_address, m_port);
+	return m_socket.write(data, length, m_addr, m_addrLen);
 }
 
 unsigned int CNXDNNetwork::read(unsigned char* data, unsigned int len)
 {
-	in_addr address;
-	unsigned int port;
-	int length = m_socket.read(data, len, address, port);
+	sockaddr_storage addr;
+	unsigned int addrlen;
+	int length = m_socket.read(data, len, addr, addrlen);
 	if (length <= 0)
 		return 0U;
 
-	m_address.s_addr = address.s_addr;
-	m_port = port;
+	m_addr    = addr;
+	m_addrLen = addrlen;
 
 	if (::memcmp(data, "NXDNP", 5U) == 0 && length == 17) {			// A poll
 		write(data, length);
@@ -73,7 +73,7 @@ unsigned int CNXDNNetwork::read(unsigned char* data, unsigned int len)
 
 void CNXDNNetwork::end()
 {
-	m_port = 0U;
+	m_addrLen = 0U;
 }
 
 void CNXDNNetwork::close()

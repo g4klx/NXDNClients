@@ -233,12 +233,12 @@ void CNXDNReflector::run()
 
 	for (;;) {
 		unsigned char buffer[200U];
-		in_addr address;
-		unsigned int port;
+		sockaddr_storage address;
+		unsigned int addressLen;
 
-		unsigned int len = nxdnNetwork.read(buffer, 200U, address, port);
+		unsigned int len = nxdnNetwork.read(buffer, 200U, address, addressLen);
 		if (len > 0U) {
-			CNXDNRepeater* rpt = findRepeater(address, port);
+			CNXDNRepeater* rpt = findRepeater(address);
 
 			if (::memcmp(buffer, "NXDNP", 5U) == 0 && len == 17U) {
 				unsigned short id = (buffer[15U] << 8) | buffer[16U];
@@ -246,25 +246,25 @@ void CNXDNReflector::run()
 					if (rpt == NULL) {
 						rpt = new CNXDNRepeater;
 						rpt->m_timer.start();
-						rpt->m_address = address;
-						rpt->m_port = port;
+						rpt->m_addr     = address;
+						rpt->m_addrLen  = addressLen;
 						rpt->m_callsign = std::string((char*)(buffer + 5U), 10U);
 						m_repeaters.push_back(rpt);
 
-						LogMessage("Adding %s (%s:%u)", rpt->m_callsign.c_str(), ::inet_ntoa(address), port);
+						LogMessage("Adding %s", rpt->m_callsign.c_str());
 					} else {
 						rpt->m_timer.start();
 					}
 
 					// Return the poll
-					nxdnNetwork.write(buffer, len, address, port);
+					nxdnNetwork.write(buffer, len, address, addressLen);
 				}
 			} else if (::memcmp(buffer, "NXDNU", 5U) == 0 && len == 17U) {
 				unsigned short id = (buffer[15U] << 8) | buffer[16U];
 				if (id == tg) {
 					if (rpt != NULL) {
 						std::string callsign = std::string((char*)(buffer + 5U), 10U);
-						LogMessage("Removing %s (%s:%u)", callsign.c_str(), ::inet_ntoa(address), port);
+						LogMessage("Removing %s", callsign.c_str());
 
 						for (std::vector<CNXDNRepeater*>::iterator it = m_repeaters.begin(); it != m_repeaters.end(); ++it) {
 							if (*it == rpt) {
@@ -334,10 +334,10 @@ void CNXDNReflector::run()
 							watchdogTimer.start();
 
 							for (std::vector<CNXDNRepeater*>::const_iterator it = m_repeaters.begin(); it != m_repeaters.end(); ++it) {
-								in_addr addr = (*it)->m_address;
-								unsigned int prt = (*it)->m_port;
-								if (addr.s_addr != address.s_addr || prt != port)
-									nxdnNetwork.write(buffer, len, addr, prt);
+								sockaddr_storage addr = (*it)->m_addr;
+								unsigned int addrLen  = (*it)->m_addrLen;
+								if (!CUDPSocket::match(addr, address))
+									nxdnNetwork.write(buffer, len, addr, addrLen);
 							}
 
 							if (m_icomNetwork != NULL)
@@ -355,7 +355,7 @@ void CNXDNReflector::run()
 						}
 					}
 				} else {
-					LogMessage("Data received from an unknown source - %s:%u", ::inet_ntoa(address), port);
+					LogMessage("Data received from an unknown source");
 					CUtils::dump(2U, "Data", buffer, len);
 				}
 			}
@@ -406,9 +406,9 @@ void CNXDNReflector::run()
 						watchdogTimer.start();
 
 						for (std::vector<CNXDNRepeater*>::const_iterator it = m_repeaters.begin(); it != m_repeaters.end(); ++it) {
-							in_addr addr = (*it)->m_address;
-							unsigned int prt = (*it)->m_port;
-							nxdnNetwork.write(buffer, len, srcId, dstId, grp, addr, prt);
+							sockaddr_storage addr = (*it)->m_addr;
+							unsigned int addrLen  = (*it)->m_addrLen;
+							nxdnNetwork.write(buffer, len, srcId, dstId, grp, addr, addrLen);
 						}
 
 						if (m_kenwoodNetwork != NULL)
@@ -474,9 +474,9 @@ void CNXDNReflector::run()
 						watchdogTimer.start();
 
 						for (std::vector<CNXDNRepeater*>::const_iterator it = m_repeaters.begin(); it != m_repeaters.end(); ++it) {
-							in_addr addr = (*it)->m_address;
-							unsigned int prt = (*it)->m_port;
-							nxdnNetwork.write(buffer, len, srcId, dstId, grp, addr, prt);
+							sockaddr_storage addr = (*it)->m_addr;
+							unsigned int addrLen  = (*it)->m_addrLen;
+							nxdnNetwork.write(buffer, len, srcId, dstId, grp, addr, addrLen);
 						}
 
 						if (m_icomNetwork != NULL)
@@ -507,10 +507,8 @@ void CNXDNReflector::run()
 		for (std::vector<CNXDNRepeater*>::iterator it = m_repeaters.begin(); it != m_repeaters.end(); ++it) {
 			CNXDNRepeater* itRpt = *it;
 			if (itRpt->m_timer.hasExpired()) {
-				in_addr address      = itRpt->m_address;
-				unsigned int port    = itRpt->m_port;
 				std::string callsign = itRpt->m_callsign;
-				LogMessage("Removing %s (%s:%u) disappeared", callsign.c_str(), ::inet_ntoa(address), port);
+				LogMessage("Removing %s disappeared", callsign.c_str());
 				m_repeaters.erase(it);
 				delete itRpt;
 				break;
@@ -552,10 +550,10 @@ void CNXDNReflector::run()
 	::LogFinalise();
 }
 
-CNXDNRepeater* CNXDNReflector::findRepeater(const in_addr& address, unsigned int port) const
+CNXDNRepeater* CNXDNReflector::findRepeater(const sockaddr_storage& addr) const
 {
 	for (std::vector<CNXDNRepeater*>::const_iterator it = m_repeaters.begin(); it != m_repeaters.end(); ++it) {
-		if (address.s_addr == (*it)->m_address.s_addr && (*it)->m_port == port)
+		if (CUDPSocket::match(addr, (*it)->m_addr))
 			return *it;
 	}
 
@@ -572,12 +570,10 @@ void CNXDNReflector::dumpRepeaters() const
 	LogMessage("Currently linked repeaters:");
 
 	for (std::vector<CNXDNRepeater*>::const_iterator it = m_repeaters.begin(); it != m_repeaters.end(); ++it) {
-		in_addr address      = (*it)->m_address;
-		unsigned int port    = (*it)->m_port;
 		std::string callsign = (*it)->m_callsign;
 		unsigned int timer   = (*it)->m_timer.getTimer();
 		unsigned int timeout = (*it)->m_timer.getTimeout();
-		LogMessage("    %s (%s:%u) %u/%u", callsign.c_str(), ::inet_ntoa(address), port, timer, timeout);
+		LogMessage("    %s %u/%u", callsign.c_str(), timer, timeout);
 	}
 }
 

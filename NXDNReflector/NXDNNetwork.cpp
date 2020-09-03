@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2009-2014,2016,2018 by Jonathan Naylor G4KLX
+ *   Copyright (C) 2009-2014,2016,2018,2020 by Jonathan Naylor G4KLX
  *
  *   This program is free software; you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -41,23 +41,21 @@ bool CNXDNNetwork::open()
 	return m_socket.open();
 }
 
-bool CNXDNNetwork::write(const unsigned char* data, unsigned int length, const in_addr& address, unsigned int port)
+bool CNXDNNetwork::write(const unsigned char* data, unsigned int length, const sockaddr_storage& addr, unsigned int addrLen)
 {
 	assert(data != NULL);
 	assert(length > 0U);
-	assert(port > 0U);
 
 	if (m_debug)
 		CUtils::dump(1U, "NXDN Network Data Sent", data, length);
 
-	return m_socket.write(data, length, address, port);
+	return m_socket.write(data, length, addr, addrLen);
 }
 
-bool CNXDNNetwork::write(const unsigned char* data, unsigned int length, unsigned short srcId, unsigned short dstId, bool grp, const in_addr& address, unsigned int port)
+bool CNXDNNetwork::write(const unsigned char* data, unsigned int length, unsigned short srcId, unsigned short dstId, bool grp, const sockaddr_storage& addr, unsigned int addrLen)
 {
 	assert(data != NULL);
 	assert(length > 0U);
-	assert(port > 0U);
 
 	unsigned char buffer[50U];
 
@@ -95,15 +93,15 @@ bool CNXDNNetwork::write(const unsigned char* data, unsigned int length, unsigne
 	if (m_debug)
 		CUtils::dump(1U, "NXDN Network Data Sent", buffer, 43U);
 
-	return m_socket.write(buffer, 43U, address, port);
+	return m_socket.write(buffer, 43U, addr, addrLen);
 }
 
-unsigned int CNXDNNetwork::read(unsigned char* data, unsigned int length, in_addr& address, unsigned int& port)
+unsigned int CNXDNNetwork::read(unsigned char* data, unsigned int length, sockaddr_storage& addr, unsigned int& addrLen)
 {
 	assert(data != NULL);
 	assert(length > 0U);
 
-	int len = m_socket.read(data, length, address, port);
+	int len = m_socket.read(data, length, addr, addrLen);
 	if (len <= 0)
 		return 0U;
 

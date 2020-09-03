@@ -43,17 +43,17 @@
 class CNXDNRepeater {
 public:
 	CNXDNRepeater() :
-	m_address(),
-	m_port(0U),
+	m_addr(),
+	m_addrLen(0U),
 	m_callsign(),
 	m_timer(1000U, 120U)
 	{
 	}
 
-	in_addr      m_address;
-	unsigned int m_port;
-	std::string  m_callsign;
-	CTimer       m_timer;
+	sockaddr_storage m_addr;
+	unsigned int     m_addrLen;
+	std::string      m_callsign;
+	CTimer           m_timer;
 };
 
 class CNXDNReflector
@@ -70,7 +70,7 @@ private:
 	CKenwoodNetwork*            m_kenwoodNetwork;
 	std::vector<CNXDNRepeater*> m_repeaters;
 
-	CNXDNRepeater* findRepeater(const in_addr& address, unsigned int port) const;
+	CNXDNRepeater* findRepeater(const sockaddr_storage& addr) const;
 	void dumpRepeaters() const;
 
 	bool openIcomNetwork();

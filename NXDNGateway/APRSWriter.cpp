@@ -34,8 +34,8 @@ m_latitude(0.0F),
 m_longitude(0.0F),
 m_height(0),
 m_desc(),
-m_aprsAddress(),
-m_aprsPort(port),
+m_aprsAddr(),
+m_aprsAddrLen(),
 m_aprsSocket()
 #if defined(USE_GPSD)
 ,m_gpsdEnabled(false),
@@ -53,7 +53,7 @@ m_gpsdData()
 		m_callsign.append(suffix.substr(0U, 1U));
 	}
 
-	m_aprsAddress = CUDPSocket::lookup(address);
+	CUDPSocket::lookup(address, port, m_aprsAddr, m_aprsAddrLen);
 }
 
 CAPRSWriter::~CAPRSWriter()
@@ -120,7 +120,7 @@ void CAPRSWriter::write(const char* data)
 	if (m_debug)
 		LogDebug("APRS ==> %s", data);
 
-	m_aprsSocket.write((unsigned char*)data, (unsigned int)::strlen(data), m_aprsAddress, m_aprsPort);
+	m_aprsSocket.write((unsigned char*)data, (unsigned int)::strlen(data), m_aprsAddr, m_aprsAddrLen);
 }
 
 void CAPRSWriter::clock(unsigned int ms)

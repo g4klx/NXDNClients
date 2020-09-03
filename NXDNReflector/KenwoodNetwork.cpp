@@ -39,7 +39,10 @@ const unsigned int RTCP_PORT = 64001U;
 CKenwoodNetwork::CKenwoodNetwork(const std::string& address, bool debug) :
 m_rtpSocket(RTP_PORT),
 m_rtcpSocket(RTCP_PORT),
-m_address(),
+m_rtpAddr(),
+m_rtpAddrLen(),
+m_rtcpAddr(),
+m_rtcpAddrLen(),
 m_headerSeen(false),
 m_seen1(false),
 m_seen2(false),
@@ -63,7 +66,8 @@ m_random()
 
 	m_sacch = new unsigned char[10U];
 
-	m_address = CUDPSocket::lookup(address);
+	CUDPSocket::lookup(address, RTP_PORT, m_rtpAddr, m_rtpAddrLen);
+	CUDPSocket::lookup(address, RTCP_PORT, m_rtcpAddr, m_rtcpAddrLen);
 
 	std::random_device rd;
 	std::mt19937 mt(rd());
@@ -78,9 +82,6 @@ CKenwoodNetwork::~CKenwoodNetwork()
 bool CKenwoodNetwork::open()
 {
 	LogMessage("Opening Kenwood connection");
-
-	if (m_address.s_addr == INADDR_NONE)
-		return false;
 
 	if (!m_rtcpSocket.open())
 		return false;
@@ -280,7 +281,7 @@ bool CKenwoodNetwork::writeRTPVoiceHeader(const unsigned char* data)
 	if (m_debug)
 		CUtils::dump(1U, "Kenwood Network RTP Data Sent", buffer, 47U);
 
-	return m_rtpSocket.write(buffer, 47U, m_address, RTP_PORT);
+	return m_rtpSocket.write(buffer, 47U, m_rtpAddr, m_rtpAddrLen);
 }
 
 bool CKenwoodNetwork::writeRTPVoiceTrailer(const unsigned char* data)
@@ -326,7 +327,7 @@ bool CKenwoodNetwork::writeRTPVoiceTrailer(const unsigned char* data)
 	if (m_debug)
 		CUtils::dump(1U, "Kenwood Network RTP Data Sent", buffer, 47U);
 
-	return m_rtpSocket.write(buffer, 47U, m_address, RTP_PORT);
+	return m_rtpSocket.write(buffer, 47U, m_rtpAddr, m_rtpAddrLen);
 }
 
 bool CKenwoodNetwork::writeRTPVoiceData(const unsigned char* data)
@@ -372,7 +373,7 @@ bool CKenwoodNetwork::writeRTPVoiceData(const unsigned char* data)
 	if (m_debug)
 		CUtils::dump(1U, "Kenwood Network RTP Data Sent", buffer, 59U);
 
-	return m_rtpSocket.write(buffer, 59U, m_address, RTP_PORT);
+	return m_rtpSocket.write(buffer, 59U, m_rtpAddr, m_rtpAddrLen);
 }
 
 bool CKenwoodNetwork::writeRTCPStart()
@@ -432,7 +433,7 @@ bool CKenwoodNetwork::writeRTCPStart()
 	if (m_debug)
 		CUtils::dump(1U, "Kenwood Network RTCP Data Sent", buffer, 28U);
 
-	return m_rtcpSocket.write(buffer, 28U, m_address, RTCP_PORT);
+	return m_rtcpSocket.write(buffer, 28U, m_rtcpAddr, m_rtcpAddrLen);
 }
 
 bool CKenwoodNetwork::writeRTCPPing()
@@ -474,7 +475,7 @@ bool CKenwoodNetwork::writeRTCPPing()
 	if (m_debug)
 		CUtils::dump(1U, "Kenwood Network RTCP Data Sent", buffer, 28U);
 
-	return m_rtcpSocket.write(buffer, 28U, m_address, RTCP_PORT);
+	return m_rtcpSocket.write(buffer, 28U, m_rtcpAddr, m_rtcpAddrLen);
 }
 
 bool CKenwoodNetwork::writeRTCPHang(unsigned char type, unsigned short src, unsigned short dst)
@@ -517,7 +518,7 @@ bool CKenwoodNetwork::writeRTCPHang()
 	if (m_debug)
 		CUtils::dump(1U, "Kenwood Network RTCP Data Sent", buffer, 20U);
 
-	return m_rtcpSocket.write(buffer, 20U, m_address, RTCP_PORT);
+	return m_rtcpSocket.write(buffer, 20U, m_rtcpAddr, m_rtcpAddrLen);
 }
 
 unsigned int CKenwoodNetwork::read(unsigned char* data)
@@ -552,15 +553,15 @@ unsigned int CKenwoodNetwork::readRTP(unsigned char* data)
 
 	unsigned char buffer[BUFFER_LENGTH];
 
-	in_addr address;
-	unsigned int port;
-	int length = m_rtpSocket.read(buffer, BUFFER_LENGTH, address, port);
+	sockaddr_storage addr;
+	unsigned int addrLen;
+	int length = m_rtpSocket.read(buffer, BUFFER_LENGTH, addr, addrLen);
 	if (length <= 0)
 		return 0U;
 
 	// Check if the data is for us
-	if (m_address.s_addr != address.s_addr) {
-		LogMessage("Kenwood RTP packet received from an invalid source, %08X != %08X", m_address.s_addr, address.s_addr);
+	if (!CUDPSocket::match(m_rtpAddr, addr)) {
+		LogMessage("Kenwood RTP packet received from an invalid source");
 		return 0U;
 	}
 
@@ -578,15 +579,15 @@ unsigned int CKenwoodNetwork::readRTCP(unsigned char* data)
 
 	unsigned char buffer[BUFFER_LENGTH];
 
-	in_addr address;
-	unsigned int port;
-	int length = m_rtcpSocket.read(buffer, BUFFER_LENGTH, address, port);
+	sockaddr_storage addr;
+	unsigned int addrLen;
+	int length = m_rtcpSocket.read(buffer, BUFFER_LENGTH, addr, addrLen);
 	if (length <= 0)
 		return 0U;
 
 	// Check if the data is for us
-	if (m_address.s_addr != address.s_addr) {
-		LogMessage("Kenwood RTCP packet received from an invalid source, %08X != %08X", m_address.s_addr, address.s_addr);
+	if (!CUDPSocket::match(m_rtcpAddr, addr)) {
+		LogMessage("Kenwood RTCP packet received from an invalid source");
 		return 0U;
 	}
 

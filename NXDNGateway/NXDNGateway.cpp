@@ -247,24 +247,24 @@ void CNXDNGateway::run()
 	bool grp = false;
 
 	unsigned short currentId = 9999U;
-	in_addr currentAddr;
-	unsigned int currentPort = 0U;
+	sockaddr_storage currentAddr;
+	unsigned int currentAddrLen = 0U;
 
 	unsigned short startupId = m_conf.getNetworkStartup();
 	if (startupId != 9999U) {
 		CNXDNReflector* reflector = reflectors.find(startupId);
 		if (reflector != NULL) {
-			currentId   = startupId;
-			currentAddr = reflector->m_address;
-			currentPort = reflector->m_port;
+			currentId      = startupId;
+			currentAddr    = reflector->m_addr;
+			currentAddrLen = reflector->m_addrLen;
 
 			inactivityTimer.start();
 			pollTimer.start();
 			lostTimer.start();
 
-			remoteNetwork.writePoll(currentAddr, currentPort, currentId);
-			remoteNetwork.writePoll(currentAddr, currentPort, currentId);
-			remoteNetwork.writePoll(currentAddr, currentPort, currentId);
+			remoteNetwork.writePoll(currentAddr, currentAddrLen, currentId);
+			remoteNetwork.writePoll(currentAddr, currentAddrLen, currentId);
+			remoteNetwork.writePoll(currentAddr, currentAddrLen, currentId);
 
 			LogMessage("Linked at startup to reflector %u", currentId);
 		} else {
@@ -274,14 +274,14 @@ void CNXDNGateway::run()
 
 	for (;;) {
 		unsigned char buffer[200U];
-		in_addr address;
-		unsigned int port;
+		sockaddr_storage addr;
+		unsigned int addrLen;
 
 		// From the reflector to the MMDVM
-		unsigned int len = remoteNetwork.readData(buffer, 200U, address, port);
+		unsigned int len = remoteNetwork.readData(buffer, 200U, addr, addrLen);
 		if (len > 0U) {
 			// If we're linked and it's from the right place, send it on
-			if (currentId != 9999U && currentAddr.s_addr == address.s_addr && currentPort == port) {
+			if (currentId != 9999U && CUDPSocket::match(currentAddr, addr)) {
 				// Don't pass reflector control data through to the MMDVM
 				if (::memcmp(buffer, "NXDND", 5U) == 0) {
 					unsigned short dstId = 0U;
@@ -326,9 +326,9 @@ void CNXDNGateway::run()
 							if (voice != NULL && dstId == 9999U)
 								voice->unlinked();
 
-							remoteNetwork.writeUnlink(currentAddr, currentPort, currentId);
-							remoteNetwork.writeUnlink(currentAddr, currentPort, currentId);
-							remoteNetwork.writeUnlink(currentAddr, currentPort, currentId);
+							remoteNetwork.writeUnlink(currentAddr, currentAddrLen, currentId);
+							remoteNetwork.writeUnlink(currentAddr, currentAddrLen, currentId);
+							remoteNetwork.writeUnlink(currentAddr, currentAddrLen, currentId);
 
 							inactivityTimer.stop();
 							pollTimer.stop();
@@ -340,9 +340,9 @@ void CNXDNGateway::run()
 
 					// Link to the new reflector
 					if (reflector != NULL) {
-						currentId = dstId;
-						currentAddr = reflector->m_address;
-						currentPort = reflector->m_port;
+						currentId      = dstId;
+						currentAddr    = reflector->m_addr;
+						currentAddrLen = reflector->m_addrLen;
 
 						std::string callsign = lookup->find(srcId);
 						LogMessage("Linked to reflector %u by %s", currentId, callsign.c_str());
@@ -350,9 +350,9 @@ void CNXDNGateway::run()
 						if (voice != NULL)
 							voice->linkedTo(currentId);
 
-						remoteNetwork.writePoll(currentAddr, currentPort, currentId);
-						remoteNetwork.writePoll(currentAddr, currentPort, currentId);
-						remoteNetwork.writePoll(currentAddr, currentPort, currentId);
+						remoteNetwork.writePoll(currentAddr, currentAddrLen, currentId);
+						remoteNetwork.writePoll(currentAddr, currentAddrLen, currentId);
+						remoteNetwork.writePoll(currentAddr, currentAddrLen, currentId);
 
 						inactivityTimer.start();
 						pollTimer.start();
@@ -392,7 +392,7 @@ void CNXDNGateway::run()
 
 			// If we're linked and we have a network, send it on
 			if (currentId != 9999U) {
-				remoteNetwork.writeData(buffer, len, srcId, dstId, grp, currentAddr, currentPort);
+				remoteNetwork.writeData(buffer, len, srcId, dstId, grp, currentAddr, currentAddrLen);
 				inactivityTimer.start();
 			}
 		}
@@ -404,7 +404,7 @@ void CNXDNGateway::run()
 		}
 
 		if (remoteSocket != NULL) {
-			int res = remoteSocket->read(buffer, 200U, address, port);
+			int res = remoteSocket->read(buffer, 200U, addr, addrLen);
 			if (res > 0) {
 				buffer[res] = '\0';
 				if (::memcmp(buffer + 0U, "TalkGroup", 9U) == 0) {
@@ -420,9 +420,9 @@ void CNXDNGateway::run()
 						if (voice != NULL)
 							voice->unlinked();
 
-						remoteNetwork.writeUnlink(currentAddr, currentPort, currentId);
-						remoteNetwork.writeUnlink(currentAddr, currentPort, currentId);
-						remoteNetwork.writeUnlink(currentAddr, currentPort, currentId);
+						remoteNetwork.writeUnlink(currentAddr, currentAddrLen, currentId);
+						remoteNetwork.writeUnlink(currentAddr, currentAddrLen, currentId);
+						remoteNetwork.writeUnlink(currentAddr, currentAddrLen, currentId);
 
 						inactivityTimer.stop();
 						pollTimer.stop();
@@ -430,18 +430,18 @@ void CNXDNGateway::run()
 
 						currentId = 9999U;
 					} else if (reflector != NULL && currentId == 9999U) {
-						currentId = tg;
-						currentAddr = reflector->m_address;
-						currentPort = reflector->m_port;
+						currentId      = tg;
+						currentAddr    = reflector->m_addr;
+						currentAddrLen = reflector->m_addrLen;
 
 						LogMessage("Linked to reflector %u by remote command", currentId);
 
 						if (voice != NULL)
 							voice->linkedTo(currentId);
 
-						remoteNetwork.writePoll(currentAddr, currentPort, currentId);
-						remoteNetwork.writePoll(currentAddr, currentPort, currentId);
-						remoteNetwork.writePoll(currentAddr, currentPort, currentId);
+						remoteNetwork.writePoll(currentAddr, currentAddrLen, currentId);
+						remoteNetwork.writePoll(currentAddr, currentAddrLen, currentId);
+						remoteNetwork.writePoll(currentAddr, currentAddrLen, currentId);
 
 						inactivityTimer.start();
 						pollTimer.start();
@@ -449,22 +449,22 @@ void CNXDNGateway::run()
 					} else if (reflector != NULL && currentId != 9999U) {
 						LogMessage("Unlinked from reflector %u by remote command", currentId);
 
-						remoteNetwork.writeUnlink(currentAddr, currentPort, currentId);
-						remoteNetwork.writeUnlink(currentAddr, currentPort, currentId);
-						remoteNetwork.writeUnlink(currentAddr, currentPort, currentId);
+						remoteNetwork.writeUnlink(currentAddr, currentAddrLen, currentId);
+						remoteNetwork.writeUnlink(currentAddr, currentAddrLen, currentId);
+						remoteNetwork.writeUnlink(currentAddr, currentAddrLen, currentId);
 
-						currentId = tg;
-						currentAddr = reflector->m_address;
-						currentPort = reflector->m_port;
+						currentId      = tg;
+						currentAddr    = reflector->m_addr;
+						currentAddrLen = reflector->m_addrLen;
 
 						LogMessage("Linked to reflector %u by remote command", currentId);
 
 						if (voice != NULL)
 							voice->linkedTo(currentId);
 
-						remoteNetwork.writePoll(currentAddr, currentPort, currentId);
-						remoteNetwork.writePoll(currentAddr, currentPort, currentId);
-						remoteNetwork.writePoll(currentAddr, currentPort, currentId);
+						remoteNetwork.writePoll(currentAddr, currentAddrLen, currentId);
+						remoteNetwork.writePoll(currentAddr, currentAddrLen, currentId);
+						remoteNetwork.writePoll(currentAddr, currentAddrLen, currentId);
 
 						inactivityTimer.start();
 						pollTimer.start();
@@ -491,9 +491,9 @@ void CNXDNGateway::run()
 			if (currentId != 9999U && startupId == 9999U) {
 				LogMessage("Unlinking from %u due to inactivity", currentId);
 
-				remoteNetwork.writeUnlink(currentAddr, currentPort, currentId);
-				remoteNetwork.writeUnlink(currentAddr, currentPort, currentId);
-				remoteNetwork.writeUnlink(currentAddr, currentPort, currentId);
+				remoteNetwork.writeUnlink(currentAddr, currentAddrLen, currentId);
+				remoteNetwork.writeUnlink(currentAddr, currentAddrLen, currentId);
+				remoteNetwork.writeUnlink(currentAddr, currentAddrLen, currentId);
 
 				if (voice != NULL)
 					voice->unlinked();
@@ -504,16 +504,16 @@ void CNXDNGateway::run()
 				lostTimer.stop();
 			} else if (currentId != startupId) {
 				if (currentId != 9999U) {
-					remoteNetwork.writeUnlink(currentAddr, currentPort, currentId);
-					remoteNetwork.writeUnlink(currentAddr, currentPort, currentId);
-					remoteNetwork.writeUnlink(currentAddr, currentPort, currentId);
+					remoteNetwork.writeUnlink(currentAddr, currentAddrLen, currentId);
+					remoteNetwork.writeUnlink(currentAddr, currentAddrLen, currentId);
+					remoteNetwork.writeUnlink(currentAddr, currentAddrLen, currentId);
 				}
 
 				CNXDNReflector* reflector = reflectors.find(startupId);
 				if (reflector != NULL) {
-					currentId   = startupId;
-					currentAddr = reflector->m_address;
-					currentPort = reflector->m_port;
+					currentId      = startupId;
+					currentAddr    = reflector->m_addr;
+					currentAddrLen = reflector->m_addrLen;
 
 					inactivityTimer.start();
 					pollTimer.start();
@@ -524,9 +524,9 @@ void CNXDNGateway::run()
 					if (voice != NULL)
 						voice->linkedTo(currentId);
 
-					remoteNetwork.writePoll(currentAddr, currentPort, currentId);
-					remoteNetwork.writePoll(currentAddr, currentPort, currentId);
-					remoteNetwork.writePoll(currentAddr, currentPort, currentId);
+					remoteNetwork.writePoll(currentAddr, currentAddrLen, currentId);
+					remoteNetwork.writePoll(currentAddr, currentAddrLen, currentId);
+					remoteNetwork.writePoll(currentAddr, currentAddrLen, currentId);
 				} else {
 					startupId = 9999U;
 					inactivityTimer.stop();
@@ -539,7 +539,7 @@ void CNXDNGateway::run()
 		pollTimer.clock(ms);
 		if (pollTimer.isRunning() && pollTimer.hasExpired()) {
 			if (currentId != 9999U)
-				remoteNetwork.writePoll(currentAddr, currentPort, currentId);
+				remoteNetwork.writePoll(currentAddr, currentAddrLen, currentId);
 			pollTimer.start();
 		}
 

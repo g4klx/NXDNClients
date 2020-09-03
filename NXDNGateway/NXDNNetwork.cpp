@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2009-2014,2016,2018 by Jonathan Naylor G4KLX
+ *   Copyright (C) 2009-2014,2016,2018,2020 by Jonathan Naylor G4KLX
  *
  *   This program is free software; you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -43,11 +43,10 @@ bool CNXDNNetwork::open()
 	return m_socket.open();
 }
 
-bool CNXDNNetwork::writeData(const unsigned char* data, unsigned int length, unsigned short srcId, unsigned short dstId, bool grp, const in_addr& address, unsigned int port)
+bool CNXDNNetwork::writeData(const unsigned char* data, unsigned int length, unsigned short srcId, unsigned short dstId, bool grp, const sockaddr_storage& addr, unsigned int addrLen)
 {
 	assert(data != NULL);
 	assert(length > 0U);
-	assert(port > 0U);
 
 	unsigned char buffer[50U];
 
@@ -85,13 +84,11 @@ bool CNXDNNetwork::writeData(const unsigned char* data, unsigned int length, uns
 	if (m_debug)
 		CUtils::dump(1U, "NXDN Network Data Sent", buffer, 43U);
 
-	return m_socket.write(buffer, 43U, address, port);
+	return m_socket.write(buffer, 43U, addr, addrLen);
 }
 
-bool CNXDNNetwork::writePoll(const in_addr& address, unsigned int port, unsigned short tg)
+bool CNXDNNetwork::writePoll(const sockaddr_storage& addr, unsigned int addrLen, unsigned short tg)
 {
-	assert(port > 0U);
-
 	unsigned char data[20U];
 
 	data[0U] = 'N';
@@ -109,13 +106,11 @@ bool CNXDNNetwork::writePoll(const in_addr& address, unsigned int port, unsigned
 	if (m_debug)
 		CUtils::dump(1U, "NXDN Network Poll Sent", data, 17U);
 
-	return m_socket.write(data, 17U, address, port);
+	return m_socket.write(data, 17U, addr, addrLen);
 }
 
-bool CNXDNNetwork::writeUnlink(const in_addr& address, unsigned int port, unsigned short tg)
+bool CNXDNNetwork::writeUnlink(const sockaddr_storage& addr, unsigned int addrLen, unsigned short tg)
 {
-	assert(port > 0U);
-
 	unsigned char data[20U];
 
 	data[0U] = 'N';
@@ -133,15 +128,15 @@ bool CNXDNNetwork::writeUnlink(const in_addr& address, unsigned int port, unsign
 	if (m_debug)
 		CUtils::dump(1U, "NXDN Network Unlink Sent", data, 17U);
 
-	return m_socket.write(data, 17U, address, port);
+	return m_socket.write(data, 17U, addr, addrLen);
 }
 
-unsigned int CNXDNNetwork::readData(unsigned char* data, unsigned int length, in_addr& address, unsigned int& port)
+unsigned int CNXDNNetwork::readData(unsigned char* data, unsigned int length, sockaddr_storage& addr, unsigned int& addrLen)
 {
 	assert(data != NULL);
 	assert(length > 0U);
 
-	int len = m_socket.read(data, length, address, port);
+	int len = m_socket.read(data, length, addr, addrLen);
 	if (len <= 0)
 		return 0U;
 
