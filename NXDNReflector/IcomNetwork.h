@@ -38,7 +38,7 @@ public:
 
 	void close();
 
-    void clock(unsigned int ms);
+	void clock(unsigned int ms);
 
 private:
 	CUDPSocket       m_socket;

@@ -54,14 +54,14 @@ public:
 	void clock(unsigned int ms);
 
 private:
-	std::string                  m_hostsFile1;
-	std::string                  m_hostsFile2;
-	std::string                  m_parrotAddress;
-	unsigned int                 m_parrotPort;
-	std::string                  m_nxdn2dmrAddress;
-	unsigned int                 m_nxdn2dmrPort;
+	std::string  m_hostsFile1;
+	std::string  m_hostsFile2;
+	std::string  m_parrotAddress;
+	unsigned int m_parrotPort;
+	std::string  m_nxdn2dmrAddress;
+	unsigned int m_nxdn2dmrPort;
 	std::vector<CNXDNReflector*> m_reflectors;
-	CTimer                       m_timer;
+	CTimer       m_timer;
 };
 
 #endif

@@ -29,14 +29,15 @@ const unsigned int BUFFER_LENGTH = 200U;
 CIcomNetwork::CIcomNetwork(unsigned int localPort, const std::string& rptAddress, unsigned int rptPort, bool debug) :
 m_socket(localPort),
 m_addr(),
-m_addrLen(),
+m_addrLen(0U),
 m_debug(debug)
 {
 	assert(localPort > 0U);
 	assert(!rptAddress.empty());
 	assert(rptPort > 0U);
 
-	CUDPSocket::lookup(rptAddress, rptPort, m_addr, m_addrLen);
+	if (CUDPSocket::lookup(rptAddress, rptPort, m_addr, m_addrLen) != 0)
+		m_addrLen = 0U;
 }
 
 CIcomNetwork::~CIcomNetwork()
@@ -45,6 +46,11 @@ CIcomNetwork::~CIcomNetwork()
 
 bool CIcomNetwork::open()
 {
+	if (m_addrLen == 0U) {
+		LogError("Unable to resolve the address of the Icom network");
+		return false;
+	}
+
 	LogMessage("Opening Icom connection");
 
 	return m_socket.open();

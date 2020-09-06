@@ -81,10 +81,17 @@ bool CReflectors::load()
 				std::string host  = std::string(p2);
 				unsigned int port = (unsigned int)::atoi(p3);
 
-				CNXDNReflector* refl = new CNXDNReflector;
-				refl->m_id = (unsigned short)::atoi(p1);
-				CUDPSocket::lookup(host, port, refl->m_addr, refl->m_addrLen);
-				m_reflectors.push_back(refl);
+				sockaddr_storage addr;
+				unsigned int addrLen;
+				if (CUDPSocket::lookup(host, port, addr, addrLen) == 0) {
+					CNXDNReflector* refl = new CNXDNReflector;
+					refl->m_id      = (unsigned short)::atoi(p1);
+					refl->m_addr    = addr;
+					refl->m_addrLen = addrLen;
+					m_reflectors.push_back(refl);
+				} else {
+					LogWarning("Unable to resolve the address of %s", host.c_str());
+				}
 			}
 		}
 
@@ -109,10 +116,17 @@ bool CReflectors::load()
 					std::string host  = std::string(p2);
 					unsigned int port = (unsigned int)::atoi(p3);
 
-					CNXDNReflector* refl = new CNXDNReflector;
-					refl->m_id = id;
-					CUDPSocket::lookup(host, port, refl->m_addr, refl->m_addrLen);
-					m_reflectors.push_back(refl);
+					sockaddr_storage addr;
+					unsigned int addrLen;
+					if (CUDPSocket::lookup(host, port, addr, addrLen) == 0) {
+						CNXDNReflector* refl = new CNXDNReflector;
+						refl->m_id      = id;
+						refl->m_addr    = addr;
+						refl->m_addrLen = addrLen;
+						m_reflectors.push_back(refl);
+					} else {
+						LogWarning("Unable to resolve the address of %s", host.c_str());
+					}
 				}
 			}
 		}
@@ -125,20 +139,34 @@ bool CReflectors::load()
 
 	// Add the Parrot entry
 	if (m_parrotPort > 0U) {
-		CNXDNReflector* refl = new CNXDNReflector;
-		refl->m_id = 10U;
-		CUDPSocket::lookup(m_parrotAddress, m_parrotPort, refl->m_addr, refl->m_addrLen);
-		m_reflectors.push_back(refl);
-		LogInfo("Loaded NXDN parrot (TG%u)", refl->m_id);
+		sockaddr_storage addr;
+		unsigned int addrLen;
+		if (CUDPSocket::lookup(m_parrotAddress, m_parrotPort, addr, addrLen) == 0) {
+			CNXDNReflector* refl = new CNXDNReflector;
+			refl->m_id      = 10U;
+			refl->m_addr    = addr;
+			refl->m_addrLen = addrLen;
+			m_reflectors.push_back(refl);
+			LogInfo("Loaded NXDN parrot (TG%u)", refl->m_id);
+		} else {
+			LogWarning("Unable to resolve the address of the NXDN Parrot");
+		}
 	}
 
 	// Add the NXDN2DMR entry
 	if (m_nxdn2dmrPort > 0U) {
-		CNXDNReflector* refl = new CNXDNReflector;
-		refl->m_id = 20U;
-		CUDPSocket::lookup(m_nxdn2dmrAddress, m_nxdn2dmrPort, refl->m_addr, refl->m_addrLen);
-		m_reflectors.push_back(refl);
-		LogInfo("Loaded NXDN2DMR reflector (TG%u)", refl->m_id);
+		sockaddr_storage addr;
+		unsigned int addrLen;
+		if (CUDPSocket::lookup(m_nxdn2dmrAddress, m_nxdn2dmrPort, addr, addrLen) == 0) {
+			CNXDNReflector* refl = new CNXDNReflector;
+			refl->m_id      = 20U;
+			refl->m_addr    = addr;
+			refl->m_addrLen = addrLen;
+			m_reflectors.push_back(refl);
+			LogInfo("Loaded NXDN2DMR (TG%u)", refl->m_id);
+		} else {
+			LogWarning("Unable to resolve the address of NXDN2DMR");
+		}
 	}
 
 	size = m_reflectors.size();

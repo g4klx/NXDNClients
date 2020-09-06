@@ -47,7 +47,7 @@ public:
 
 	virtual void close() = 0;
 
-    virtual void clock(unsigned int ms) = 0;
+	virtual void clock(unsigned int ms) = 0;
 
 private:
 };

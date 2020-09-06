@@ -31,12 +31,13 @@ const unsigned int ICOM_PORT = 41300U;
 CIcomNetwork::CIcomNetwork(const std::string& address, bool debug) :
 m_socket(ICOM_PORT),
 m_addr(),
-m_addrLen(),
+m_addrLen(0U),
 m_debug(debug)
 {
 	assert(!address.empty());
 
-	CUDPSocket::lookup(address, ICOM_PORT, m_addr, m_addrLen);
+	if (CUDPSocket::lookup(address, ICOM_PORT, m_addr, m_addrLen) != 0)
+		m_addrLen = 0U;
 }
 
 CIcomNetwork::~CIcomNetwork()
@@ -45,9 +46,14 @@ CIcomNetwork::~CIcomNetwork()
 
 bool CIcomNetwork::open()
 {
+	if (m_addrLen == 0U) {
+		LogError("Unable to resolve the address of the Icom network");
+		return false;
+	}
+
 	LogMessage("Opening Icom network connection");
 
-	return m_socket.open();
+	return m_socket.open(m_addr);
 }
 
 bool CIcomNetwork::write(const unsigned char* data, unsigned int len)

@@ -40,9 +40,9 @@ CKenwoodNetwork::CKenwoodNetwork(const std::string& address, bool debug) :
 m_rtpSocket(RTP_PORT),
 m_rtcpSocket(RTCP_PORT),
 m_rtpAddr(),
-m_rtpAddrLen(),
+m_rtpAddrLen(0U),
 m_rtcpAddr(),
-m_rtcpAddrLen(),
+m_rtcpAddrLen(0U),
 m_headerSeen(false),
 m_seen1(false),
 m_seen2(false),
@@ -66,8 +66,11 @@ m_random()
 
 	m_sacch = new unsigned char[10U];
 
-	CUDPSocket::lookup(address, RTP_PORT, m_rtpAddr, m_rtpAddrLen);
-	CUDPSocket::lookup(address, RTCP_PORT, m_rtcpAddr, m_rtcpAddrLen);
+	if (CUDPSocket::lookup(address, RTP_PORT, m_rtpAddr, m_rtpAddrLen) != 0)
+		m_rtpAddrLen = 0U;
+
+	if (CUDPSocket::lookup(address, RTCP_PORT, m_rtcpAddr, m_rtcpAddrLen) != 0)
+		m_rtcpAddrLen = 0U;
 
 	std::random_device rd;
 	std::mt19937 mt(rd());
@@ -81,12 +84,17 @@ CKenwoodNetwork::~CKenwoodNetwork()
 
 bool CKenwoodNetwork::open()
 {
+	if (m_rtpAddrLen == 0U || m_rtcpAddrLen == 0U) {
+		LogError("Unable to resolve the address of the Kenwood network");
+		return false;
+	}
+
 	LogMessage("Opening Kenwood connection");
 
-	if (!m_rtcpSocket.open())
+	if (!m_rtcpSocket.open(m_rtcpAddr))
 		return false;
 
-	if (!m_rtpSocket.open()) {
+	if (!m_rtpSocket.open(m_rtpAddr)) {
 		m_rtcpSocket.close();
 		return false;
 	}
@@ -560,7 +568,7 @@ unsigned int CKenwoodNetwork::readRTP(unsigned char* data)
 		return 0U;
 
 	// Check if the data is for us
-	if (!CUDPSocket::match(m_rtpAddr, addr)) {
+	if (!CUDPSocket::match(m_rtpAddr, addr, IMT_ADDRESS_ONLY)) {
 		LogMessage("Kenwood RTP packet received from an invalid source");
 		return 0U;
 	}
@@ -586,7 +594,7 @@ unsigned int CKenwoodNetwork::readRTCP(unsigned char* data)
 		return 0U;
 
 	// Check if the data is for us
-	if (!CUDPSocket::match(m_rtcpAddr, addr)) {
+	if (!CUDPSocket::match(m_rtcpAddr, addr, IMT_ADDRESS_ONLY)) {
 		LogMessage("Kenwood RTCP packet received from an invalid source");
 		return 0U;
 	}
