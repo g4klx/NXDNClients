@@ -168,7 +168,7 @@ void CNXDNReflector::run()
 
 	unsigned short tg = m_conf.getTG();
 
-	CNXDNNetwork nxdnNetwork(m_conf.getYSFPort(), m_conf.getYSFDebug());
+	CNXDNNetwork nxdnNetwork(m_conf.getNetworkPort(), m_conf.getNetworkDebug());
 	ret = nxdnNetwork.open();
 	if (!ret) {
 		::LogFinalise();

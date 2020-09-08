@@ -44,9 +44,9 @@ public:
   std::string    getLogFilePath() const;
   std::string    getLogFileRoot() const;
 
-  // The YSF Network section
-  unsigned int   getYSFPort() const;
-  bool           getYSFDebug() const;
+  // The Network section
+  unsigned int   getNetworkPort() const;
+  bool           getNetworkDebug() const;
 
   // The Icom Network section
   bool           getIcomEnabled() const;
@@ -75,8 +75,8 @@ private:
   std::string    m_logFilePath;
   std::string    m_logFileRoot;
 
-  unsigned int   m_ysfPort;
-  bool           m_ysfDebug;
+  unsigned int   m_networkPort;
+  bool           m_networkDebug;
 
   bool           m_icomEnabled;
   std::string    m_icomAddress;
