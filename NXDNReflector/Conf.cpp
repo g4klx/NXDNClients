@@ -31,7 +31,7 @@ enum SECTION {
   SECTION_GENERAL,
   SECTION_ID_LOOKUP,
   SECTION_LOG,
-  SECTION_YSF_NETWORK,
+  SECTION_NETWORK,
   SECTION_ICOM_NETWORK,
   SECTION_KENWOOD_NETWORK
 };
@@ -46,8 +46,8 @@ m_logDisplayLevel(0U),
 m_logFileLevel(0U),
 m_logFilePath(),
 m_logFileRoot(),
-m_ysfPort(0U),
-m_ysfDebug(false),
+m_networkPort(0U),
+m_networkDebug(false),
 m_icomEnabled(false),
 m_icomAddress(),
 m_icomTGEnable(0U),
@@ -87,8 +87,8 @@ bool CConf::read()
 			  section = SECTION_ID_LOOKUP;
 		  else if (::strncmp(buffer, "[Log]", 5U) == 0)
 			  section = SECTION_LOG;
-		  else if (::strncmp(buffer, "[YSF Network]", 13U) == 0)
-			  section = SECTION_YSF_NETWORK;
+		  else if (::strncmp(buffer, "[Network]", 9U) == 0)
+			  section = SECTION_NETWORK;
 		  else if (::strncmp(buffer, "[Icom Network]", 14U) == 0)
 			  section = SECTION_ICOM_NETWORK;
 		  else if (::strncmp(buffer, "[Kenwood Network]", 17U) == 0)
@@ -123,11 +123,11 @@ bool CConf::read()
 			  m_logFileLevel = (unsigned int)::atoi(value);
 		  else if (::strcmp(key, "DisplayLevel") == 0)
 			  m_logDisplayLevel = (unsigned int)::atoi(value);
-	  } else if (section == SECTION_YSF_NETWORK) {
+	  } else if (section == SECTION_NETWORK) {
 		  if (::strcmp(key, "Port") == 0)
-			  m_ysfPort = (unsigned int)::atoi(value);
+			  m_networkPort = (unsigned int)::atoi(value);
 		  else if (::strcmp(key, "Debug") == 0)
-			  m_ysfDebug = ::atoi(value) == 1;
+			  m_networkDebug = ::atoi(value) == 1;
 	  } else if (section == SECTION_ICOM_NETWORK) {
 		  if (::strcmp(key, "Enabled") == 0)
 			  m_icomEnabled = ::atoi(value) == 1;
@@ -190,22 +190,22 @@ unsigned int CConf::getLogFileLevel() const
 
 std::string CConf::getLogFilePath() const
 {
-  return m_logFilePath;
+	return m_logFilePath;
 }
 
 std::string CConf::getLogFileRoot() const
 {
-  return m_logFileRoot;
+	return m_logFileRoot;
 }
 
-unsigned int CConf::getYSFPort() const
+unsigned int CConf::getNetworkPort() const
 {
-	return m_ysfPort;
+	return m_networkPort;
 }
 
-bool CConf::getYSFDebug() const
+bool CConf::getNetworkDebug() const
 {
-	return m_ysfDebug;
+	return m_networkDebug;
 }
 
 bool CConf::getIcomEnabled() const
