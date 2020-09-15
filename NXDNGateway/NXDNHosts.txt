@@ -120,6 +120,9 @@
 # 22200 IT HBLINK ITALY
 22200 nxdn.hblink.it 41400
 
+# 22202 IT SARDINIA
+22202 nxdn.is0hha.hblink.it 41400
+
 # 22202 IT NXDN Sardegna
 22202 nxdn.is0hha.hblink.it 41400
 
