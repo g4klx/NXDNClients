@@ -29,7 +29,7 @@
 #include <arpa/inet.h>
 #include <errno.h>
 #else
-#include <winsock.h>
+#include <WS2tcpip.h>
 #endif
 
 #include <cstdint>

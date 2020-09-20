@@ -32,8 +32,7 @@
 #include <arpa/inet.h>
 #include <errno.h>
 #else
-#include <winsock2.h>
-#include <ws2tcpip.h>
+#include <WS2tcpip.h>
 #endif
 
 #if !defined(UDP_SOCKET_MAX)
