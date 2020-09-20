@@ -94,10 +94,12 @@ m_conf(file),
 m_writer(NULL),
 m_gps(NULL)
 {
+	CUDPSocket::startup();
 }
 
 CNXDNGateway::~CNXDNGateway()
 {
+	CUDPSocket::shutdown();
 }
 
 void CNXDNGateway::run()

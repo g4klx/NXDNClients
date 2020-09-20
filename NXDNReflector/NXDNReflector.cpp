@@ -83,10 +83,12 @@ m_icomNetwork(NULL),
 m_kenwoodNetwork(NULL),
 m_repeaters()
 {
+	CUDPSocket::startup();
 }
 
 CNXDNReflector::~CNXDNReflector()
 {
+	CUDPSocket::shutdown();
 }
 
 void CNXDNReflector::run()
