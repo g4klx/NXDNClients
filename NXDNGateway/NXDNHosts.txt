@@ -228,7 +228,7 @@
 # 33581 OMISS Group
 33581 omiss.dyndns.org  41400
 
-# 37224 Haitia NXDN
+# 37224 Haiti NXDN
 37224 44.98.254.130 41400
 
 # 40721 Fusion Canada Fr /Wires-x /Ysf /Nxdn Network
