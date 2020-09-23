@@ -114,6 +114,9 @@
 # 21418 NXDN RC Veleta
 21418 rcveleta.xreflector.es 41400
 
+# 21430 Alcayna
+21430 alcayna.duckdns.org 41400
+
 # 21465 ADER Multimode
 21465 aderdigital.ddns.net 41400
 
