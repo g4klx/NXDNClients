@@ -114,6 +114,9 @@
 # 21418 NXDN RC Veleta
 21418 rcveleta.xreflector.es 41400
 
+# 21430 Alcayna
+21430 alcayna.duckdns.org 41400
+
 # 21465 ADER Multimode
 21465 aderdigital.ddns.net 41400
 
@@ -121,9 +124,6 @@
 22200 nxdn.hblink.it 41400
 
 # 22202 IT SARDINIA
-22202 nxdn.is0hha.hblink.it 41400
-
-# 22202 IT NXDN Sardegna
 22202 nxdn.is0hha.hblink.it 41400
 
 # 22221 HBLINK IT-DMR REGIONALE LOMBARDIA
@@ -228,7 +228,7 @@
 # 33581 OMISS Group
 33581 omiss.dyndns.org  41400
 
-# 37224 Haitia NXDN
+# 37224 Haiti NXDN
 37224 44.98.254.130 41400
 
 # 40721 Fusion Canada Fr /Wires-x /Ysf /Nxdn Network
