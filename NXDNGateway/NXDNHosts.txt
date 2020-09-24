@@ -96,6 +96,9 @@
 # Pacific, 10400
 10400	pacific.nxref.org	41400
 
+# 10922 CQ-UK
+10922	81.150.10.62	41400
+
 # 20000 Europe, German speaking
 20000	89.185.97.38	41400
 
