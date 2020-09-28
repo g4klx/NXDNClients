@@ -417,8 +417,10 @@ void CNXDNGateway::run()
 					if (reflector == NULL && currentId != 9999U) {
 						LogMessage("Unlinked from reflector %u by remote command", currentId);
 
-						if (voice != NULL)
+						if (voice != NULL) {
 							voice->unlinked();
+							voice->eof();
+						}
 
 						remoteNetwork.writeUnlink(currentAddr, currentPort, currentId);
 						remoteNetwork.writeUnlink(currentAddr, currentPort, currentId);
@@ -436,8 +438,10 @@ void CNXDNGateway::run()
 
 						LogMessage("Linked to reflector %u by remote command", currentId);
 
-						if (voice != NULL)
+						if (voice != NULL) {
 							voice->linkedTo(currentId);
+							voice->eof();
+						}
 
 						remoteNetwork.writePoll(currentAddr, currentPort, currentId);
 						remoteNetwork.writePoll(currentAddr, currentPort, currentId);
@@ -459,8 +463,10 @@ void CNXDNGateway::run()
 
 						LogMessage("Linked to reflector %u by remote command", currentId);
 
-						if (voice != NULL)
+						if (voice != NULL) {
 							voice->linkedTo(currentId);
+							voice->eof();
+						}
 
 						remoteNetwork.writePoll(currentAddr, currentPort, currentId);
 						remoteNetwork.writePoll(currentAddr, currentPort, currentId);
