@@ -127,7 +127,7 @@
 22200 nxdn.hblink.it 41400
 
 # 22202 IT SARDINIA
-22202 nxdn.is0hha.hblink.it 41400
+22202 nxdn.sardinia.hblink.it 41400
 
 # 22221 HBLINK IT-DMR REGIONALE LOMBARDIA
 22221 dagobah.hblink.it 41400
