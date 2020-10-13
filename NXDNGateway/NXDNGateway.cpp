@@ -222,6 +222,8 @@ void CNXDNGateway::run()
 		reflectors.setParrot(m_conf.getNetworkParrotAddress(), m_conf.getNetworkParrotPort());
 	if (m_conf.getNetworkNXDN2DMRPort() > 0U)
 		reflectors.setNXDN2DMR(m_conf.getNetworkNXDN2DMRAddress(), m_conf.getNetworkNXDN2DMRPort());
+	if (m_conf.getNetworkNXDN2PCMPort() > 0U)
+		reflectors.setNXDN2PCM(m_conf.getNetworkNXDN2PCMAddress(), m_conf.getNetworkNXDN2PCMPort());
 	reflectors.load();
 
 	CNXDNLookup* lookup = new CNXDNLookup(m_conf.getLookupName(), m_conf.getLookupTime());
@@ -255,6 +257,8 @@ void CNXDNGateway::run()
 	unsigned int currentPort = 0U;
 
 	unsigned short startupId = m_conf.getNetworkStartup();
+	bool nxdn2pcm_enabled = (startupId == 30) ? true : false;
+	
 	if (startupId != 9999U) {
 		CNXDNReflector* reflector = reflectors.find(startupId);
 		if (reflector != NULL) {
@@ -316,7 +320,10 @@ void CNXDNGateway::run()
 				dstId = (buffer[10U] << 8) & 0xFF00U;
 				dstId |= (buffer[11U] << 0) & 0x00FFU;
 
-				if (dstId != currentId) {
+				if(nxdn2pcm_enabled){
+					currentId = dstId;
+				}
+				else if (dstId != currentId) {
 					CNXDNReflector* reflector = NULL;
 					if (dstId != 9999U)
 						reflector = reflectors.find(dstId);

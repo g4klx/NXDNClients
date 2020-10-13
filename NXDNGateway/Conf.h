@@ -81,6 +81,8 @@ public:
   unsigned int   getNetworkParrotPort() const;
   std::string    getNetworkNXDN2DMRAddress() const;
   unsigned int   getNetworkNXDN2DMRPort() const;
+  std::string    getNetworkNXDN2PCMAddress() const;
+  unsigned int   getNetworkNXDN2PCMPort() const;
   unsigned short getNetworkStartup() const;
   unsigned int   getNetworkInactivityTimeout() const;
   bool           getNetworkDebug() const;
@@ -140,6 +142,8 @@ private:
   unsigned int   m_networkParrotPort;
   std::string    m_networkNXDN2DMRAddress;
   unsigned int   m_networkNXDN2DMRPort;
+  std::string    m_networkNXDN2PCMAddress;
+  unsigned int   m_networkNXDN2PCMPort;
   unsigned short m_networkStartup;
   unsigned int   m_networkInactivityTimeout;
   bool           m_networkDebug;

@@ -79,6 +79,8 @@ m_networkParrotAddress("127.0.0.1"),
 m_networkParrotPort(0U),
 m_networkNXDN2DMRAddress("127.0.0.1"),
 m_networkNXDN2DMRPort(0U),
+m_networkNXDN2PCMAddress("127.0.0.1"),
+m_networkNXDN2PCMPort(0U),
 m_networkStartup(9999U),
 m_networkInactivityTimeout(0U),
 m_networkDebug(false),
@@ -228,6 +230,10 @@ bool CConf::read()
 			  m_networkNXDN2DMRAddress = value;
 		  else if (::strcmp(key, "NXDN2DMRPort") == 0)
 			  m_networkNXDN2DMRPort = (unsigned int)::atoi(value);
+		  else if (::strcmp(key, "NXDN2PCMAddress") == 0)
+			  m_networkNXDN2PCMAddress = value;
+		  else if (::strcmp(key, "NXDN2PCMPort") == 0)
+			  m_networkNXDN2PCMPort = (unsigned int)::atoi(value);
 		  else if (::strcmp(key, "Startup") == 0)
 			  m_networkStartup = (unsigned short)::atoi(value);
 		  else if (::strcmp(key, "InactivityTimeout") == 0)
@@ -442,6 +448,16 @@ std::string CConf::getNetworkNXDN2DMRAddress() const
 unsigned int CConf::getNetworkNXDN2DMRPort() const
 {
 	return m_networkNXDN2DMRPort;
+}
+
+std::string CConf::getNetworkNXDN2PCMAddress() const
+{
+	return m_networkNXDN2PCMAddress;
+}
+
+unsigned int CConf::getNetworkNXDN2PCMPort() const
+{
+	return m_networkNXDN2PCMPort;
 }
 
 unsigned short CConf::getNetworkStartup() const
