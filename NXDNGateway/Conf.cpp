@@ -35,8 +35,7 @@ enum SECTION {
   SECTION_LOG,
   SECTION_APRS,
   SECTION_NETWORK,
-  SECTION_GPSD,
-  SECTION_REMOTE_COMMANDS
+  SECTION_GPSD
 };
 
 CConf::CConf(const std::string& file) :
@@ -79,14 +78,13 @@ m_networkParrotAddress("127.0.0.1"),
 m_networkParrotPort(0U),
 m_networkNXDN2DMRAddress("127.0.0.1"),
 m_networkNXDN2DMRPort(0U),
-m_networkStartup(9999U),
-m_networkInactivityTimeout(0U),
+m_networkStatic(),
+m_networkRFHangTime(120U),
+m_networkNetHangTime(60U),
 m_networkDebug(false),
 m_gpsdEnabled(false),
 m_gpsdAddress(),
-m_gpsdPort(),
-m_remoteCommandsEnabled(false),
-m_remoteCommandsPort(6075U)
+m_gpsdPort()
 {
 }
 
@@ -126,8 +124,6 @@ bool CConf::read()
 			  section = SECTION_NETWORK;
 		  else if (::strncmp(buffer, "[GPSD]", 6U) == 0)
 			  section = SECTION_GPSD;
-		  else if (::strncmp(buffer, "[Remote Commands]", 17U) == 0)
-			  section = SECTION_REMOTE_COMMANDS;
 		  else
 			  section = SECTION_NONE;
 
@@ -248,10 +244,17 @@ bool CConf::read()
 			  m_networkNXDN2DMRAddress = value;
 		  else if (::strcmp(key, "NXDN2DMRPort") == 0)
 			  m_networkNXDN2DMRPort = (unsigned int)::atoi(value);
-		  else if (::strcmp(key, "Startup") == 0)
-			  m_networkStartup = (unsigned short)::atoi(value);
-		  else if (::strcmp(key, "InactivityTimeout") == 0)
-			  m_networkInactivityTimeout = (unsigned int)::atoi(value);
+		  else if (::strcmp(key, "Static") == 0) {
+			  char* p = ::strtok(value, ",\r\n");
+			  while (p != NULL) {
+				  unsigned short tg = (unsigned short)::atoi(p);
+				  m_networkStatic.push_back(tg);
+				  p = ::strtok(NULL, ",\r\n");
+			  }
+		  } else if (::strcmp(key, "RFHangTime") == 0)
+			  m_networkRFHangTime = (unsigned int)::atoi(value);
+		  else if (::strcmp(key, "NetHangTime") == 0)
+			  m_networkNetHangTime = (unsigned int)::atoi(value);
 		  else if (::strcmp(key, "Debug") == 0)
 			  m_networkDebug = ::atoi(value) == 1;
 	  } else if (section == SECTION_GPSD) {
@@ -261,11 +264,6 @@ bool CConf::read()
 			  m_gpsdAddress = value;
 		  else if (::strcmp(key, "Port") == 0)
 			  m_gpsdPort = value;
-	  } else if (section == SECTION_REMOTE_COMMANDS) {
-		  if (::strcmp(key, "Enable") == 0)
-			  m_remoteCommandsEnabled = ::atoi(value) == 1;
-		  else if (::strcmp(key, "Port") == 0)
-			  m_remoteCommandsPort = (unsigned int)::atoi(value);
 	  }
   }
 
@@ -464,14 +462,19 @@ unsigned int CConf::getNetworkNXDN2DMRPort() const
 	return m_networkNXDN2DMRPort;
 }
 
-unsigned short CConf::getNetworkStartup() const
+std::vector<unsigned short> CConf::getNetworkStatic() const
 {
-	return m_networkStartup;
+	return m_networkStatic;
 }
 
-unsigned int CConf::getNetworkInactivityTimeout() const
+unsigned int CConf::getNetworkRFHangTime() const
 {
-	return m_networkInactivityTimeout;
+	return m_networkRFHangTime;
+}
+
+unsigned int CConf::getNetworkNetHangTime() const
+{
+	return m_networkNetHangTime;
 }
 
 bool CConf::getNetworkDebug() const
@@ -492,14 +495,4 @@ std::string CConf::getGPSDAddress() const
 std::string CConf::getGPSDPort() const
 {
 	return m_gpsdPort;
-}
-
-bool CConf::getRemoteCommandsEnabled() const
-{
-	return m_remoteCommandsEnabled;
-}
-
-unsigned int CConf::getRemoteCommandsPort() const
-{
-	return m_remoteCommandsPort;
 }

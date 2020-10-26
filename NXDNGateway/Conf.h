@@ -81,18 +81,15 @@ public:
   unsigned int   getNetworkParrotPort() const;
   std::string    getNetworkNXDN2DMRAddress() const;
   unsigned int   getNetworkNXDN2DMRPort() const;
-  unsigned short getNetworkStartup() const;
-  unsigned int   getNetworkInactivityTimeout() const;
+  std::vector<unsigned short> getNetworkStatic() const;
+  unsigned int   getNetworkRFHangTime() const;
+  unsigned int   getNetworkNetHangTime() const;
   bool           getNetworkDebug() const;
 
   // The GPSD section
   bool           getGPSDEnabled() const;
   std::string    getGPSDAddress() const;
   std::string    getGPSDPort() const;
-
-  // The Remote Commands section
-  bool           getRemoteCommandsEnabled() const;
-  unsigned int   getRemoteCommandsPort() const;
 
 private:
   std::string  m_file;
@@ -140,16 +137,14 @@ private:
   unsigned int   m_networkParrotPort;
   std::string    m_networkNXDN2DMRAddress;
   unsigned int   m_networkNXDN2DMRPort;
-  unsigned short m_networkStartup;
-  unsigned int   m_networkInactivityTimeout;
+  std::vector<unsigned short> m_networkStatic;
+  unsigned int   m_networkRFHangTime;
+  unsigned int   m_networkNetHangTime;
   bool           m_networkDebug;
 
   bool         m_gpsdEnabled;
   std::string  m_gpsdAddress;
   std::string  m_gpsdPort;
-
-  bool         m_remoteCommandsEnabled;
-  unsigned int m_remoteCommandsPort;
 };
 
 #endif
