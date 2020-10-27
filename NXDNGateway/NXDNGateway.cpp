@@ -287,7 +287,7 @@ void CNXDNGateway::run()
 		unsigned int len = remoteNetwork.readData(buffer, 200U, addr, addrLen);
 		if (len > 0U) {
 			// If we're linked and it's from the right place, send it on
-			if (currentTG > 0U && CUDPSocket::match(currentAddr, addr)) {
+			if (currentAddrLen > 0U && CUDPSocket::match(currentAddr, addr)) {
 				// Don't pass reflector control data through to the MMDVM
 				if (::memcmp(buffer, "NXDND", 5U) == 0) {
 					unsigned short dstTG = 0U;
@@ -349,7 +349,7 @@ void CNXDNGateway::run()
 				dstTG |= (buffer[11U] << 0) & 0x00FFU;
 
 				if (dstTG != currentTG) {
-					if (currentTG > 0U) {
+					if (currentAddrLen > 0U) {
 						std::string callsign = lookup->find(srcId);
 						LogMessage("Unlinking from reflector %u by %s", currentTG, callsign.c_str());
 
@@ -370,15 +370,16 @@ void CNXDNGateway::run()
 						}
 					}
 
-					currentTG      = 0U;
-					currentAddrLen = 0U;
-
 					if (found == NULL) {
 						CNXDNReflector* refl = reflectors.find(dstTG);
 						if (refl != NULL) {
 							currentTG       = dstTG;
 							currentAddr     = refl->m_addr;
 							currentAddrLen  = refl->m_addrLen;
+							currentIsStatic = false;
+						} else {
+							currentTG       = dstTG;
+							currentAddrLen  = 0U;
 							currentIsStatic = false;
 						}
 					} else {
@@ -404,7 +405,7 @@ void CNXDNGateway::run()
 					}
 
 					if (voice != NULL) {
-						if (currentTG == 0U)
+						if (currentAddrLen == 0U)
 							voice->unlinked();
 						else
 							voice->linkedTo(currentTG);
@@ -442,7 +443,7 @@ void CNXDNGateway::run()
 			}
 
 			// If we're linked and we have a network, send it on
-			if (currentTG > 0U) {
+			if (currentAddrLen > 0U) {
 				remoteNetwork.writeData(buffer, len, srcId, dstTG, grp, currentAddr, currentAddrLen);
 				hangTimer.start();
 			}
@@ -466,7 +467,9 @@ void CNXDNGateway::run()
 
 		hangTimer.clock(ms);
 		if (hangTimer.isRunning() && hangTimer.hasExpired()) {
-			if (currentTG > 0U) {
+			currentTG = 0U;
+
+			if (currentAddrLen > 0U) {
 				LogMessage("Unlinking from %u due to inactivity", currentTG);
 
 				if (!currentIsStatic) {
@@ -478,7 +481,6 @@ void CNXDNGateway::run()
 				if (voice != NULL)
 					voice->unlinked();
 
-				currentTG      = 0U;
 				currentAddrLen = 0U;
 
 				hangTimer.stop();
