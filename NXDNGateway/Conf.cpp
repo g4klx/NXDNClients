@@ -35,7 +35,8 @@ enum SECTION {
   SECTION_LOG,
   SECTION_APRS,
   SECTION_NETWORK,
-  SECTION_GPSD
+  SECTION_GPSD,
+  SECTION_REMOTE_COMMANDS
 };
 
 CConf::CConf(const std::string& file) :
@@ -84,7 +85,9 @@ m_networkNetHangTime(60U),
 m_networkDebug(false),
 m_gpsdEnabled(false),
 m_gpsdAddress(),
-m_gpsdPort()
+m_gpsdPort(),
+m_remoteCommandsEnabled(false),
+m_remoteCommandsPort(6075U)
 {
 }
 
@@ -124,6 +127,8 @@ bool CConf::read()
 			  section = SECTION_NETWORK;
 		  else if (::strncmp(buffer, "[GPSD]", 6U) == 0)
 			  section = SECTION_GPSD;
+		  else if (::strncmp(buffer, "[Remote Commands]", 17U) == 0)
+			  section = SECTION_REMOTE_COMMANDS;
 		  else
 			  section = SECTION_NONE;
 
@@ -264,6 +269,11 @@ bool CConf::read()
 			  m_gpsdAddress = value;
 		  else if (::strcmp(key, "Port") == 0)
 			  m_gpsdPort = value;
+	  }  else if (section == SECTION_REMOTE_COMMANDS) {
+		  if (::strcmp(key, "Enable") == 0)
+			  m_remoteCommandsEnabled = ::atoi(value) == 1;
+		  else if (::strcmp(key, "Port") == 0)
+			  m_remoteCommandsPort = (unsigned int)::atoi(value);
 	  }
   }
 
@@ -495,4 +505,14 @@ std::string CConf::getGPSDAddress() const
 std::string CConf::getGPSDPort() const
 {
 	return m_gpsdPort;
+}
+
+bool CConf::getRemoteCommandsEnabled() const
+{
+	return m_remoteCommandsEnabled;
+}
+
+unsigned int CConf::getRemoteCommandsPort() const
+{
+	return m_remoteCommandsPort;
 }

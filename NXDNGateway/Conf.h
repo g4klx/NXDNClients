@@ -91,6 +91,10 @@ public:
   std::string    getGPSDAddress() const;
   std::string    getGPSDPort() const;
 
+  // The Remote Commands section
+  bool           getRemoteCommandsEnabled() const;
+  unsigned int   getRemoteCommandsPort() const;
+
 private:
   std::string  m_file;
   std::string  m_callsign;
@@ -145,6 +149,9 @@ private:
   bool         m_gpsdEnabled;
   std::string  m_gpsdAddress;
   std::string  m_gpsdPort;
+
+  bool         m_remoteCommandsEnabled;
+  unsigned int m_remoteCommandsPort;
 };
 
 #endif
