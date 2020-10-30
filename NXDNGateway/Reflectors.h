@@ -46,6 +46,7 @@ public:
 
 	void setParrot(const std::string& address, unsigned int port);
 	void setNXDN2DMR(const std::string& address, unsigned int port);
+	void setNXDN2PCM(const std::string& address, unsigned int port);
 
 	bool load();
 
@@ -60,6 +61,8 @@ private:
 	unsigned int                 m_parrotPort;
 	std::string                  m_nxdn2dmrAddress;
 	unsigned int                 m_nxdn2dmrPort;
+	std::string                  m_nxdn2pcmAddress;
+	unsigned int                 m_nxdn2pcmPort;
 	std::vector<CNXDNReflector*> m_reflectors;
 	CTimer                       m_timer;
 };
