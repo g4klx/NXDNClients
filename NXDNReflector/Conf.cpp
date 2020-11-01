@@ -46,6 +46,7 @@ m_logDisplayLevel(0U),
 m_logFileLevel(0U),
 m_logFilePath(),
 m_logFileRoot(),
+m_logFileRotate(true),
 m_networkPort(0U),
 m_networkDebug(false),
 m_icomEnabled(false),
@@ -143,6 +144,8 @@ bool CConf::read()
 			  m_logFileLevel = (unsigned int)::atoi(value);
 		  else if (::strcmp(key, "DisplayLevel") == 0)
 			  m_logDisplayLevel = (unsigned int)::atoi(value);
+		  else if (::strcmp(key, "FileRotate") == 0)
+			  m_logFileRotate = ::atoi(value) == 1;
 	  } else if (section == SECTION_NETWORK) {
 		  if (::strcmp(key, "Port") == 0)
 			  m_networkPort = (unsigned int)::atoi(value);
@@ -216,6 +219,11 @@ std::string CConf::getLogFilePath() const
 std::string CConf::getLogFileRoot() const
 {
 	return m_logFileRoot;
+}
+
+bool CConf::getLogFileRotate() const
+{
+	return m_logFileRotate;
 }
 
 unsigned int CConf::getNetworkPort() const
