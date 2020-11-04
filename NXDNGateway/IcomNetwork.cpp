@@ -53,7 +53,7 @@ bool CIcomNetwork::open()
 
 	LogMessage("Opening Icom connection");
 
-	return m_socket.open();
+	return m_socket.open(m_addr);
 }
 
 bool CIcomNetwork::write(const unsigned char* data, unsigned int length)
