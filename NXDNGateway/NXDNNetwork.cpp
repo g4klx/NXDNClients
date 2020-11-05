@@ -43,11 +43,11 @@ bool CNXDNNetwork::open()
 {
 	LogInfo("Opening NXDN network connection");
 
-	bool ret = m_socket.open(0, PF_INET, "", m_port);
-	if (!ret)
-		return false;
+	bool ret = m_socket.open(0, PF_INET6, "", m_port);
+	if (ret)
+		return true;
 
-	return m_socket.open(1, PF_INET6, "", m_port);
+	return m_socket.open(1, PF_INET, "", m_port);
 }
 
 bool CNXDNNetwork::writeData(const unsigned char* data, unsigned int length, unsigned short srcId, unsigned short dstId, bool grp, const sockaddr_storage& addr, unsigned int addrLen)
