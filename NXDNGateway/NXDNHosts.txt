@@ -33,6 +33,9 @@
 # 707 RuralMN Reflector
 707 707nxdn.kd0ioe.com  41400
 
+# 730 Chile NXDN Reflector to BM TG 730
+730 sdradio.cl  41400
+
 # 911 Cop Talk, Multimode TG for Police and First Responders
 911 nxdn.k2cop.com 41400
 
@@ -77,6 +80,9 @@
 
 # 7225 Multiprotocolo Argentina
 7225  ysfarg.ddns.net 41400
+
+# 7309 CHILE-LINK NXDN Reflector to BM TG 73099
+7309 sdradio.cl  41401
 
 # 9846 NXDN Portal to WW8GM YSF network www.gmarc.org 
 9846	nxdn.dudetronics.com	41401
