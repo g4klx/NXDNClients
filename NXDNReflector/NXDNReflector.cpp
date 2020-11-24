@@ -257,7 +257,8 @@ void CNXDNReflector::run()
 						rpt->m_callsign = std::string((char*)(buffer + 5U), 10U);
 						m_repeaters.push_back(rpt);
 
-						LogMessage("Adding %s", rpt->m_callsign.c_str());
+						char buff[80U];
+						LogMessage("Adding %s (%s)", rpt->m_callsign.c_str(), CUDPSocket::display(address, buff, 80U));
 					} else {
 						rpt->m_timer.start();
 					}
@@ -270,7 +271,9 @@ void CNXDNReflector::run()
 				if (id == tg) {
 					if (rpt != NULL) {
 						std::string callsign = std::string((char*)(buffer + 5U), 10U);
-						LogMessage("Removing %s", callsign.c_str());
+
+						char buff[80U];
+						LogMessage("Removing %s (%s) unlinked", callsign.c_str(), CUDPSocket::display(address, buff, 80U));
 
 						for (std::vector<CNXDNRepeater*>::iterator it = m_repeaters.begin(); it != m_repeaters.end(); ++it) {
 							if (*it == rpt) {
@@ -514,7 +517,10 @@ void CNXDNReflector::run()
 			CNXDNRepeater* itRpt = *it;
 			if (itRpt->m_timer.hasExpired()) {
 				std::string callsign = itRpt->m_callsign;
-				LogMessage("Removing %s disappeared", callsign.c_str());
+
+				char buff[80U];
+				LogMessage("Removing %s (%s) disappeared", callsign.c_str(), CUDPSocket::display(itRpt->m_addr, buff, 80U));
+
 				m_repeaters.erase(it);
 				delete itRpt;
 				break;
@@ -576,10 +582,13 @@ void CNXDNReflector::dumpRepeaters() const
 	LogMessage("Currently linked repeaters:");
 
 	for (std::vector<CNXDNRepeater*>::const_iterator it = m_repeaters.begin(); it != m_repeaters.end(); ++it) {
-		std::string callsign = (*it)->m_callsign;
-		unsigned int timer   = (*it)->m_timer.getTimer();
-		unsigned int timeout = (*it)->m_timer.getTimeout();
-		LogMessage("    %s %u/%u", callsign.c_str(), timer, timeout);
+		std::string callsign  = (*it)->m_callsign;
+		sockaddr_storage addr = (*it)->m_addr;
+		unsigned int timer    = (*it)->m_timer.getTimer();
+		unsigned int timeout  = (*it)->m_timer.getTimeout();
+
+		char buffer[80U];
+		LogMessage("    %s: %s %u/%u", callsign.c_str(), CUDPSocket::display(addr, buffer, 80U), timer, timeout);
 	}
 }
 
