@@ -27,7 +27,7 @@
 # 530 New Zealand
 530 zldigitalreflectors.hopto.org 41400
 
-# XLX545E PA
+# 545 XLX545E PA
 545 70.44.20.24 41401
 
 # 707 RuralMN Reflector
@@ -63,8 +63,8 @@
 # 2503 RU DMR
 2503  nxdn.r1ik.ru  41400
 
-# Melbourne FL
-2700  kp4oo.ddns.net  41400
+# 2700 Melbourne FL
+2700  2700nxdn.ddns.net  41400
 
 # 3023 Ontario Crosslink
 3023    ontxlink.hopto.org 41400
