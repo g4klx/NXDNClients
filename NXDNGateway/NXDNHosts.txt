@@ -168,6 +168,9 @@
 # 26000 Poland
 26000	80.211.249.221	41400
 
+# 26079 NXDN Poland local Group Reflector
+26079	nxdn-sp7.noip.pl	41400
+
 # 26085 Poland DMR+
 26085 91.245.81.2     41400
 
