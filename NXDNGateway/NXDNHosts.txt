@@ -58,7 +58,7 @@
 2249 nxdn.digitalsicilia.it 41400
 
 # 2263 Bucharest YO3 NXDN Network
-2263	nxdn.dstar-yo.ro	41401
+2263	nxdn.dstar-yo.ro	41403
 
 # 2265 Baia Mare YO5 NXDN Network
 2265	nxdn.dstar-yo.ro	41405
