@@ -165,6 +165,9 @@
 # 25000 NX Core
 25000 173.166.94.77 41400
 
+# 25617 Russia Kavkaz
+25617   kavkaz.qrz.ru  41400
+
 # 25641 Russia NXDN Net
 25641	194.182.85.217	41400
 
