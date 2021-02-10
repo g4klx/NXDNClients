@@ -267,6 +267,9 @@
 # 40721 Fusion Canada Fr /Wires-x /Ysf /Nxdn Network
 40721 158.69.169.205 41400
 
+# 45000 Korea
+45000 nxdn.dvham.com  41400
+
 # 46000 China
 46000	120.234.41.144	41400
 
