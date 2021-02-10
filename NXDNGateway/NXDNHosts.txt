@@ -87,6 +87,9 @@
 # 7309 CHILE-LINK NXDN Reflector to BM TG 73099
 7309 sdradio.cl  41401
 
+# 9480 ICQ PODCAST
+9480 xlx235.mb6ng.uk  41401
+
 # 9846 NXDN Portal to WW8GM YSF network www.gmarc.org 
 9846	nxdn.dudetronics.com	41401
 
@@ -257,9 +260,6 @@
 
 # 33581 OMISS Group
 33581 omiss.dyndns.org  41400
-
-# 35480 ICQPODCAST
-35480 xlx235.mb6ng.uk  41401
 
 # 37224 Haiti NXDN
 37224 44.98.254.130 41400
