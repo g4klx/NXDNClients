@@ -88,7 +88,7 @@
 7309 sdradio.cl  41401
 
 # 9480 ICQ PODCAST
-9480 xlx235.mb6ng.uk  41401
+9480 xlx235.mb6ng.uk  42400
 
 # 9846 NXDN Portal to WW8GM YSF network www.gmarc.org 
 9846	nxdn.dudetronics.com	41401
