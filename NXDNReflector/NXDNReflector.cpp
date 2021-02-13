@@ -1,5 +1,5 @@
 /*
-*   Copyright (C) 2016,2018,2020 by Jonathan Naylor G4KLX
+*   Copyright (C) 2016,2018,2020,2021 by Jonathan Naylor G4KLX
 *
 *   This program is free software; you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -252,7 +252,7 @@ void CNXDNReflector::run()
 					if (rpt == NULL) {
 						rpt = new CNXDNRepeater;
 						rpt->m_timer.start();
-						rpt->m_addr     = address;
+						::memcpy(&rpt->m_addr, &address, sizeof(struct sockaddr_storage));
 						rpt->m_addrLen  = addressLen;
 						rpt->m_callsign = std::string((char*)(buffer + 5U), 10U);
 						m_repeaters.push_back(rpt);
@@ -343,10 +343,8 @@ void CNXDNReflector::run()
 							watchdogTimer.start();
 
 							for (std::vector<CNXDNRepeater*>::const_iterator it = m_repeaters.begin(); it != m_repeaters.end(); ++it) {
-								sockaddr_storage addr = (*it)->m_addr;
-								unsigned int addrLen  = (*it)->m_addrLen;
-								if (!CUDPSocket::match(addr, address))
-									nxdnNetwork.write(buffer, len, addr, addrLen);
+								if (!CUDPSocket::match((*it)->m_addr, address))
+									nxdnNetwork.write(buffer, len, (*it)->m_addr, (*it)->m_addrLen);
 							}
 
 							if (m_icomNetwork != NULL)
@@ -414,11 +412,8 @@ void CNXDNReflector::run()
 					if (active == ACTIVE_ICOM) {
 						watchdogTimer.start();
 
-						for (std::vector<CNXDNRepeater*>::const_iterator it = m_repeaters.begin(); it != m_repeaters.end(); ++it) {
-							sockaddr_storage addr = (*it)->m_addr;
-							unsigned int addrLen  = (*it)->m_addrLen;
-							nxdnNetwork.write(buffer, len, srcId, dstId, grp, addr, addrLen);
-						}
+						for (std::vector<CNXDNRepeater*>::const_iterator it = m_repeaters.begin(); it != m_repeaters.end(); ++it)
+							nxdnNetwork.write(buffer, len, srcId, dstId, grp, (*it)->m_addr, (*it)->m_addrLen);
 
 						if (m_kenwoodNetwork != NULL)
 							m_kenwoodNetwork->write(buffer, len);
@@ -482,11 +477,8 @@ void CNXDNReflector::run()
 					if (active == ACTIVE_KENWOOD) {
 						watchdogTimer.start();
 
-						for (std::vector<CNXDNRepeater*>::const_iterator it = m_repeaters.begin(); it != m_repeaters.end(); ++it) {
-							sockaddr_storage addr = (*it)->m_addr;
-							unsigned int addrLen  = (*it)->m_addrLen;
-							nxdnNetwork.write(buffer, len, srcId, dstId, grp, addr, addrLen);
-						}
+						for (std::vector<CNXDNRepeater*>::const_iterator it = m_repeaters.begin(); it != m_repeaters.end(); ++it)
+							nxdnNetwork.write(buffer, len, srcId, dstId, grp, (*it)->m_addr, (*it)->m_addrLen);
 
 						if (m_icomNetwork != NULL)
 							m_icomNetwork->write(buffer, len);
@@ -514,15 +506,13 @@ void CNXDNReflector::run()
 			(*it)->m_timer.clock(ms);
 
 		for (std::vector<CNXDNRepeater*>::iterator it = m_repeaters.begin(); it != m_repeaters.end(); ++it) {
-			CNXDNRepeater* itRpt = *it;
-			if (itRpt->m_timer.hasExpired()) {
-				std::string callsign = itRpt->m_callsign;
-
+			if ((*it)->m_timer.hasExpired()) {
 				char buff[80U];
-				LogMessage("Removing %s (%s) disappeared", callsign.c_str(), CUDPSocket::display(itRpt->m_addr, buff, 80U));
+				LogMessage("Removing %s (%s) disappeared", (*it)->m_callsign.c_str(),
+														   CUDPSocket::display((*it)->m_addr, buff, 80U));
 
 				m_repeaters.erase(it);
-				delete itRpt;
+				delete *it;
 				break;
 			}
 		}
@@ -582,13 +572,11 @@ void CNXDNReflector::dumpRepeaters() const
 	LogMessage("Currently linked repeaters:");
 
 	for (std::vector<CNXDNRepeater*>::const_iterator it = m_repeaters.begin(); it != m_repeaters.end(); ++it) {
-		std::string callsign  = (*it)->m_callsign;
-		sockaddr_storage addr = (*it)->m_addr;
-		unsigned int timer    = (*it)->m_timer.getTimer();
-		unsigned int timeout  = (*it)->m_timer.getTimeout();
-
 		char buffer[80U];
-		LogMessage("    %s: %s %u/%u", callsign.c_str(), CUDPSocket::display(addr, buffer, 80U), timer, timeout);
+		LogMessage("    %s: %s %u/%u", (*it)->m_callsign.c_str(),
+									   CUDPSocket::display((*it)->m_addr, buffer, 80U), 
+									   (*it)->m_timer.getTimer(),
+									   (*it)->m_timer.getTimeout());
 	}
 }
 
