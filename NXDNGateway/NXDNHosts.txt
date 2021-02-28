@@ -54,6 +54,9 @@
 # 2231  IT Multiprotocollo Sardegna
 2231  nxdn.is0.org 41400
 
+# 2241 IT TUSCANY MULTIP
+2241 nxdn.grupporadiofirenze.net 41400
+
 # 2249 IT SICILIA
 2249 nxdn.digitalsicilia.it 41400
 
@@ -158,6 +161,9 @@
 
 # 22258 D2ALP HBLink Italia
 22258 94.177.173.53 41400
+
+# 22292 IT MP XLX039/B BM2222
+22292 hblink.dmrbrescia.it 41400
 
 # 22825 Swiss NXDN Reflerctor
 22825 212.237.33.114 41400
