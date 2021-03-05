@@ -169,7 +169,7 @@
 22825 212.237.33.114 41400
 
 # 23426 FreeSTAR NXDN Reflerctor
-23426 xlx248.freestar.network 41400
+23426 obp.freestar.network 41400
 
 # 23551 NXDN Scotland
 23551 nxdnscotland.ddns.net 41400
