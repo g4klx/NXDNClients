@@ -84,6 +84,9 @@
 # 5057 VK7 TAS
 5057    45.248.50.37    41400
 
+# 7160 Peru Digital
+7160  nxdn.dmr-peru.pe  41400 
+
 # 7225 Multiprotocolo Argentina
 7225  ysfarg.ddns.net 41400
 
