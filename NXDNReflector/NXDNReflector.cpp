@@ -181,10 +181,12 @@ void CNXDNReflector::run()
 		return;
 	}
 
+	bool icomEnabled = m_conf.getIcomEnabled();
+
 	unsigned short icomTGEnable = 0U;
 	unsigned short icomTGDisable = 0U;
 
-	if (m_conf.getIcomEnabled()) {
+	if (icomEnabled) {
 		ret = openIcomNetwork();
 		if (!ret) {
 			nxdnNetwork.close();
@@ -196,10 +198,12 @@ void CNXDNReflector::run()
 		icomTGDisable = m_conf.getIcomTGDisable();
 	}
 
+	bool kenwoodEnabled = m_conf.getKenwoodEnabled();
+
 	unsigned short kenwoodTGEnable = 0U;
 	unsigned short kenwoodTGDisable = 0U;
 
-	if (m_conf.getKenwoodEnabled()) {
+	if (kenwoodEnabled) {
 		ret = openKenwoodNetwork();
 		if (!ret) {
 			nxdnNetwork.close();
@@ -291,7 +295,7 @@ void CNXDNReflector::run()
 					unsigned short dstId = (buffer[7U] << 8) | buffer[8U];
 					bool grp = (buffer[9U] & 0x01U) == 0x01U;
 
-					if (icomTGEnable != 0U && grp && dstId == icomTGEnable) {
+					if (icomEnabled && icomTGEnable != 0U && grp && dstId == icomTGEnable) {
 						if (m_icomNetwork == NULL) {
 							std::string callsign = lookup->find(srcId);
 							LogMessage("Icom Network link enabled by %s at %s", callsign.c_str(), current->m_callsign.c_str());
@@ -301,7 +305,7 @@ void CNXDNReflector::run()
 						}
 					}
 
-					if (kenwoodTGEnable != 0U && grp && dstId == kenwoodTGEnable) {
+					if (kenwoodEnabled && kenwoodTGEnable != 0U && grp && dstId == kenwoodTGEnable) {
 						if (m_kenwoodNetwork == NULL) {
 							std::string callsign = lookup->find(srcId);
 							LogMessage("Kenwood Network link enabled by %s at %s", callsign.c_str(), current->m_callsign.c_str());
@@ -311,7 +315,7 @@ void CNXDNReflector::run()
 						}
 					}
 
-					if (icomTGDisable != 0U && grp && dstId == icomTGDisable) {
+					if (icomEnabled && icomTGDisable != 0U && grp && dstId == icomTGDisable) {
 						if (m_icomNetwork != NULL) {
 							std::string callsign = lookup->find(srcId);
 							LogMessage("Icom Network link disabled by %s at %s", callsign.c_str(), current->m_callsign.c_str());
@@ -319,7 +323,7 @@ void CNXDNReflector::run()
 						}
 					}
 
-					if (kenwoodTGDisable != 0U && grp && dstId == kenwoodTGDisable) {
+					if (kenwoodEnabled && kenwoodTGDisable != 0U && grp && dstId == kenwoodTGDisable) {
 						if (m_kenwoodNetwork != NULL) {
 							std::string callsign = lookup->find(srcId);
 							LogMessage("Kenwood Network link disabled by %s at %s", callsign.c_str(), current->m_callsign.c_str());

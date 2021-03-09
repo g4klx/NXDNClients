@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2009-2014,2016,2018,2020 by Jonathan Naylor G4KLX
+ *   Copyright (C) 2009-2014,2016,2018,2020,2021 by Jonathan Naylor G4KLX
  *
  *   This program is free software; you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -89,15 +89,18 @@ bool CKenwoodNetwork::open()
 		return false;
 	}
 
-	LogMessage("Opening Kenwood connection");
-
-	if (!m_rtcpSocket.open(m_rtcpAddr))
+	if (!m_rtcpSocket.open(m_rtcpAddr)) {
+		LogError("Unable to open the Kenwood network connection");
 		return false;
+	}
 
 	if (!m_rtpSocket.open(m_rtpAddr)) {
+		LogError("Unable to open the Kenwood network connection");
 		m_rtcpSocket.close();
 		return false;
 	}
+
+	LogMessage("Opened the Kenwood network connection");
 
 	std::uniform_int_distribution<unsigned int> dist(0x00000001, 0xfffffffe);
 	m_ssrc = dist(m_random);

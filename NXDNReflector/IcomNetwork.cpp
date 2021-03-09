@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2009-2014,2016,2018,2020 by Jonathan Naylor G4KLX
+ *   Copyright (C) 2009-2014,2016,2018,2020,2021 by Jonathan Naylor G4KLX
  *
  *   This program is free software; you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -51,9 +51,15 @@ bool CIcomNetwork::open()
 		return false;
 	}
 
-	LogMessage("Opening Icom network connection");
+	bool ret = m_socket.open(m_addr);
+	if (!ret) {
+		LogError("Unable to open the Icom network connection");
+		return false;
+	}
 
-	return m_socket.open(m_addr);
+	LogMessage("Opened the Icom network connection");
+
+	return true;
 }
 
 bool CIcomNetwork::write(const unsigned char* data, unsigned int len)
