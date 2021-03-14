@@ -201,8 +201,8 @@
 # 26200 Deutschland
 26200	135.125.204.81	41400
 
-# 26810 Portuguese speaking test
-26810	84.90.7.110	41400
+# 26810 Portuguese speakers
+26810	nxcore.brandmeister.pt	41400
 
 # 28299 America-Ragchew
 28299	65.101.7.52	41400
