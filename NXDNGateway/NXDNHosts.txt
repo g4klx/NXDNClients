@@ -81,6 +81,9 @@
 # PRadise
 3300  nxdn3300.from-pr.com  41400
 
+# 3400 W2BTN Group
+3400  w2btn.dmrnet.net  41400
+
 # 5057 VK7 TAS
 5057    45.248.50.37    41400
 
