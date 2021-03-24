@@ -3,6 +3,9 @@
 # The format of this file is the number of the Talk Group followed by the host name or address and port
 #
 
+# 138 Thailand
+138 e23jwe.ddns.net 41400
+
 # 202 HELLAS Zone
 202 hellaszone.com 41400
 
