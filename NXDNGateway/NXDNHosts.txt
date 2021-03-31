@@ -43,7 +43,7 @@
 911 nxdn.k2cop.com 41400
 
 # 914 Latin America
-914 164.132.96.157 41400
+914 80.211.94.145 41400
 
 # 1200 Florida
 1200	florida.nxref.org	41400
