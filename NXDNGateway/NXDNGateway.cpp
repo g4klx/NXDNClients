@@ -628,7 +628,7 @@ void CNXDNGateway::createGPS()
 	std::string callsign  = m_conf.getCallsign();
 	std::string rptSuffix = m_conf.getSuffix();
 	std::string address   = m_conf.getAPRSAddress();
-	unsigned int port     = m_conf.getAPRSPort();
+	unsigned short port   = m_conf.getAPRSPort();
 	std::string suffix    = m_conf.getAPRSSuffix();
 	bool debug            = m_conf.getDebug();
 

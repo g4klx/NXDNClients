@@ -22,7 +22,7 @@
 #include <cassert>
 #include <cstring>
 
-CNXDNNetwork::CNXDNNetwork(unsigned int port) :
+CNXDNNetwork::CNXDNNetwork(unsigned short port) :
 m_socket(port),
 m_addr(),
 m_addrLen(0U)

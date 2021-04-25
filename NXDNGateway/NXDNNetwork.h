@@ -26,7 +26,7 @@
 
 class CNXDNNetwork {
 public:
-	CNXDNNetwork(unsigned int port, const std::string& callsign, bool debug);
+	CNXDNNetwork(unsigned short port, const std::string& callsign, bool debug);
 	~CNXDNNetwork();
 
 	bool open();
@@ -44,7 +44,7 @@ public:
 private:
 	std::string  m_callsign;
 	CUDPSocket   m_socket;
-	unsigned int m_port;
+	unsigned short m_port;
 	bool         m_debug;
 };
 

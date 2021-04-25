@@ -177,9 +177,9 @@ bool CConf::read()
 		  else if (::strcmp(key, "RptAddress") == 0)
 			  m_rptAddress = value;
 		  else if (::strcmp(key, "RptPort") == 0)
-			  m_rptPort = (unsigned int)::atoi(value);
+			  m_rptPort = (unsigned short)::atoi(value);
 		  else if (::strcmp(key, "LocalPort") == 0)
-			  m_myPort = (unsigned int)::atoi(value);
+			  m_myPort = (unsigned short)::atoi(value);
 		  else if (::strcmp(key, "Debug") == 0)
 			  m_debug = ::atoi(value) == 1;
 		  else if (::strcmp(key, "Daemon") == 0)
@@ -230,14 +230,14 @@ bool CConf::read()
 		  else if (::strcmp(key, "Address") == 0)
 			  m_aprsAddress = value;
 		  else if (::strcmp(key, "Port") == 0)
-			  m_aprsPort = (unsigned int)::atoi(value);
+			  m_aprsPort = (unsigned short)::atoi(value);
 		  else if (::strcmp(key, "Suffix") == 0)
 			  m_aprsSuffix = value;
 		  else if (::strcmp(key, "Description") == 0)
 			  m_aprsDescription = value;
 	  } else if (section == SECTION_NETWORK) {
 		  if (::strcmp(key, "Port") == 0)
-			  m_networkPort = (unsigned int)::atoi(value);
+			  m_networkPort = (unsigned short)::atoi(value);
 		  else if (::strcmp(key, "HostsFile1") == 0)
 			  m_networkHosts1 = value;
 		  else if (::strcmp(key, "HostsFile2") == 0)
@@ -247,11 +247,11 @@ bool CConf::read()
 		  else if (::strcmp(key, "ParrotAddress") == 0)
 			  m_networkParrotAddress = value;
 		  else if (::strcmp(key, "ParrotPort") == 0)
-			  m_networkParrotPort = (unsigned int)::atoi(value);
+			  m_networkParrotPort = (unsigned short)::atoi(value);
 		  else if (::strcmp(key, "NXDN2DMRAddress") == 0)
 			  m_networkNXDN2DMRAddress = value;
 		  else if (::strcmp(key, "NXDN2DMRPort") == 0)
-			  m_networkNXDN2DMRPort = (unsigned int)::atoi(value);
+			  m_networkNXDN2DMRPort = (unsigned short)::atoi(value);
 		  else if (::strcmp(key, "Static") == 0) {
 			  char* p = ::strtok(value, ",\r\n");
 			  while (p != NULL) {
@@ -276,7 +276,7 @@ bool CConf::read()
 		  if (::strcmp(key, "Enable") == 0)
 			  m_remoteCommandsEnabled = ::atoi(value) == 1;
 		  else if (::strcmp(key, "Port") == 0)
-			  m_remoteCommandsPort = (unsigned int)::atoi(value);
+			  m_remoteCommandsPort = (unsigned short)::atoi(value);
 	  }
   }
 
@@ -305,12 +305,12 @@ std::string CConf::getRptAddress() const
 	return m_rptAddress;
 }
 
-unsigned int CConf::getRptPort() const
+unsigned short CConf::getRptPort() const
 {
 	return m_rptPort;
 }
 
-unsigned int CConf::getMyPort() const
+unsigned short CConf::getMyPort() const
 {
 	return m_myPort;
 }
@@ -400,7 +400,7 @@ std::string CConf::getAPRSAddress() const
 	return m_aprsAddress;
 }
 
-unsigned int CConf::getAPRSPort() const
+unsigned short CConf::getAPRSPort() const
 {
 	return m_aprsPort;
 }
@@ -440,7 +440,7 @@ bool CConf::getLogFileRotate() const
 	return m_logFileRotate;
 }
 
-unsigned int CConf::getNetworkPort() const
+unsigned short CConf::getNetworkPort() const
 {
 	return m_networkPort;
 }
@@ -465,7 +465,7 @@ std::string CConf::getNetworkParrotAddress() const
 	return m_networkParrotAddress;
 }
 
-unsigned int CConf::getNetworkParrotPort() const
+unsigned short CConf::getNetworkParrotPort() const
 {
 	return m_networkParrotPort;
 }
@@ -475,7 +475,7 @@ std::string CConf::getNetworkNXDN2DMRAddress() const
 	return m_networkNXDN2DMRAddress;
 }
 
-unsigned int CConf::getNetworkNXDN2DMRPort() const
+unsigned short CConf::getNetworkNXDN2DMRPort() const
 {
 	return m_networkNXDN2DMRPort;
 }
@@ -520,7 +520,7 @@ bool CConf::getRemoteCommandsEnabled() const
 	return m_remoteCommandsEnabled;
 }
 
-unsigned int CConf::getRemoteCommandsPort() const
+unsigned short CConf::getRemoteCommandsPort() const
 {
 	return m_remoteCommandsPort;
 }

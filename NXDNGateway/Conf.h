@@ -35,8 +35,8 @@ public:
   std::string  getSuffix() const;
   std::string  getRptProtocol() const;
   std::string  getRptAddress() const;
-  unsigned int getRptPort() const;
-  unsigned int getMyPort() const;
+  unsigned short getRptPort() const;
+  unsigned short getMyPort() const;
   bool         getDebug() const;
   bool         getDaemon() const;
 
@@ -62,7 +62,7 @@ public:
   // The APRS section
   bool         getAPRSEnabled() const;
   std::string  getAPRSAddress() const;
-  unsigned int getAPRSPort() const;
+  unsigned short getAPRSPort() const;
   std::string  getAPRSSuffix() const;
   std::string  getAPRSDescription() const;
 
@@ -74,14 +74,14 @@ public:
   bool         getLogFileRotate() const;
 
   // The Network section
-  unsigned int   getNetworkPort() const;
+  unsigned short getNetworkPort() const;
   std::string    getNetworkHosts1() const;
   std::string    getNetworkHosts2() const;
   unsigned int   getNetworkReloadTime() const;
   std::string    getNetworkParrotAddress() const;
-  unsigned int   getNetworkParrotPort() const;
+  unsigned short getNetworkParrotPort() const;
   std::string    getNetworkNXDN2DMRAddress() const;
-  unsigned int   getNetworkNXDN2DMRPort() const;
+  unsigned short getNetworkNXDN2DMRPort() const;
   std::vector<unsigned short> getNetworkStatic() const;
   unsigned int   getNetworkRFHangTime() const;
   unsigned int   getNetworkNetHangTime() const;
@@ -94,7 +94,7 @@ public:
 
   // The Remote Commands section
   bool           getRemoteCommandsEnabled() const;
-  unsigned int   getRemoteCommandsPort() const;
+  unsigned short getRemoteCommandsPort() const;
 
 private:
   std::string  m_file;
@@ -102,8 +102,8 @@ private:
   std::string  m_suffix;
   std::string  m_rptProtocol;
   std::string  m_rptAddress;
-  unsigned int m_rptPort;
-  unsigned int m_myPort;
+  unsigned short m_rptPort;
+  unsigned short m_myPort;
   bool         m_debug;
   bool         m_daemon;
 
@@ -131,18 +131,18 @@ private:
 
   bool         m_aprsEnabled;
   std::string  m_aprsAddress;
-  unsigned int m_aprsPort;
+  unsigned short m_aprsPort;
   std::string  m_aprsSuffix;
   std::string  m_aprsDescription;
 
-  unsigned int   m_networkPort;
+  unsigned short m_networkPort;
   std::string    m_networkHosts1;
   std::string    m_networkHosts2;
   unsigned int   m_networkReloadTime;
   std::string    m_networkParrotAddress;
-  unsigned int   m_networkParrotPort;
+  unsigned short m_networkParrotPort;
   std::string    m_networkNXDN2DMRAddress;
-  unsigned int   m_networkNXDN2DMRPort;
+  unsigned short m_networkNXDN2DMRPort;
   std::vector<unsigned short> m_networkStatic;
   unsigned int   m_networkRFHangTime;
   unsigned int   m_networkNetHangTime;
@@ -153,7 +153,7 @@ private:
   std::string  m_gpsdPort;
 
   bool         m_remoteCommandsEnabled;
-  unsigned int m_remoteCommandsPort;
+  unsigned short m_remoteCommandsPort;
 };
 
 #endif
