@@ -44,8 +44,8 @@ public:
 	CReflectors(const std::string& hostsFile1, const std::string& hostsFile2, unsigned int reloadTime);
 	~CReflectors();
 
-	void setParrot(const std::string& address, unsigned int port);
-	void setNXDN2DMR(const std::string& address, unsigned int port);
+	void setParrot(const std::string& address, unsigned short port);
+	void setNXDN2DMR(const std::string& address, unsigned short port);
 
 	bool load();
 
@@ -57,9 +57,9 @@ private:
 	std::string  m_hostsFile1;
 	std::string  m_hostsFile2;
 	std::string  m_parrotAddress;
-	unsigned int m_parrotPort;
+	unsigned short m_parrotPort;
 	std::string  m_nxdn2dmrAddress;
-	unsigned int m_nxdn2dmrPort;
+	unsigned short m_nxdn2dmrPort;
 	std::vector<CNXDNReflector*> m_reflectors;
 	CTimer       m_timer;
 };

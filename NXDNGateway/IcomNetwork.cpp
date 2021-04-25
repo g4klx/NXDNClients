@@ -26,7 +26,7 @@
 
 const unsigned int BUFFER_LENGTH = 200U;
 
-CIcomNetwork::CIcomNetwork(unsigned int localPort, const std::string& rptAddress, unsigned int rptPort, bool debug) :
+CIcomNetwork::CIcomNetwork(unsigned short localPort, const std::string& rptAddress, unsigned short rptPort, bool debug) :
 m_socket(localPort),
 m_addr(),
 m_addrLen(0U),

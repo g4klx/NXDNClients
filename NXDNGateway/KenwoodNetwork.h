@@ -29,7 +29,7 @@
 
 class CKenwoodNetwork : public IRptNetwork {
 public:
-	CKenwoodNetwork(unsigned int localPort, const std::string& rptAddress, unsigned int rptPort, bool debug);
+	CKenwoodNetwork(unsigned short localPort, const std::string& rptAddress, unsigned short rptPort, bool debug);
 	virtual ~CKenwoodNetwork();
 
 	virtual bool open();

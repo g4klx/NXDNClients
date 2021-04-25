@@ -22,13 +22,13 @@
 class CNXDNParrot
 {
 public:
-	CNXDNParrot(unsigned int port);
+	CNXDNParrot(unsigned short port);
 	~CNXDNParrot();
 
 	void run();
 
 private:
-	unsigned int m_port;
+	unsigned short m_port;
 };
 
 #endif
