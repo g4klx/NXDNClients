@@ -270,6 +270,9 @@
 # 31444 Rhode Island Digital Link
 31444	18.219.32.21	41400
 
+# 31581 KD2UQK Long Island, NY - NXDN Reflector
+31581 kd2uqk.ham-radio-op.net 41400
+
 # 31665 TGIF Network
 31665	tgif.network	41400
 
