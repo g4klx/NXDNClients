@@ -192,6 +192,9 @@
 # 23551 NXDN Scotland
 23551 nxdnscotland.ddns.net 41400
 
+# 23595 OZ-DMR_CHAT
+23595	reflector.oz-dmr.uk	41400
+
 # 25000 NX Core
 25000 173.166.94.77 41400
 
@@ -275,9 +278,6 @@
 
 # 31672 Pi-Star
 31672	nxdn-31672.pistar.uk	41400
-
-# 31769 OZ-DMR
-31769	reflector.oz-dmr.uk	41400
 
 # 31777 DX-LINK SYSTEM,
 31777	8.9.4.102	41400
