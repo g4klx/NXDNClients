@@ -39,6 +39,9 @@
 # 730 Chile NXDN Reflector to BM TG 730
 730 sdradio.cl  41400
 
+# 822 Thailand NXDN to BM TG 520822
+822 nxdn.dstarthailand.com 41400
+
 # 911 Cop Talk, Multimode TG for Police and First Responders
 911 nxdn.k2cop.com 41400
 
