@@ -28,43 +28,46 @@
 505	43.229.63.42	41450
 
 # 530 New Zealand
-530 zldigitalreflectors.hopto.org 41400
+530 zldigitalreflectors.hopto.org	41400
 
 # 545 XLX545E PA
-545 70.44.20.24 41401
+545 70.44.20.24	41401
 
 # 707 RuralMN Reflector
-707 707nxdn.kd0ioe.com  41400
+707	707nxdn.kd0ioe.com  41400
 
 # 730 Chile NXDN Reflector to BM TG 730
-730 sdradio.cl  41400
+730	sdradio.cl  41400
 
 # 822 Thailand NXDN to BM TG 520822
-822 nxdn.dstarthailand.com 41400
+822	nxdn.dstarthailand.com	41400
+
+# 910 Washington DC - Virginia - Maryland
+910	nxdn910.freeddns.org	41400
 
 # 911 Cop Talk, Multimode TG for Police and First Responders
-911 nxdn.k2cop.com 41400
+911	nxdn.k2cop.com	41400
 
 # 914 Latin America
-914 80.211.94.145 41400
+914 80.211.94.145	41400
 
 # 1200 Florida
 1200	florida.nxref.org	41400
 
 # 2140 DMRplus BM Multi
-2140  94.177.235.81 41400
+2140  94.177.235.81	41400
 
 # 2225  IT Tuscany
-2225  80.211.99.134 41400
+2225  80.211.99.134	41400
 
 # 2231  IT Multiprotocollo Sardegna
-2231  nxdn.is0.org 41400
+2231  nxdn.is0.org	41400
 
 # 2241 IT TUSCANY MULTIP
-2241 nxdn.grupporadiofirenze.net 41400
+2241 nxdn.grupporadiofirenze.net	41400
 
 # 2249 IT SICILIA
-2249 nxdn.digitalsicilia.it 41400
+2249 nxdn.digitalsicilia.it	41400
 
 # 2263 Bucharest YO3 NXDN Network
 2263	nxdn.dstar-yo.ro	41403
