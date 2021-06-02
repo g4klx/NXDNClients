@@ -235,7 +235,7 @@
 30639	nfonorcalnxdn.dyndns.org	41400
 
 # 31010 Alabama-Link
-31010	nxdn.alabamalink.info	41400
+31010	alabamalink.radiotechnology.xyz	41400
 
 # 31031 XLX310 Multimode Reflector
 31031	ref.xlx310.com	41400
