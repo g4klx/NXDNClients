@@ -24,7 +24,7 @@
 #include <cassert>
 #include <cstring>
 
-CNXDNNetwork::CNXDNNetwork(unsigned int port, bool debug) :
+CNXDNNetwork::CNXDNNetwork(unsigned short port, bool debug) :
 m_socket(port),
 m_debug(debug)
 {

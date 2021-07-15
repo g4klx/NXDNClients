@@ -46,13 +46,13 @@ CReflectors::~CReflectors()
 	m_reflectors.clear();
 }
 
-void CReflectors::setParrot(const std::string& address, unsigned int port)
+void CReflectors::setParrot(const std::string& address, unsigned short port)
 {
 	m_parrotAddress = address;
 	m_parrotPort    = port;
 }
 
-void CReflectors::setNXDN2DMR(const std::string& address, unsigned int port)
+void CReflectors::setNXDN2DMR(const std::string& address, unsigned short port)
 {
 	m_nxdn2dmrAddress = address;
 	m_nxdn2dmrPort    = port;
@@ -79,7 +79,7 @@ bool CReflectors::load()
 
 			if (p1 != NULL && p2 != NULL && p3 != NULL) {
 				std::string host  = std::string(p2);
-				unsigned int port = (unsigned int)::atoi(p3);
+				unsigned short port = (unsigned short)::atoi(p3);
 
 				sockaddr_storage addr;
 				unsigned int addrLen;
@@ -114,7 +114,7 @@ bool CReflectors::load()
 				unsigned int id = (unsigned int)::atoi(p1);
 				if (find(id) == NULL) {
 					std::string host  = std::string(p2);
-					unsigned int port = (unsigned int)::atoi(p3);
+					unsigned short port = (unsigned short)::atoi(p3);
 
 					sockaddr_storage addr;
 					unsigned int addrLen;

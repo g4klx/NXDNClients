@@ -26,7 +26,7 @@
 
 class CNXDNNetwork {
 public:
-	CNXDNNetwork(unsigned int port, bool debug);
+	CNXDNNetwork(unsigned short port, bool debug);
 	~CNXDNNetwork();
 
 	bool open();

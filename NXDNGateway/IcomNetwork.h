@@ -27,7 +27,7 @@
 
 class CIcomNetwork : public IRptNetwork {
 public:
-	CIcomNetwork(unsigned int localPort, const std::string& rptAddress, unsigned int rptPort, bool debug);
+	CIcomNetwork(unsigned short localPort, const std::string& rptAddress, unsigned short rptPort, bool debug);
 	virtual ~CIcomNetwork();
 
 	virtual bool open();
