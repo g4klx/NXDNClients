@@ -252,6 +252,9 @@
 # 31092 Connecticut Chat
 31092	nxdn.alecwasserman.com	41400
 
+# 31121 First Coast FL
+31121   dvse.dmrnet.net    41400
+
 # 31137 Kingsland Digital Link
 31137   74.91.119.94    41400
 
