@@ -93,6 +93,9 @@
 # 3400 W2BTN Group
 3400	w2btn.dmrnet.net	41400
 
+# 3400 W2BTN Group
+3400  w2btn.dmrnet.net  41400
+
 # 5057 VK7 TAS
 5057    45.248.50.37    41400
 
@@ -248,6 +251,9 @@
 
 # 31092 Connecticut Chat
 31092	nxdn.alecwasserman.com	41400
+
+# 31121 First Coast FL
+31121   dvse.dmrnet.net    41400
 
 # 31137 Kingsland Digital Link
 31137   74.91.119.94    41400
