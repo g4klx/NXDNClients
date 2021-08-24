@@ -120,16 +120,13 @@
 # 10301 HBLINK Espana
 10301	ea5gvk.duckdns.org	41400
 
-# 10302 Multimode BM 21461 EA Spain
-10302	93.186.254.219	41400
-
 # 10303 Italian speaking
 10303	185.203.118.8	41400
 
 # 10304 REM-ADER Spain Group
 10304	176.31.161.9	41400
 
-# Pacific, 10400
+# 10400 Pacific
 10400	pacific.nxref.org	41400
 
 # 10922 CQ-UK
