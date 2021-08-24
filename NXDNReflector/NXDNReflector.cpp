@@ -228,7 +228,7 @@ void CNXDNReflector::run()
 
 	enum {
 		ACTIVE_NONE,
-		ACTIVE_YSF,
+		ACTIVE_NXDN,
 		ACTIVE_ICOM,
 		ACTIVE_KENWOOD
 	} active = ACTIVE_NONE;
@@ -340,10 +340,10 @@ void CNXDNReflector::run()
 							std::string callsign = lookup->find(srcId);
 							LogMessage("Transmission from %s at %s to %s%u", callsign.c_str(), current->m_callsign.c_str(), grp ? "TG " : "", dstId);
 
-							active = ACTIVE_YSF;
+							active = ACTIVE_NXDN;
 						}
 
-						if (active == ACTIVE_YSF) {
+						if (active == ACTIVE_NXDN) {
 							watchdogTimer.start();
 
 							for (std::vector<CNXDNRepeater*>::const_iterator it = m_repeaters.begin(); it != m_repeaters.end(); ++it) {
@@ -401,7 +401,7 @@ void CNXDNReflector::run()
 
 							if (tempGrp && tempDstId == tg) {
 								// Save the grp, src and dest for use in the NXDN Protocol messages
-								grp = tempGrp;
+								grp   = tempGrp;
 								srcId = tempSrcId;
 								dstId = tempDstId;
 
@@ -449,7 +449,7 @@ void CNXDNReflector::run()
 
 							if (tempGrp && tempDstId == tg) {
 								// Save the grp, src and dest for use in the NXDN Protocol messages
-								grp = tempGrp;
+								grp   = tempGrp;
 								srcId = tempSrcId;
 								dstId = tempDstId;
 
@@ -466,7 +466,7 @@ void CNXDNReflector::run()
 
 							if (tempGrp && tempDstId == tg) {
 								// Save the grp, src and dest for use in the NXDN Protocol messages
-								grp = tempGrp;
+								grp   = tempGrp;
 								srcId = tempSrcId;
 								dstId = tempDstId;
 
@@ -515,8 +515,8 @@ void CNXDNReflector::run()
 				LogMessage("Removing %s (%s) disappeared", (*it)->m_callsign.c_str(),
 														   CUDPSocket::display((*it)->m_addr, buff, 80U));
 
-				m_repeaters.erase(it);
 				delete *it;
+				m_repeaters.erase(it);
 				break;
 			}
 		}
