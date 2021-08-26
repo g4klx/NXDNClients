@@ -198,6 +198,9 @@
 # 23426 FreeSTAR UK
 23426 obp.freestar.network 41400
 
+# 23530 Yorkshire UK, https://dvswitch.uk/nxdn
+23530	194.146.44.13	41400
+
 # 23551 NXDN Scotland
 23551	nxdnscotland.ddns.net	41400
 
