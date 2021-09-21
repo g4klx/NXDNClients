@@ -81,6 +81,9 @@
 # 2700 Melbourne FL
 2700	2700nxdn.ddns.net	41400
 
+# 2724 YSF-NRSI-EI
+2724	dmr.nrsi.ie	41400
+
 # 3023 Ontario Crosslink
 3023    ontxlink.hopto.org 41400
 
