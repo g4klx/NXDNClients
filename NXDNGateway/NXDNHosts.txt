@@ -24,9 +24,6 @@
 # 420 Super Freq
 420 hb.superfreqdigital.com 41400
 
-# 505 VKCore
-505	43.229.63.42	41450
-
 # 530 New Zealand
 530 zldigitalreflectors.hopto.org	41400
 
