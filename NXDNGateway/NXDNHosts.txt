@@ -6,6 +6,9 @@
 # 138 Thailand
 138 nxdn138.freeddns.org 41400
 
+# 149 Thailand
+149	nxdn.pwk.ac.th	41400
+
 # 202 HELLAS Zone
 202 hellaszone.com 41400
 
