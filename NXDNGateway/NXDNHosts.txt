@@ -201,6 +201,9 @@
 # 23426 FreeSTAR UK
 23426 obp.freestar.network 41400
 
+# 22488 Digital Network
+22488	185.203.119.229	41400
+
 # 23530 Yorkshire UK, https://dvswitch.uk/nxdn
 23530	194.146.44.13	41400
 
