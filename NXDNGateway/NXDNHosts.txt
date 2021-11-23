@@ -51,6 +51,9 @@
 # 914 Latin America
 914	80.211.94.145	41400
 
+# 1007 Harley-Hangout TGIF TG-1007 Bridge
+1007  43773.kb5rir.com  41400
+
 # 1200 Florida
 1200	florida.nxref.org	41400
 
