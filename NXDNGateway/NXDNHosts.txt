@@ -348,6 +348,9 @@
 # 52000 Thailand DTDXA XLX520N
 52000	nxdn.dtdxa.com	41400
 
+# 52032 Surin Amateur Radio Association (HS3AS) ,Thailand,XLX149C
+52032 hs3as.pwk.ac.th 41404
+
 # 53099 New Zealand, 53099 linked to BM TG 53099
 53099	203.86.206.49	41400
 
