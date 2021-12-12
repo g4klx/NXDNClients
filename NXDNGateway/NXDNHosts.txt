@@ -25,7 +25,7 @@
 302	p25canada.hopto.org	41400
 
 # 420 Super Freq
-420 hb.superfreqdigital.com 41400
+420 nxdn.superfreqdigital.com 41400
 
 # 530 New Zealand
 530 zldigitalreflectors.hopto.org	41400
