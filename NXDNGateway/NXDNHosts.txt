@@ -246,6 +246,9 @@
 # 28299 America-Ragchew
 28299	65.101.7.52	41400
 
+# 29999 AllStarLink Bridge
+29999 64.154.38.103 41400 
+
 # 30639 NorCal-Bridge / Multimode-NXDN
 30639	nfonorcalnxdn.dyndns.org	41400
 
