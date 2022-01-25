@@ -336,7 +336,7 @@ void CNXDNGateway::run()
 
 						bool grp = (buffer[9U] & 0x01U) == 0x01U;
 
-						if (grp && currentTG == dstTG && (poll == false))
+						if (grp && currentTG == dstTG && !poll)
 							localNetwork->write(buffer + 10U, len - 10U);
 
 						LogMessage("Switched to reflector %u due to network activity", currentTG);
