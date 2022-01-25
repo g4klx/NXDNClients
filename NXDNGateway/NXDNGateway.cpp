@@ -313,9 +313,11 @@ void CNXDNGateway::run()
 					hangTimer.start();
 				}
 			} else if (currentTG == 0U) {
-				// Don't pass reflector control data through to the MMDVM
-				if (::memcmp(buffer, "NXDND", 5U) == 0) {
-					// Find the static TG that this audio data belongs to
+				bool poll = false;
+
+				// We weren't really connected yet, but we got a reply from a poll, or some data
+				if ((::memcmp(buffer, "NXDND", 5U) == 0) || (poll = (::memcmp(buffer, "NXDNP", 5U) == 0))) {
+					// Find the static TG that this audio data/poll belongs to
 					for (std::vector<CStaticTG>::const_iterator it = staticTGs.cbegin(); it != staticTGs.cend(); ++it) {
 						if (CUDPSocket::match(addr, (*it).m_addr)) {
 							currentTG = (*it).m_tg;
@@ -334,7 +336,7 @@ void CNXDNGateway::run()
 
 						bool grp = (buffer[9U] & 0x01U) == 0x01U;
 
-						if (grp && currentTG == dstTG)
+						if (grp && currentTG == dstTG && (poll == false))
 							localNetwork->write(buffer + 10U, len - 10U);
 
 						LogMessage("Switched to reflector %u due to network activity", currentTG);
