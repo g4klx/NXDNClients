@@ -204,6 +204,9 @@
 # 23426 FreeSTAR UK
 23426 nxdn.freestar.network 41400
 
+# 23491 NXDN Cambridge
+23491 nxdn-cambridge.dyndns.org 41400
+
 # 22488 Digital Network
 22488	185.203.119.229	41400
 
