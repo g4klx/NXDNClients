@@ -330,6 +330,9 @@
 # 37224 Haiti NXDN
 37224	44.98.254.130	41400
 
+# 37500 Belarus Digital MultiMode Network
+37500	xlx375.bfrr.by	41400
+
 # 40721 Fusion Canada Fr /Wires-x /Ysf /Nxdn Network
 40721	158.69.169.205	41400
 
@@ -356,6 +359,9 @@
 
 # 53099 New Zealand, 53099 linked to BM TG 53099
 53099	203.86.206.49	41400
+
+# 63600 Latvian Digital MultiMode Network
+63600	xlx.ham.lv	41400
 
 # 65000 World Wide
 65000	176.9.1.168 41400
