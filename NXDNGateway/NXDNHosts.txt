@@ -93,6 +93,9 @@
 # 3142 Pennsylvania
 3142	3.215.215.169	41402
 
+# 3160 K6JWN Crossroads
+3160  nxdn.k6jwn.org  41400
+
 # PRadise
 3300	nxdn3300.from-pr.com	41400
 
