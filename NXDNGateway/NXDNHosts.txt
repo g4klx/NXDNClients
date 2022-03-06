@@ -357,6 +357,9 @@
 # 52032 Surin Amateur Radio Association (HS3AS) ,Thailand,XLX149C
 52032 hs3as.pwk.ac.th 41404
 
+# 52910 XLX Nexus
+52910	nxdn910x.mywire.org	41400
+
 # 53099 New Zealand, 53099 linked to BM TG 53099
 53099	203.86.206.49	41400
 
