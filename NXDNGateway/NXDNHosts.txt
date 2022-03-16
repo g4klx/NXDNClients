@@ -151,7 +151,7 @@
 20328	nxdn.projekt-pegasus.net	41400
 
 # 20330 NXDN German DE-RAMSES Project 
-20330	161.97.140.131	41400
+20330	81.169.173.132	41400
 
 # 20333 NXDN LausitzLink Germany 
 20333	nxdn02.bzsax.de	41400
