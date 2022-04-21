@@ -52,7 +52,7 @@
 914	80.211.94.145	41400
 
 # 1007 Harley-Hangout TGIF TG-1007 Bridge
-1007  43773.kb5rir.com  41400
+1007	43773.kb5rir.com	41400
 
 # 1200 Florida
 1200	florida.nxref.org	41400
@@ -94,7 +94,7 @@
 3142	3.215.215.169	41402
 
 # 3160 K6JWN Crossroads
-3160  nxdn.k6jwn.org  41400
+3160	nxdn.k6jwn.org	41400
 
 # PRadise
 3300	nxdn3300.from-pr.com	41400
@@ -145,7 +145,7 @@
 20000	89.185.97.38	41400
 
 # 20201 NXDN Athens GR HBLink
-20201 stargate-dmr.net  41400
+20201	stargate-dmr.net	41400
 
 # 20328 NXDN German Pegasus Project 
 20328	nxdn.projekt-pegasus.net	41400
@@ -166,7 +166,7 @@
 21410	nxdn21410.nxdn.es	41400
 
 # 2147 Andalucia Room
-21401 2147.nxdn.es 41400
+21401	2147.nxdn.es	41400
 
 # 21418 NXDN RC Veleta
 21418	rcveleta.xreflector.es	41400
@@ -204,17 +204,17 @@
 # 22292 IT MP XLX039/B BM2222
 22292	hblink.dmrbrescia.it	41400
 
+# 22488 Digital Network
+22488	185.203.119.229	41400
+
 # 22825 Swiss NXDN Reflerctor
 22825	212.237.33.114	41400
 
 # 23426 FreeSTAR UK
-23426 nxdn.freestar.network 41400
+23426	nxdn.freestar.network	41400
 
 # 23491 NXDN Cambridge
-23491 nxdn-cambridge.dyndns.org 41400
-
-# 22488 Digital Network
-22488	185.203.119.229	41400
+23491	nxdn-cambridge.dyndns.org	41400
 
 # 23530 Yorkshire UK, https://dvswitch.uk/nxdn
 23530	194.146.44.13	41400
@@ -259,7 +259,7 @@
 28299	arcnxdn.duckdns.org	41400
 
 # 29999 AllStarLink Bridge
-29999 64.154.38.103 41400 
+29999	64.154.38.103	41400
 
 # 30639 NorCal-Bridge / Multimode-NXDN
 30639	nfonorcalnxdn.dyndns.org	41400
@@ -319,7 +319,7 @@
 31581	kd2uqk.ham-radio-op.net	41400
 
 # 31582 KO4UYJ Milton, Fl - NXDN Reflector
-31582  ko4uyj.com  41400
+31582	ko4uyj.com	41400
 
 # 31665 TGIF Network
 31665	tgif.network	41400
@@ -373,7 +373,7 @@
 52000	nxdn.dtdxa.com	41400
 
 # 52032 Surin Amateur Radio Association (HS3AS) ,Thailand,XLX149C
-52032 hs3as.pwk.ac.th 41404
+52032	hs3as.pwk.ac.th	41404
 
 # 52149 XLX149 D Thailand
 52149	nxdn149d.pwk.ac.th	41408
