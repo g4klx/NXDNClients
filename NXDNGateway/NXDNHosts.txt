@@ -294,6 +294,9 @@
 # 31226 WorldWide Dx System
 31226	198.245.53.107	41400
 
+# 31238 Foxhole Radio Bridged Network
+31238	nxdn.foxhole.radio	41400
+
 # 31257 NEARC
 31257	nxdn.w0jay.com	41400
 
