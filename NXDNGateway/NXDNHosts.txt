@@ -303,6 +303,9 @@
 # 31264 XLX625 The BROniverse www.wa8bro.com
 31264	nxdn.dudetronics.com	41400
 
+# 31266 DGTLCOM Digital Common Interlink
+31266 dgtlcom.dyndns.org 41400
+
 # 31340 Central New Jersey
 31340	cnjham.msmts.com	41400
 
