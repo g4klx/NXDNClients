@@ -177,7 +177,7 @@
 # 21465 ADER Multimode
 21465	aderdigital.ddns.net	41400
 
-# 21909 Mother Owl - Multi-mode HUB & Reflector
+# 21909 PRIDE - Multi-mode HUB & Reflector
 21909	hub.kimberlychase.com	41400
 
 # 22200 IT HBLINK ITALY
@@ -389,6 +389,9 @@
 
 # 53099 New Zealand, 53099 linked to BM TG 53099
 53099	203.86.206.49	41400
+
+# 56987 Mother Owl - Multi-mode HUB & Reflector
+56987	server.captsmokey.com	41400
 
 # 63600 Latvian Digital MultiMode Network
 63600	xlx.ham.lv	41400
