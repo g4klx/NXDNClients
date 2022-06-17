@@ -366,6 +366,9 @@
 # 43389 SouthEast Link
 43389	nxdn.lmarc.net	41400
 
+# 46010 NXDN Link XLX074 Modules A / BM TG46010, Beijing, China
+46010	nxdn.bh1nyr.net	41400
+
 # 50525 DMR TG50525 bridge
 50525	50525.nxref.org	41400
 
