@@ -357,6 +357,9 @@
 # 40721 Fusion Canada Fr /Wires-x /Ysf /Nxdn Network
 40721	158.69.169.205	41400
 
+# 43389 SouthEast Link
+43389	nxdn.lmarc.net	41400
+
 # 44120 Managed by JA2CCV
 44120	nxdn.owari.biz	41400
 
@@ -366,17 +369,14 @@
 # 46000 China
 46000	120.234.41.144	41400
 
-# 43389 SouthEast Link
-43389	nxdn.lmarc.net	41400
-
 # 46010 NXDN Link XLX074 Modules A / BM TG46010, Beijing, China
-46010	nxdn.bh1nyr.net	41400
+46010	101.89.136.112	41400
 
 # 50525 DMR TG50525 bridge
 50525	50525.nxref.org	41400
 
 # 50535 PrideNet multimode bridge
-50535	p25tg50535.vkradio.com  41400
+50535	p25tg50535.vkradio.com	41400
 
 # 50599 BM NXCore bridge
 50599	nxdn.duckdns.org	41490
