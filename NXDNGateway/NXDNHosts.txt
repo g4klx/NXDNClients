@@ -123,6 +123,9 @@
 # 10200 North America
 10200   dvswitch.org    42400
 
+# 10201 North America TAC
+10201 10201.dyndns.org  41400
+
 # 10301 HBLINK Espana
 10301	ea5gvk.duckdns.org	41400
 
