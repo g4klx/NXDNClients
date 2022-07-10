@@ -372,7 +372,10 @@
 # 46000 China
 46000	120.234.41.144	41400
 
-# 46010 NXDN Link XLX074 Modules A / BM TG46010, Beijing, China
+# 46001 NXDN Link BM TG46001, China
+46001 n46001.bh1nyr.net 41404
+
+# 46010 NXDN Link XLX074 / BM TG46010, Beijing, China
 46010	nxdn.bh1nyr.net	41400
 
 # 50525 DMR TG50525 bridge
