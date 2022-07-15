@@ -375,11 +375,20 @@
 # 46000 China
 46000	120.234.41.144	41400
 
-# 46001 NXDN Link BM TG46001, China
-46001 n46001.bh1nyr.net 41404
+# 46001 NXDN Link TG46001, China
+46001 46001.freedmr.club 41400
 
-# 46010 NXDN Link XLX074 / BM TG46010, Beijing, China
-46010	nxdn.bh1nyr.net	41400
+# 46004 NXDN Link TG46004, Zone 4, China
+46004 46004.freedmr.club 41401
+
+# 46010 NXDN Link TG46010, Beijing, China
+46010	46010.freedmr.club	41402
+
+# 46055 NXDN Link TG46055, China
+46055 46055.freedmr.club 41403
+
+# 46516 NXDN Link TG460516, Xuzhou, China
+46516 460516.freedmr.club 41404
 
 # 50525 DMR TG50525 bridge
 50525	50525.nxref.org	41400
