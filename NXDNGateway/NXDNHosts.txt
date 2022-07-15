@@ -384,7 +384,7 @@
 # 46010 NXDN Link TG46010, Beijing, China
 46010	46010.freedmr.club	41402
 
-# 46055 NXDN Link TG46055, China
+# 46055 NXDN Link TG46055, Zhejiang, China
 46055 46055.freedmr.club 41403
 
 # 46516 NXDN Link TG460516, Xuzhou, China
