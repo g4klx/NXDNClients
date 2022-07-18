@@ -390,8 +390,8 @@
 # 46055 NXDN Link TG46055, Zhejiang, China
 46055 46055.freedmr.club 41403
 
-# 46516 NXDN Link TG460516, Xuzhou, China
-46516 460516.freedmr.club 41404
+# 46516 NXDN Link TG46516, Xuzhou, China
+46516 46516.freedmr.club 41404
 
 # 50525 DMR TG50525 bridge
 50525	50525.nxref.org	41400
