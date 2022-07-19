@@ -372,6 +372,9 @@
 # 44120 Managed by JA2CCV
 44120	nxdn.owari.biz	41400
 
+# 44155 XLX298 YSF-NAGOYA BRIDGE NAGOYA JAPAN
+44155	xrf298.mydns.jp	41400
+
 # 45000 Korea
 45000	nxdn.dvham.com	41400
 
