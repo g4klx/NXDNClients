@@ -276,6 +276,9 @@
 # 31031 XLX310 Multimode Reflector
 31031	ref.xlx310.com	41400
 
+# 31059 Vidalia Net NXDN
+31059 vidalianet.cbridge.net  41400
+
 # 31081 Colorado Fun Machine WE0FUN Bridge to C4FM, DMR, DStar, P25 and AllStarLink (Analog) http://www.we0fun.com
 31081	nxdn.we0fun.com	41400
 
