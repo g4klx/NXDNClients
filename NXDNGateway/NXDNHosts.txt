@@ -117,6 +117,9 @@
 # 7309 CHILE-LINK NXDN Reflector to BM TG 73099
 7309	sdradio.cl	41401
 
+# 7487 Uruguay Link 
+7487 23.234.230.152 41400
+
 # 9480 ICQPODCAST - ICQ DIGITAL GROUP
 9480	reflectors.icqpodcast.com	42400
 
