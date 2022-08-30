@@ -438,6 +438,9 @@
 # 63600 Latvian Digital MultiMode Network
 63600	xlx.ham.lv	41400
 
+# 64003 ELITE Group
+64003 51.77.213.200 41400
+
 # 65000 World Wide
 65000 176.9.1.168 41400
 
