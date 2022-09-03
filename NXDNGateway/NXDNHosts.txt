@@ -364,7 +364,7 @@
 33581	omiss.dyndns.org	41400
 
 # 37030 SKYNET
-37030 skynet.xreflector.es 41403
+37030 skynet.nxdn.es 41400
 
 # 37224 Haiti NXDN
 37224	44.98.254.130	41400
