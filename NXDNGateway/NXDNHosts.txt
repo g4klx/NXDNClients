@@ -49,7 +49,7 @@
 911	nxdn.k2cop.com	41400
 
 # 914 Latin America
-914	80.211.94.145	41400
+914	914.nxdn.es	41400
 
 # 1007 Harley-Hangout TGIF TG-1007 Bridge
 1007	43773.kb5rir.com	41400
@@ -58,7 +58,7 @@
 1200	florida.nxref.org	41400
 
 # 2140 DMRplus BM Multi
-2140	94.177.235.81	41400
+2140	2140.nxdn.es 41400
 
 # 2225  IT Tuscany
 2225	80.211.99.134	41400
@@ -118,7 +118,7 @@
 7309	sdradio.cl	41401
 
 # 7487 Uruguay Link 
-7487 23.234.230.152 41400
+7487 uruguay.nxdn.es 41400
 
 # 9480 ICQPODCAST - ICQ DIGITAL GROUP
 9480	reflectors.icqpodcast.com	42400
@@ -364,7 +364,7 @@
 33581	omiss.dyndns.org	41400
 
 # 37030 SKYNET
-37030 skynet.xreflector.es 41403
+37030 skynet.nxdn.es 41400
 
 # 37224 Haiti NXDN
 37224	44.98.254.130	41400
