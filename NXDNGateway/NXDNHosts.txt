@@ -57,8 +57,8 @@
 # 1200 Florida
 1200	florida.nxref.org	41400
 
-# 2140 DMRplus BM Multi
-2140	2140.nxdn.es 41400
+# 2140 Treehouse NXDN
+2140	nxdn.pa7lim.nl 41400
 
 # 2225  IT Tuscany
 2225	80.211.99.134	41400
