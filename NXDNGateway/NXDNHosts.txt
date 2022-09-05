@@ -60,6 +60,9 @@
 # 2140 Treehouse NXDN
 2140	nxdn.pa7lim.nl 41400
 
+# 2147 Andalucia Room
+2147	2147.nxdn.es	41400
+
 # 2225  IT Tuscany
 2225	80.211.99.134	41400
 
@@ -176,9 +179,6 @@
 
 # 21410 NXDN SPAIN
 21410	nxdn21410.nxdn.es	41400
-
-# 2147 Andalucia Room
-21401	2147.nxdn.es	41400
 
 # 21418 NXDN RC Veleta
 21418	rcveleta.xreflector.es	41400
