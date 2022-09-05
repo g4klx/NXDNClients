@@ -108,6 +108,9 @@
 # 5621 HamFurs MultiMode Bridge
 5621  ord1.w3fur.radio  41400
 
+# 7144 Chiriqui Link Panama
+7144	nxdn.pa7lim.nl 41400
+
 # 7160 Peru Digital
 7160	nxdn.dmr-peru.pe	41400
 
