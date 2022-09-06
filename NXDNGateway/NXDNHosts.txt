@@ -60,8 +60,32 @@
 # 2140 Treehouse NXDN
 2140	nxdn.pa7lim.nl 41400
 
+# 2141 EA-DISTRITO 1 NXDN
+2141	nxdn.pa7lim.nl 41400
+
+# 2142 EA-DISTRITO 2 NXDN
+2142	nxdn.pa7lim.nl 41400
+
+# 2143 EA-DISTRITO 3 NXDN
+2143	nxdn.pa7lim.nl 41400
+
+# 2144 EA-DISTRITO 4 NXDN
+2144	nxdn.pa7lim.nl 41400
+
+# 2145 EA-DISTRITO 5 NXDN
+2145	nxdn.pa7lim.nl 41400
+
+# 2146 EA-DISTRITO 6 NXDN
+2146	nxdn.pa7lim.nl 41400
+
 # 2147 Andalucia Room
 2147	2147.nxdn.es	41400
+
+# 2148 EA-DISTRITO 8 NXDN
+2148	nxdn.pa7lim.nl 41400
+
+# 2149 EA-DISTRITO 9 NXDN
+2149	nxdn.pa7lim.nl 41400
 
 # 2225  IT Tuscany
 2225	80.211.99.134	41400
