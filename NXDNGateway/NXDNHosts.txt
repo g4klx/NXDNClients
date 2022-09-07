@@ -3,6 +3,9 @@
 # The format of this file is the number of the Talk Group followed by the host name or address and port
 #
 
+# 112 Emergencias EA
+112 nxdn.pa7lim.nl 41400
+
 # 138 Thailand
 138 nxdn138.freeddns.org 41400
 
@@ -50,6 +53,9 @@
 
 # 914 Latin America
 914	914.nxdn.es	41400
+
+# 987 Centro America
+987 nxdn.pa7lim.nl 41400
 
 # 1007 Harley-Hangout TGIF TG-1007 Bridge
 1007	43773.kb5rir.com	41400
@@ -144,6 +150,9 @@
 # 7225 Multiprotocolo Argentina
 7225	argnxdn.ddnsfree.com	41400
 
+# 7227 ARGENTINA LINK
+7227 nxdn.pa7lim.nl 41400
+
 # 7309 CHILE-LINK NXDN Reflector to BM TG 73099
 7309	sdradio.cl	41401
 
@@ -205,16 +214,22 @@
 21410	nxdn21410.nxdn.es	41400
 
 # 21418 NXDN RC Veleta
-21418	rcveleta.xreflector.es	41400
+21418	nxdn.pa7lim.nl	41400
 
 # 21407 NXDN MALLORCA
-21407	82.223.54.35	41400
+21407	nxdn.pa7lim.nl 41400
+
+# 21426 FreeSTAR SPAIN
+21426 nxdn.pa7lim.nl 41400
 
 # 21430 Alcayna
 21430	alcayna.duckdns.org	41400
 
 # 21465 ADER Multimode
 21465	aderdigital.ddns.net	41400
+
+# 21468 Canarias NXDN
+21468 nxdn.pa7lim.nl 41400
 
 # 21909 PRIDE - Multi-mode HUB & Reflector
 21909	hub.kimberlychase.com	41400
