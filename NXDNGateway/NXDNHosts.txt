@@ -160,7 +160,7 @@
 7487 uruguay.nxdn.es 41400
 
 # 9480 ICQPODCAST - ICQ DIGITAL GROUP
-9480	reflectors.icqpodcast.com	42400
+9480	46.101.36.246 41400
 
 # 9846 NXDN Portal to WW8GM YSF network www.gmarc.org 
 9846	nxdn.dudetronics.com	41401
