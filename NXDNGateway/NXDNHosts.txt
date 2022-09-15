@@ -195,6 +195,9 @@
 # 20201 NXDN Athens GR HBLink
 20201	stargate-dmr.net	41400
 
+# 20222 NXDN HELLAS-FRN
+20222 nxdn-frn.ddns.net 41400
+
 # 20328 NXDN German Pegasus Project 
 20328	nxdn.projekt-pegasus.net	41400
 
