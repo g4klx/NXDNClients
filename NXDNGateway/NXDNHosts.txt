@@ -111,6 +111,9 @@
 # 2265 Baia Mare YO5 NXDN Network
 2265	nxdn.dstar-yo.ro	41405
 
+# 2345 CQ-North UK
+2345  nxdn.cqnorth.org.uk 41400
+
 # 2503 RU DMR
 2503	nxdn.r1ik.ru	41400
 
