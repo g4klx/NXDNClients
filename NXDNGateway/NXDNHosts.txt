@@ -15,6 +15,9 @@
 # 202 HELLAS Zone
 202 hellaszone.com 41400
 
+# 204 Netherlands
+204 nxdn.repeaters-haaglanden.nl 41400
+
 # 214 RED SPAIN
 214 nxdn214.xreflector.es 41400
 
