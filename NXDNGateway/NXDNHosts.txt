@@ -286,7 +286,7 @@
 23551	nxdnscotland.ddns.net	41400
 
 # 23595 OZ-DMR_CHAT
-23595	reflectors.oz-dmr.uk	41400
+23595	xlx.oz-dmr.uk	41400
 
 # 25000 NX Core
 25000	173.166.94.77	41400
