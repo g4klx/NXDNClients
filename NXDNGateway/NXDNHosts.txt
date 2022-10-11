@@ -219,20 +219,20 @@
 # 20945 Deutschland DL1BH
 20945	dl1bh.ddns.net	41400
 
+# 21407 NXDN MALLORCA
+21407	nxdn.pa7lim.nl 41400
+
 # 21410 NXDN SPAIN
 21410	nxdn21410.nxdn.es	41400
 
 # 21418 NXDN RC Veleta
 21418	nxdn.pa7lim.nl	41400
 
-# 21407 NXDN MALLORCA
-21407	nxdn.pa7lim.nl 41400
-
 # 21426 FreeSTAR SPAIN
 21426 nxdn.pa7lim.nl 41400
 
-# 21430 Alcayna
-21430	alcayna.duckdns.org	41400
+# 21430 EA5URM-Murcia
+21430	ea5urm-murcia.duckdns.org 41400
 
 # 21465 ADER Multimode
 21465	aderdigital.ddns.net	41400
