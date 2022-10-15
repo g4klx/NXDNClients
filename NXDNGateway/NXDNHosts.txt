@@ -219,6 +219,9 @@
 # 20421 DL-Nordwest (dl-nordwest.com) by 9V1LH/DG1BGS and DK5BS
 20421	dl-nordwest.com	41400
 
+# 20424 Rijmond regio Rotterdam
+20424 nxdn.pa7lim.nl  41400
+
 # 20945 Deutschland DL1BH
 20945	dl1bh.ddns.net	41400
 
