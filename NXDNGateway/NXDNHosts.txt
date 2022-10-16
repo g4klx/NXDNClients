@@ -49,7 +49,7 @@
 822	nxdn.dstarthailand.com	41400
 
 # 841 Team Wave NXDN Bridge
-841 nxdn.mv0wvv.org 41400
+841 nxdn.mx0wvv.org 41400
 
 # 910 Washington DC - Virginia - Maryland
 910	nxdn910.freeddns.org	41400
