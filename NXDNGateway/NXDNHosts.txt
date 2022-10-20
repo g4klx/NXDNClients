@@ -154,7 +154,7 @@
 7144	nxdn.pa7lim.nl 41400
 
 # 7160 Peru Digital
-7160	nxdn.dmr-peru.pe	41400
+7160	nxdn.dmr-peru.net	41400
 
 # 7225 Multiprotocolo Argentina
 7225	argnxdn.ddnsfree.com	41400
