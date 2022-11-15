@@ -513,8 +513,8 @@
 # 65206 XLX210 YSF-BELGIUM M17BEL Bridges http://freedmr.be/nxdn
 65206 161.97.169.233  41400
 
-# 65208 French-Test
-65208	m55.evxonline.net  41400
+# 65208 French-NXDN
+65208	nxdn.f5dan.fr  41400
 
 # 65209 VARG http://www.varg.club
 65209	3.215.215.169	41410
