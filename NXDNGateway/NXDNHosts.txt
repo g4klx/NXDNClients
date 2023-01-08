@@ -132,6 +132,9 @@
 # 3023 Ontario Crosslink
 3023    ontxlink.hopto.org 41400
 
+# 3120 LKDVM
+3120 nxdn.pa7lim.nl 41400
+
 # 3142 Pennsylvania
 3142	3.215.215.169	41402
 
