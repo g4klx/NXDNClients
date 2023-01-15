@@ -148,7 +148,7 @@
 3400	w2btn.dmrnet.net	41400
 
 # 5057 VK7 TAS
-5057    45.248.50.37    41400
+5057  45.248.50.37  41400
 
 # 5621 HamFurs MultiMode Bridge
 5621  ord1.w3fur.radio  41400
@@ -163,13 +163,13 @@
 7225	argnxdn.ddnsfree.com	41400
 
 # 7227 ARGENTINA LINK
-7227 nxdn.pa7lim.nl 41400
+7227  nxdn.pa7lim.nl  41400
 
 # 7309 CHILE-LINK NXDN Reflector to BM TG 73099
 7309	sdradio.cl	41401
 
 # 7487 Uruguay Link 
-7487 uruguay.nxdn.es 41400
+7487  uruguay.nxdn.es  41400
 
 # 9480 ICQPODCAST - ICQ DIGITAL GROUP
 9480	46.101.36.246 41400
@@ -178,7 +178,7 @@
 9846	nxdn.dudetronics.com	41401
 
 # 10200 North America
-10200   dvswitch.org    42400
+10200 dvswitch.org  42400
 
 # 10201 North America TAC
 10201 10201.dyndns.org  41400
@@ -211,7 +211,7 @@
 20201	stargate-dmr.net	41400
 
 # 20222 NXDN HELLAS-FRN
-20222 nxdn-frn.ddns.net 41400
+20222 greece-frn.ddns.net 41400
 
 # 20328 NXDN German Pegasus Project 
 20328	nxdn.projekt-pegasus.net	41400
