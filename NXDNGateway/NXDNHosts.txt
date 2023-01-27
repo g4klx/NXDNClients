@@ -483,6 +483,9 @@
 # 50599 BM NXCore bridge
 50599	nxdn.duckdns.org	41490
 
+# 51500 DX8WMG-NXDN
+51500	dx8wmg-ysf.ddns.net	41400
+
 # 52000 Thailand DTDXA XLX520N
 52000	nxdn.dtdxa.com	41400
 
