@@ -483,6 +483,9 @@
 # 51500 DX8WMG-NXDN
 51500	dx8wmg-ysf.ddns.net	41400
 
+# 51547 KAPIHAN Network
+51547	nxdn.kapihan.net	41400
+
 # 52000 Thailand DTDXA XLX520N
 52000	nxdn.dtdxa.com	41400
 
