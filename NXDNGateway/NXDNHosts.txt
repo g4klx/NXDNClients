@@ -378,7 +378,7 @@
 # 31257 NEARC
 31257	nxdn.w0jay.com	41400
 
-# 31264 XLX625 The BROniverse www.wa8bro.com
+# 31264 Dudetronics NXDN
 31264	nxdn.dudetronics.com	41400
 
 # 31266 DGTLCOM Great Lakes Digital Common Interlink (P25/DMR/YSF/NXDN/DSTAR/M17)
