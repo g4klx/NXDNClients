@@ -9,6 +9,9 @@
 # 138 Thailand
 138 nxdn138.freeddns.org 41400
 
+# 148 Thailand Link TO XLX148 Module X
+148	nxdn.hs3tdi.com	41400
+
 # 149 Thailand
 149	nxdn.pwk.ac.th	41400
 
