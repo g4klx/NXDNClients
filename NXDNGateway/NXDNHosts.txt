@@ -204,7 +204,7 @@
 # 20424 Rijmond regio Rotterdam
 20424 nxdn.pa7lim.nl  41400
 
-@ 20426 Boreft regio Bodegraven
+# 20426 Boreft regio Bodegraven
 20426 pa8f.nl 41400
 
 # 20945 Deutschland DL1BH
