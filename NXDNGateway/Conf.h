@@ -65,6 +65,7 @@ public:
   unsigned short getAPRSPort() const;
   std::string  getAPRSSuffix() const;
   std::string  getAPRSDescription() const;
+  std::string  getAPRSSymbol() const;
 
   // The Log section
   unsigned int getLogDisplayLevel() const;
@@ -134,6 +135,7 @@ private:
   unsigned short m_aprsPort;
   std::string  m_aprsSuffix;
   std::string  m_aprsDescription;
+  std::string  m_aprsSymbol;
 
   unsigned short m_networkPort;
   std::string    m_networkHosts1;

@@ -72,6 +72,7 @@ m_aprsAddress("127.0.0.1"),
 m_aprsPort(8673U),
 m_aprsSuffix(),
 m_aprsDescription(),
+m_aprsSymbol(),
 m_networkPort(0U),
 m_networkHosts1(),
 m_networkHosts2(),
@@ -235,6 +236,8 @@ bool CConf::read()
 			  m_aprsSuffix = value;
 		  else if (::strcmp(key, "Description") == 0)
 			  m_aprsDescription = value;
+                  else if (::strcmp(key, "Symbol") == 0)
+                          m_aprsSymbol = value;
 	  } else if (section == SECTION_NETWORK) {
 		  if (::strcmp(key, "Port") == 0)
 			  m_networkPort = (unsigned short)::atoi(value);
@@ -413,6 +416,11 @@ std::string CConf::getAPRSSuffix() const
 std::string CConf::getAPRSDescription() const
 {
 	return m_aprsDescription;
+}
+
+std::string CConf::getAPRSSymbol() const
+{
+       return m_aprsSymbol;
 }
 
 unsigned int CConf::getLogDisplayLevel() const
