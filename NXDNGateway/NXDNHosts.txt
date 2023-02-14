@@ -51,6 +51,9 @@
 # 711 NXDN NL
 711 nxdn1.digitalevoice.nl 41400
 
+# 712 NXDN JP
+712 nxdn.xreflector-jp.org  41400
+
 # 730 Chile NXDN Reflector to BM TG 730
 730	sdradio.cl  41400
 
