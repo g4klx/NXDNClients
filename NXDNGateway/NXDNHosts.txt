@@ -132,7 +132,7 @@
 # PRadise
 3300	nxdn3300.from-pr.com	41400
 
-# 3400 W2BTN Group
+# 3400 3400 Digital Group (NJ Multimode Reflector)
 3400	3400.ddns.net	41400
 
 # 5057 VK7 TAS
