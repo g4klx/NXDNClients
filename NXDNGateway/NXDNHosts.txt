@@ -108,6 +108,9 @@
 # 2345 CQ-North UK
 2345  nxdn.cqnorth.org.uk 41400
 
+# 2350 UK ChatterBOX
+2350  nxdn2350.freestar.network 41401
+
 # 2503 RU DMR
 2503	nxdn.r1ik.ru	41400
 
@@ -260,6 +263,9 @@
 
 # 22825 Swiss NXDN Reflerctor
 22825	212.237.33.114	41400
+
+# 23416 400Club
+23416 nxdn23416.freestar.network  41402
 
 # 23426 FreeSTAR UK
 23426	nxdn.freestar.network	41400
