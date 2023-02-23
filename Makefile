@@ -1,4 +1,4 @@
-SUBDIRS = NXDNGateway NXDNParrot NXDNReflector
+SUBDIRS = NXDNGateway NXDNParrot
 CLEANDIRS = $(SUBDIRS:%=clean-%)
 INSTALLDIRS = $(SUBDIRS:%=install-%)
 
