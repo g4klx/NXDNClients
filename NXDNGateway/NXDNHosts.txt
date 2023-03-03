@@ -3,6 +3,9 @@
 # The format of this file is the number of the Talk Group followed by the host name or address and port
 #
 
+# 14 www.spanish BY radiomania.net
+14 nxdn14.nxdn.es 41400
+
 # 112 Emergencias EA
 112 112.nxdn.es 41401
 
