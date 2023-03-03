@@ -84,6 +84,9 @@
 # 1200 Florida
 1200	florida.nxref.org	41400
 
+# 2020 GR-GREECE-DV-NXDN
+2020	nxdn.greece.freedmr.online 41400
+
 # 2140 Treehouse NXDN
 2140	2140.nxdn.es 41402
 
