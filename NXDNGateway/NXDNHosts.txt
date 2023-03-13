@@ -76,7 +76,7 @@
 914	914.nxdn.es	41400
 
 # 926 HamFurs/LoFAR MultiMode Bridge
-926 urf.kf3rry.org 41400
+926	urf.kf3rry.org 41400
 
 # 1007 Harley-Hangout TGIF TG-1007 Bridge
 1007	43773.kb5rir.com	41400
@@ -112,10 +112,10 @@
 2265	nxdn.dstar-yo.ro	41405
 
 # 2345 CQ-North UK
-2345  nxdn.cqnorth.org.uk 41400
+2345	nxdn.cqnorth.org.uk	41400
 
 # 2350 UK ChatterBOX
-2350  nxdn2350.freestar.network 41401
+2350	nxdn2350.freestar.network	41401
 
 # 2503 RU DMR
 2503	nxdn.r1ik.ru	41400
@@ -145,7 +145,7 @@
 3400	3400.ddns.net	41400
 
 # 5057 VK7 TAS
-5057  45.248.50.37  41400
+5057	45.248.50.37	41400
 
 # 7144 Chiriqui Link Panama
 7144	nxdn.pa7lim.nl 41400
@@ -160,7 +160,7 @@
 7309	sdradio.cl	41401
 
 # 7487 Uruguay Link 
-7487  uruguay.nxdn.es  41400
+7487	uruguay.nxdn.es	41400
 
 # 9480 ICQPODCAST - ICQ DIGITAL GROUP
 9480	46.101.36.246 41400
@@ -169,10 +169,10 @@
 9846	nxdn.dudetronics.com	41401
 
 # 10200 North America
-10200 dvswitch.org  42400
+10200	dvswitch.org	42400
 
 # 10201 North America TAC
-10201 10201.dyndns.org  41400
+10201	10201.dyndns.org	41400
 
 # 10301 HBLINK Espana
 10301	ea5gvk.duckdns.org	41400
@@ -202,7 +202,7 @@
 20201	stargate-dmr.net	41400
 
 # 20222 NXDN HELLAS-FRN
-20222 greece-frn.ddns.net 41400
+20222	greece-frn.ddns.net	41400
 
 # 20328 NXDN German Pegasus Project 
 20328	nxdn.projekt-pegasus.net	41400
@@ -220,13 +220,13 @@
 20424 nxdn.pa7lim.nl  41400
 
 # 20426 Boreft regio Bodegraven
-20426 pa8f.nl 41400
+20426	pa8f.nl	41400
 
 # 20945 Deutschland DL1BH
 20945	dl1bh.ddns.net	41400
 
 # 21426 FreeSTAR SPAIN
-21426 nxdn.pa7lim.nl 41400
+21426	nxdn.pa7lim.nl	41400
 
 # 21430 EA5URM-Murcia
 21430	ea5urm-murcia.duckdns.org 41400
@@ -235,7 +235,7 @@
 21465	aderdigital.ddns.net	41400
 
 # 21468 Canarias NXDN
-21468 nxdn.pa7lim.nl 41400
+21468	nxdn.pa7lim.nl	41400
 
 # 21909 PRIDE - Multi-mode HUB & Reflector
 21909	hub.kimberlychase.com	41400
@@ -271,7 +271,7 @@
 22825	212.237.33.114	41400
 
 # 23416 400Club
-23416 nxdn23416.freestar.network  41402
+23416	nxdn23416.freestar.network	41402
 
 # 23426 FreeSTAR UK
 23426	nxdn.freestar.network	41400
@@ -280,10 +280,10 @@
 23491	nxdn-cambridge.dyndns.org	41400
 
 # 23511 LEFARS Multi-Reflector
-23511 xlxlef.gb7hh.co.uk 41400
+23511	xlxlef.gb7hh.co.uk	41400
 
-# 23530 Yorkshire UK, https://dvswitch.uk/nxdn
-23530	194.146.44.13	41400
+# 23530 CQ-UK-North, http://109.228.47.204/nxdn
+23530	109.228.47.204	41400
 
 # 23551 NXDN Scotland
 23551	nxdnscotland.ddns.net	41400
@@ -337,7 +337,7 @@
 31031	ref.xlx310.com	41400
 
 # 31059 Vidalia Net NXDN
-31059 vidalianet.cbridge.net  41400
+31059	vidalianet.cbridge.net	41400
 
 # 31081 Colorado Fun Machine WE0FUN Bridge to C4FM, DMR, DStar, P25 and AllStarLink (Analog) http://www.we0fun.com
 31081	nxdn.we0fun.com	41400
@@ -367,7 +367,7 @@
 31264	nxdn.dudetronics.com	41400
 
 # 31266 DGTLCOM Great Lakes Digital Common Interlink (P25/DMR/YSF/NXDN/DSTAR/M17)
-31266 urf734.dgtlcom.net 41400
+31266	urf734.dgtlcom.net	41400
 
 # 31340 Central New Jersey
 31340	cnjham.msmts.com	41400
@@ -412,7 +412,7 @@
 33581	omiss.dyndns.org	41400
 
 # 37030 SKYNET
-37030 skynet.nxdn.es 41400
+37030	skynet.nxdn.es	41400
 
 # 37224 Haiti NXDN
 37224	44.98.254.130	41400
@@ -442,19 +442,19 @@
 46000	120.234.41.144	41400
 
 # 46001 NXDN Link TG46001, China
-46001 46001.freedmr.club 41400
+46001	46001.freedmr.club	41400
 
 # 46004 NXDN Link TG46004, Zone 4, China
-46004 46004.freedmr.club 41401
+46004	46004.freedmr.club	41401
 
 # 46010 NXDN Link TG46010, Beijing, China
 46010	46010.freedmr.club	41402
 
 # 46055 NXDN Link TG46055, Zhejiang, China
-46055 46055.freedmr.club 41403
+46055	46055.freedmr.club	41403
 
 # 46516 NXDN Link TG46516, Xuzhou, China
-46516 46516.freedmr.club 41404
+46516	46516.freedmr.club	41404
 
 # 50525 DMR TG50525 bridge
 50525	50525.nxref.org	41400
@@ -493,16 +493,16 @@
 63600	xlx.ham.lv	41400
 
 # 64003 ELITE Group
-64003 51.77.213.200 41400
+64003	51.77.213.200	41400
 
 # 65000 World Wide
-65000 176.9.1.168 41400
+65000	176.9.1.168	41400
 
 # 65100 NXDN - 2007DXGROUP
-65100 89.46.75.115  41400
+65100	89.46.75.115	41400
 
 # 65206 XLX210 YSF-BELGIUM M17BEL Bridges http://freedmr.be/nxdn
-65206 161.97.169.233  41400
+65206	161.97.169.233	41400
 
 # 65208 French-NXDN
 65208	nxdn.f5dan.fr  41400
