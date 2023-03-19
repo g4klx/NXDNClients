@@ -201,6 +201,9 @@
 # 20201 NXDN Athens GR HBLink
 20201	stargate-dmr.net	41400
 
+# 20281 GR-KERKYRA-DV-NXDN
+20281	nxdn.greece.freedmr.online 41401
+
 # 20222 NXDN HELLAS-FRN
 20222	greece-frn.ddns.net	41400
 
