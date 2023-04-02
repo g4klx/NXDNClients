@@ -207,6 +207,9 @@
 # 20201 NXDN Athens GR HBLink
 20201	stargate-dmr.net	41400
 
+# 20211 GR-Lamia-DV-NXDN
+20211	nxdn.greece.freedmr.online	41403
+
 # 20281 GR-KERKYRA-DV-NXDN
 20281	nxdn.greece.freedmr.online 41401
 
