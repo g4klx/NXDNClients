@@ -87,6 +87,9 @@
 # 2020 GR-GREECE-DV-NXDN
 2020	nxdn.greece.freedmr.online 41400
 
+# 2029 GR-Crete-DV-NXDN
+2029	nxdn.greece.freedmr.online 41402
+
 # 2140 Treehouse NXDN
 2140	2140.nxdn.es 41402
 
