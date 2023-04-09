@@ -162,8 +162,8 @@
 # 7225 Multiprotocolo Argentina
 7225	argnxdn.ddnsfree.com	41400
 
-# 7245  Brasil Multiprotocolo - Rede MGBrasil
-7245 mgbrasil.duckdns.org 41400
+# 7245  Brasil Multiprotocolo 
+7245 pu4ron.dynv6.net 41400
 
 # 7309 CHILE-LINK NXDN Reflector to BM TG 73099
 7309	sdradio.cl	41401
