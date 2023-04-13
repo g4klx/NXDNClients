@@ -252,8 +252,8 @@
 # 21468 Canarias NXDN
 21468	nxdn.pa7lim.nl	41400
 
-# 21909 PRIDE - Multi-mode HUB & Reflector
-21909	hub.kimberlychase.com	41400
+# 21909 PRIDE - LGBTQIA+ Hams
+21909	ham.kimberlychase.com	41400
 
 # 22200 IT HBLINK ITALY
 22200	nxdn.hblink.it	41400
@@ -501,9 +501,6 @@
 # 53099 New Zealand, 53099 linked to BM TG 53099
 53099	203.86.206.49	41400
 
-# 56987 Mother Owl - Multi-mode HUB & Reflector
-56987	server.captsmokey.com	41400
-
 # 63600 Latvian Digital MultiMode Network
 63600	xlx.ham.lv	41400
 
@@ -524,3 +521,4 @@
 
 # 65209 VARG http://www.varg.club
 65209	3.215.215.169	41410
+
