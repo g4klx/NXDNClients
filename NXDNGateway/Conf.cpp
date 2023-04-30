@@ -154,7 +154,7 @@ bool CConf::read()
 		  char *p;
 
 		  // if value is not quoted, remove after # (to make comment)
-		  if ((p = strchr(value, '#')) != NULL)
+		  if ((p = strchr(value, '#')) != NULL && p == value)
 			  *p = '\0';
 
 		  // remove trailing tab/space
