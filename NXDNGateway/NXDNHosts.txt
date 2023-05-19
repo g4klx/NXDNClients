@@ -6,6 +6,9 @@
 # 14 www.spanish BY radiomania.net
 14 nxdn14.nxdn.es 41400
 
+# 38 Thailand
+38  nxdn38.kozow.com  41400
+
 # 112 Emergencias EA
 112 112.nxdn.es 41401
 
