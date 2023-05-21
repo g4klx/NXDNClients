@@ -201,7 +201,7 @@
 # 10922 CQ-UK
 10922	81.150.10.62	41400
 
-# 11069 KK6RQ's NXDN Reflector
+# 11069 KK6RQ NXDN Reflector
 11069	area52.zapto.org	41400
 
 # 17000 M17 Project
