@@ -45,6 +45,9 @@
 # 302 P25 Canada
 302	p25canada.hopto.org	41400
 
+# 401 CT-RI-NXDN
+401 nxdn.mooo.com 41401
+
 # 420 Super Freq
 420 nxdn.superfreqdigital.com 41400
 
