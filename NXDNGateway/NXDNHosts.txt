@@ -42,6 +42,9 @@
 # 260 HBLink  Poland
 260 nxdn.hblink.pl 41400
 
+# 280 Cyprus-NXDN  Cyprus
+280 nxdn.greece.freedmr.online 41404
+
 # 302 P25 Canada
 302	p25canada.hopto.org	41400
 
