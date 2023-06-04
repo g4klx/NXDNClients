@@ -315,6 +315,9 @@
 # 23551 NXDN Scotland
 23551	nxdnscotland.ddns.net	41400
 
+# 23556 DV Scotland Phoenix Multimode
+23556 nxdn.dvsph.net  41400
+
 # 23595 OZ-DMR_CHAT
 23595	nxdn.oz-dmr.network	41400
 
