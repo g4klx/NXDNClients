@@ -60,6 +60,9 @@
 # 545 XLX545E PA
 545 70.44.20.24	41401
 
+# 621 HRCC LINK
+621 urf.hrcc.link 41400
+
 # 707 RuralMN Reflector
 707	707nxdn.kd0ioe.com  41400
 
