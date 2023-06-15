@@ -408,6 +408,9 @@
 # 31340 Central New Jersey
 31340	cnjham.msmts.com	41400
 
+# 31399 OhioLink Network crossmode. http://olnradio.digital
+31399 xlx.kd8grn.net  41400
+
 # 31403 Oklahoma Link
 31403	3.208.70.29	41400
 
