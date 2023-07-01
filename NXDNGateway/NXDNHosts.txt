@@ -543,3 +543,5 @@
 # 65209 VARG http://www.varg.club
 65209	3.215.215.169	41410
 
+# 70777 Who Cares ARG (URF239 A) https://whocaresradio.com/reflector
+70777   urf239.whocaresradio.com    41400
