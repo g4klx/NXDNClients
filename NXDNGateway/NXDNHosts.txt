@@ -522,6 +522,9 @@
 # 53099 New Zealand, 53099 linked to BM TG 53099
 53099	203.86.206.49	41400
 
+# 60777 Who Cares ARG (URF239 A) https://whocaresradio.com/reflector
+60777   urf239.whocaresradio.com    41400
+
 # 63600 Latvian Digital MultiMode Network
 63600	xlx.ham.lv	41400
 
@@ -543,5 +546,3 @@
 # 65209 VARG http://www.varg.club
 65209	3.215.215.169	41410
 
-# 70777 Who Cares ARG (URF239 A) https://whocaresradio.com/reflector
-70777   urf239.whocaresradio.com    41400
