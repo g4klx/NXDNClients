@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2015,2016,2017,2018,2020 by Jonathan Naylor G4KLX
+ *   Copyright (C) 2015,2016,2017,2018,2020,2023 by Jonathan Naylor G4KLX
  *
  *   This program is free software; you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -25,137 +25,137 @@
 class CConf
 {
 public:
-  CConf(const std::string& file);
-  ~CConf();
+	CConf(const std::string& file);
+	~CConf();
 
-  bool read();
+	bool read();
 
-  // The General section
-  std::string  getCallsign() const;
-  std::string  getSuffix() const;
-  std::string  getRptProtocol() const;
-  std::string  getRptAddress() const;
-  unsigned short getRptPort() const;
-  unsigned short getMyPort() const;
-  bool         getDebug() const;
-  bool         getDaemon() const;
+	// The General section
+	std::string  getCallsign() const;
+	std::string  getSuffix() const;
+	std::string  getRptProtocol() const;
+	std::string  getRptAddress() const;
 
-  // The Info section
-  unsigned int getRxFrequency() const;
-  unsigned int getTxFrequency() const;
-  unsigned int getPower() const;
-  float        getLatitude() const;
-  float        getLongitude() const;
-  int          getHeight() const;
-  std::string  getName() const;
-  std::string  getDescription() const;
+	unsigned short getRptPort() const;
+	unsigned short getMyPort() const;
+	bool         getDebug() const;
+	bool         getDaemon() const;
 
-  // The Id Lookup section
-  std::string  getLookupName() const;
-  unsigned int getLookupTime() const;
+	// The Info section
+	unsigned int getRxFrequency() const;
+	unsigned int getTxFrequency() const;
+	unsigned int getPower() const;
+	float        getLatitude() const;
+	float        getLongitude() const;
+	int          getHeight() const;
+	std::string  getName() const;
+	std::string  getDescription() const;
 
-  // The Voice section
-  bool         getVoiceEnabled() const;
-  std::string  getVoiceLanguage() const;
-  std::string  getVoiceDirectory() const;
+	// The Id Lookup section
+	std::string  getLookupName() const;
+	unsigned int getLookupTime() const;
 
-  // The APRS section
-  bool         getAPRSEnabled() const;
-  std::string  getAPRSAddress() const;
-  unsigned short getAPRSPort() const;
-  std::string  getAPRSSuffix() const;
-  std::string  getAPRSDescription() const;
-  std::string  getAPRSSymbol() const;
+	// The Voice section
+	bool         getVoiceEnabled() const;
+	std::string  getVoiceLanguage() const;
+	std::string  getVoiceDirectory() const;
 
-  // The Log section
-  unsigned int getLogDisplayLevel() const;
-  unsigned int getLogFileLevel() const;
-  std::string  getLogFilePath() const;
-  std::string  getLogFileRoot() const;
-  bool         getLogFileRotate() const;
+	// The APRS section
+	bool         getAPRSEnabled() const;
+	std::string  getAPRSSuffix() const;
+	std::string  getAPRSDescription() const;
+	std::string  getAPRSSymbol() const;
 
-  // The Network section
-  unsigned short getNetworkPort() const;
-  std::string    getNetworkHosts1() const;
-  std::string    getNetworkHosts2() const;
-  unsigned int   getNetworkReloadTime() const;
-  std::string    getNetworkParrotAddress() const;
-  unsigned short getNetworkParrotPort() const;
-  std::string    getNetworkNXDN2DMRAddress() const;
-  unsigned short getNetworkNXDN2DMRPort() const;
-  std::vector<unsigned short> getNetworkStatic() const;
-  unsigned int   getNetworkRFHangTime() const;
-  unsigned int   getNetworkNetHangTime() const;
-  bool           getNetworkDebug() const;
+	// The Log section
+	unsigned int getLogDisplayLevel() const;
+	unsigned int getLogMQTTLevel() const;
 
-  // The GPSD section
-  bool           getGPSDEnabled() const;
-  std::string    getGPSDAddress() const;
-  std::string    getGPSDPort() const;
+	// The MQTT section
+	std::string  getMQTTAddress() const;
+	unsigned short getMQTTPort() const;
+	unsigned int getMQTTKeepalive() const;
+	std::string  getMQTTName() const;
 
-  // The Remote Commands section
-  bool           getRemoteCommandsEnabled() const;
-  unsigned short getRemoteCommandsPort() const;
+	// The Network section
+	unsigned short getNetworkPort() const;
+	std::string    getNetworkHosts1() const;
+	std::string    getNetworkHosts2() const;
+	unsigned int   getNetworkReloadTime() const;
+	std::string    getNetworkParrotAddress() const;
+	unsigned short getNetworkParrotPort() const;
+	std::string    getNetworkNXDN2DMRAddress() const;
+	unsigned short getNetworkNXDN2DMRPort() const;
+	std::vector<unsigned short> getNetworkStatic() const;
+	unsigned int   getNetworkRFHangTime() const;
+	unsigned int   getNetworkNetHangTime() const;
+	bool           getNetworkDebug() const;
+
+	// The GPSD section
+	bool           getGPSDEnabled() const;
+	std::string    getGPSDAddress() const;
+	std::string    getGPSDPort() const;
+
+	// The Remote Commands section
+	bool           getRemoteCommandsEnabled() const;
 
 private:
-  std::string  m_file;
-  std::string  m_callsign;
-  std::string  m_suffix;
-  std::string  m_rptProtocol;
-  std::string  m_rptAddress;
-  unsigned short m_rptPort;
-  unsigned short m_myPort;
-  bool         m_debug;
-  bool         m_daemon;
+	std::string  m_file;
+	std::string  m_callsign;
+	std::string  m_suffix;
+	std::string  m_rptProtocol;
+	std::string  m_rptAddress;
+	unsigned short m_rptPort;
+	unsigned short m_myPort;
+	bool         m_debug;
+	bool         m_daemon;
 
-  unsigned int m_rxFrequency;
-  unsigned int m_txFrequency;
-  unsigned int m_power;
-  float        m_latitude;
-  float        m_longitude;
-  int          m_height;
-  std::string  m_name;
-  std::string  m_description;
+	unsigned int m_rxFrequency;
+	unsigned int m_txFrequency;
+	unsigned int m_power;
+	float        m_latitude;
+	float        m_longitude;
+	int          m_height;
+	std::string  m_name;
+	std::string  m_description;
 
-  std::string  m_lookupName;
-  unsigned int m_lookupTime;
+	std::string  m_lookupName;
+	unsigned int m_lookupTime;
 
-  bool         m_voiceEnabled;
-  std::string  m_voiceLanguage;
-  std::string  m_voiceDirectory;
+	bool         m_voiceEnabled;
+	std::string  m_voiceLanguage;
+	std::string  m_voiceDirectory;
 
-  unsigned int m_logDisplayLevel;
-  unsigned int m_logFileLevel;
-  std::string  m_logFilePath;
-  std::string  m_logFileRoot;
-  bool         m_logFileRotate;
+	unsigned int m_logDisplayLevel;
+	unsigned int m_logMQTTLevel;
 
-  bool         m_aprsEnabled;
-  std::string  m_aprsAddress;
-  unsigned short m_aprsPort;
-  std::string  m_aprsSuffix;
-  std::string  m_aprsDescription;
-  std::string  m_aprsSymbol;
+	bool         m_aprsEnabled;
+	std::string  m_aprsSuffix;
+	std::string  m_aprsDescription;
+	std::string  m_aprsSymbol;
 
-  unsigned short m_networkPort;
-  std::string    m_networkHosts1;
-  std::string    m_networkHosts2;
-  unsigned int   m_networkReloadTime;
-  std::string    m_networkParrotAddress;
-  unsigned short m_networkParrotPort;
-  std::string    m_networkNXDN2DMRAddress;
-  unsigned short m_networkNXDN2DMRPort;
-  std::vector<unsigned short> m_networkStatic;
-  unsigned int   m_networkRFHangTime;
-  unsigned int   m_networkNetHangTime;
-  bool           m_networkDebug;
+	std::string  m_mqttAddress;
+	unsigned short m_mqttPort;
+	unsigned int m_mqttKeepalive;
+	std::string  m_mqttName;
 
-  bool         m_gpsdEnabled;
-  std::string  m_gpsdAddress;
-  std::string  m_gpsdPort;
+	unsigned short m_networkPort;
+	std::string    m_networkHosts1;
+	std::string    m_networkHosts2;
+	unsigned int   m_networkReloadTime;
+	std::string    m_networkParrotAddress;
+	unsigned short m_networkParrotPort;
+	std::string    m_networkNXDN2DMRAddress;
+	unsigned short m_networkNXDN2DMRPort;
+	std::vector<unsigned short> m_networkStatic;
+	unsigned int   m_networkRFHangTime;
+	unsigned int   m_networkNetHangTime;
+	bool           m_networkDebug;
 
-  bool         m_remoteCommandsEnabled;
-  unsigned short m_remoteCommandsPort;
+	bool         m_gpsdEnabled;
+	std::string  m_gpsdAddress;
+	std::string  m_gpsdPort;
+
+	bool         m_remoteCommandsEnabled;
 };
 
 #endif
