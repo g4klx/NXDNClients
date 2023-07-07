@@ -56,7 +56,7 @@ public:
 	CNXDNGateway(const std::string& file);
 	~CNXDNGateway();
 
-	void run();
+	int run();
 
 private:
 	CConf        m_conf;

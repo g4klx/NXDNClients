@@ -28,6 +28,7 @@
 #include "Thread.h"
 #include "Utils.h"
 #include "Log.h"
+#include "GitVersion.h"
 
 #if defined(_WIN32) || defined(_WIN64)
 #include <Windows.h>
@@ -61,6 +62,17 @@ extern CMQTTConnection* m_mqtt;
 
 static CNXDNGateway* gateway = NULL;
 
+static bool m_killed = false;
+static int  m_signal = 0;
+
+#if !defined(_WIN32) && !defined(_WIN64)
+static void sigHandler(int signum)
+{
+	m_killed = true;
+	m_signal = signum;
+}
+#endif
+
 const unsigned char NXDN_TYPE_DCALL_HDR = 0x09U;
 const unsigned char NXDN_TYPE_DCALL = 0x0BU;
 const unsigned char NXDN_TYPE_TX_REL = 0x08U;
@@ -74,7 +86,7 @@ int main(int argc, char** argv)
 		for (int currentArg = 1; currentArg < argc; ++currentArg) {
 			std::string arg = argv[currentArg];
 			if ((arg == "-v") || (arg == "--version")) {
-				::fprintf(stdout, "NXDNGateway version %s\n", VERSION);
+				::fprintf(stdout, "NXDNGateway version %s git #%.7s\n", VERSION, gitversion);
 				return 0;
 			} else if (arg.substr(0, 1) == "-") {
 				::fprintf(stderr, "Usage: NXDNGateway [-v|--version] [filename]\n");
@@ -85,11 +97,36 @@ int main(int argc, char** argv)
 		}
 	}
 
-	gateway = new CNXDNGateway(std::string(iniFile));
-	gateway->run();
-	delete gateway;
+#if !defined(_WIN32) && !defined(_WIN64)
+	::signal(SIGINT,  sigHandler);
+	::signal(SIGTERM, sigHandler);
+	::signal(SIGHUP,  sigHandler);
+#endif
 
-	return 0;
+	int ret = 0;
+
+	do {
+		m_signal = 0;
+
+		gateway = new CNXDNGateway(std::string(iniFile));
+		ret = gateway->run();
+
+		delete gateway;
+
+		if (m_signal == 2)
+			::LogInfo("NXDNGateway-%s exited on receipt of SIGINT", VERSION);
+
+		if (m_signal == 15)
+			::LogInfo("NXDNGateway-%s exited on receipt of SIGTERM", VERSION);
+
+		if (m_signal == 1)
+			::LogInfo("NXDNGateway-%s restarted on receipt of SIGHUP", VERSION);
+
+	} while (m_signal == 1);
+
+	::LogFinalise();
+
+	return ret;
 }
 
 CNXDNGateway::CNXDNGateway(const std::string& file) :
@@ -115,12 +152,12 @@ CNXDNGateway::~CNXDNGateway()
 	CUDPSocket::shutdown();
 }
 
-void CNXDNGateway::run()
+int CNXDNGateway::run()
 {
 	bool ret = m_conf.read();
 	if (!ret) {
 		::fprintf(stderr, "NXDNGateway: cannot read the .ini file\n");
-		return;
+		return 1;
 	}
 
 #if !defined(_WIN32) && !defined(_WIN64)
@@ -130,7 +167,7 @@ void CNXDNGateway::run()
 		pid_t pid = ::fork();
 		if (pid == -1) {
 			::fprintf(stderr, "Couldn't fork() , exiting\n");
-			return;
+			return -1;
 		}
 		else if (pid != 0) {
 			exit(EXIT_SUCCESS);
@@ -139,13 +176,13 @@ void CNXDNGateway::run()
 		// Create new session and process group
 		if (::setsid() == -1) {
 			::fprintf(stderr, "Couldn't setsid(), exiting\n");
-			return;
+			return -1;
 		}
 
 		// Set the working directory to the root directory
 		if (::chdir("/") == -1) {
 			::fprintf(stderr, "Couldn't cd /, exiting\n");
-			return;
+			return -1;
 		}
 
 		// If we are currently root...
@@ -153,7 +190,7 @@ void CNXDNGateway::run()
 			struct passwd* user = ::getpwnam("mmdvm");
 			if (user == NULL) {
 				::fprintf(stderr, "Could not get the mmdvm user, exiting\n");
-				return;
+				return -1;
 			}
 
 			uid_t mmdvm_uid = user->pw_uid;
@@ -162,18 +199,18 @@ void CNXDNGateway::run()
 			// Set user and group ID's to mmdvm:mmdvm
 			if (setgid(mmdvm_gid) != 0) {
 				::fprintf(stderr, "Could not set mmdvm GID, exiting\n");
-				return;
+				return -1;
 			}
 
 			if (setuid(mmdvm_uid) != 0) {
 				::fprintf(stderr, "Could not set mmdvm UID, exiting\n");
-				return;
+				return -1;
 			}
 
 			// Double check it worked (AKA Paranoia) 
 			if (setuid(0) != -1) {
 				::fprintf(stderr, "It's possible to regain root - something is wrong!, exiting\n");
-				return;
+				return -1;
 			}
 		}
 	}
@@ -194,10 +231,8 @@ void CNXDNGateway::run()
 
 	m_mqtt = new CMQTTConnection(m_conf.getMQTTAddress(), m_conf.getMQTTPort(), m_conf.getMQTTName(), subscriptions, m_conf.getMQTTKeepalive());
 	ret = m_mqtt->open();
-	if (!ret) {
-		delete m_mqtt;
-		return;
-	}
+	if (!ret)
+		return 1;
 
 	createGPS();
 
@@ -211,8 +246,8 @@ void CNXDNGateway::run()
 
 	ret = localNetwork->open();
 	if (!ret) {
-		::LogFinalise();
-		return;
+		delete localNetwork;
+		return 1;
 	}
 
 	m_remoteNetwork = new CNXDNNetwork(m_conf.getNetworkPort(), m_conf.getCallsign(), m_conf.getNetworkDebug());
@@ -221,8 +256,7 @@ void CNXDNGateway::run()
 		delete m_remoteNetwork;
 		localNetwork->close();
 		delete localNetwork;
-		::LogFinalise();
-		return;
+		return 1;
 	}
 
 	m_reflectors = new CReflectors(m_conf.getNetworkHosts1(), m_conf.getNetworkHosts2(), m_conf.getNetworkReloadTime());
@@ -253,7 +287,8 @@ void CNXDNGateway::run()
 		}
 	}
 
-	LogMessage("Starting NXDNGateway-%s", VERSION);
+	LogMessage("NXDNGateway-%s is starting", VERSION);
+	LogMessage("Built %s %s (GitID #%.7s)", __TIME__, __DATE__, gitversion);
 
 	unsigned short srcId = 0U;
 	unsigned short dstTG = 0U;
@@ -527,7 +562,7 @@ void CNXDNGateway::run()
 		delete m_gps;
 	}
 
-	::LogFinalise();
+	return 0;
 }
 
 void CNXDNGateway::createGPS()
