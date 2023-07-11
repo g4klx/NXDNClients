@@ -106,6 +106,7 @@ int main(int argc, char** argv)
 	int ret = 0;
 
 	do {
+		m_killed = false;
 		m_signal = 0;
 
 		gateway = new CNXDNGateway(std::string(iniFile));
@@ -287,8 +288,10 @@ int CNXDNGateway::run()
 		}
 	}
 
-	LogMessage("NXDNGateway-%s is starting", VERSION);
-	LogMessage("Built %s %s (GitID #%.7s)", __TIME__, __DATE__, gitversion);
+	LogInfo("NXDNGateway-%s is starting", VERSION);
+	LogInfo("Built %s %s (GitID #%.7s)", __TIME__, __DATE__, gitversion);
+
+	writeJSONStatus("NXDNGateway is starting");
 
 	unsigned short srcId = 0U;
 	unsigned short dstTG = 0U;
@@ -309,11 +312,12 @@ int CNXDNGateway::run()
 			m_remoteNetwork->writePoll(staticTG.m_addr, staticTG.m_addrLen, staticTG.m_tg);
 			m_remoteNetwork->writePoll(staticTG.m_addr, staticTG.m_addrLen, staticTG.m_tg);
 
-			LogMessage("Statically linked to reflector %u", *it);
+			LogMessage("Statically linked to reflector %u", staticTG.m_tg);
+			writeJSONLinking("startup", staticTG.m_tg);
 		}
 	}
 
-	for (;;) {
+	while (!m_killed) {
 		unsigned char buffer[200U];
 		sockaddr_storage addr;
 		unsigned int addrLen;
@@ -363,6 +367,8 @@ int CNXDNGateway::run()
 						if (grp && m_currentTG == dstTG && !poll)
 							localNetwork->write(buffer + 10U, len - 10U);
 
+						writeJSONLinking("network", m_currentTG);
+
 						LogMessage("Switched to reflector %u due to network activity", m_currentTG);
 
 						m_hangTimer.setTimeout(netHangTime);
@@ -388,6 +394,8 @@ int CNXDNGateway::run()
 				if (dstTG != m_currentTG) {
 					if (m_currentAddrLen > 0U) {
 						std::string callsign = lookup->find(srcId);
+
+						writeJSONUnlinked("user");
 						LogMessage("Unlinking from reflector %u by %s", m_currentTG, callsign.c_str());
 
 						if (!m_currentIsStatic) {
@@ -430,6 +438,7 @@ int CNXDNGateway::run()
 					if (m_currentAddrLen > 0U) {
 						std::string callsign = lookup->find(srcId);
 						LogMessage("Switched to reflector %u due to RF activity from %s", m_currentTG, callsign.c_str());
+						writeJSONLinking("user", m_currentTG);
 
 						if (!m_currentIsStatic) {
 							m_remoteNetwork->writePoll(m_currentAddr, m_currentAddrLen, m_currentTG);
@@ -508,6 +517,7 @@ int CNXDNGateway::run()
 		if (m_hangTimer.isRunning() && m_hangTimer.hasExpired()) {
 			if (m_currentAddrLen > 0U) {
 				LogMessage("Unlinking from %u due to inactivity", m_currentTG);
+				writeJSONUnlinked("timer");
 
 				if (!m_currentIsStatic) {
 					m_remoteNetwork->writeUnlink(m_currentAddr, m_currentAddrLen, m_currentTG);
@@ -545,6 +555,9 @@ int CNXDNGateway::run()
 		if (ms < 5U)
 			CThread::sleep(5U);
 	}
+
+	LogInfo("NXDNGateway is stopping");
+	writeJSONStatus("NXDNGateway is stopping");
 
 	delete m_voice;
 
@@ -618,6 +631,7 @@ void CNXDNGateway::writeCommand(const std::string& command)
 		if (tg != m_currentTG) {
 			if (m_currentAddrLen > 0U) {
 				LogMessage("Unlinked from reflector %u by remote command", m_currentTG);
+				writeJSONUnlinked("remote");
 
 				if (!m_currentIsStatic) {
 					m_remoteNetwork->writeUnlink(m_currentAddr, m_currentAddrLen, m_currentTG);
@@ -658,6 +672,7 @@ void CNXDNGateway::writeCommand(const std::string& command)
 			// Link to the new reflector
 			if (m_currentAddrLen > 0U) {
 				LogMessage("Switched to reflector %u by remote command", m_currentTG);
+				writeJSONLinking("remote", m_currentTG);
 
 				if (!m_currentIsStatic) {
 					m_remoteNetwork->writePoll(m_currentAddr, m_currentAddrLen, m_currentTG);
@@ -696,6 +711,50 @@ void CNXDNGateway::writeCommand(const std::string& command)
 	} else {
 		CUtils::dump("Invalid remote command received", (unsigned char*)command.c_str(), command.length());
 	}
+}
+
+void CNXDNGateway::writeJSONStatus(const std::string& status)
+{
+	nlohmann::json json;
+
+	json["timestamp"] = CUtils::createTimestamp();
+	json["message"]   = status;
+
+	WriteJSON("status", json);
+}
+
+void CNXDNGateway::writeJSONLinking(const std::string& reason, unsigned short tg)
+{
+	nlohmann::json json;
+
+	json["timestamp"] = CUtils::createTimestamp();
+	json["action"]    = "linking";
+	json["reason"]    = reason;
+	json["talkgroup"] = int(tg);
+
+	WriteJSON("link", json);
+}
+
+void CNXDNGateway::writeJSONUnlinked(const std::string& reason)
+{
+	nlohmann::json json;
+
+	json["timestamp"] = CUtils::createTimestamp();
+	json["action"]    = "unlinked";
+	json["reason"]    = reason;
+
+	WriteJSON("link", json);
+}
+
+void CNXDNGateway::writeJSONRelinking(unsigned short tg)
+{
+	nlohmann::json json;
+
+	json["timestamp"] = CUtils::createTimestamp();
+	json["action"]    = "relinking";
+	json["talkgroup"] = int(tg);
+
+	WriteJSON("link", json);
 }
 
 void CNXDNGateway::onCommand(const unsigned char* command, unsigned int length)
