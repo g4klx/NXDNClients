@@ -384,6 +384,9 @@
 # 31137 Kingsland Digital Link
 31137   74.91.119.94    41400
 
+# 31138 Kingsland Local Ga
+31138  kingsland.cbridge.net  41400
+
 # 31171 Illinois Link
 31171	illink.radiotechnology.xyz  41400
 
