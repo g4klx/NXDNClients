@@ -246,9 +246,6 @@
 # 20330 NXDN German DE-RAMSES Project 
 20330	81.169.173.132	41400
 
-# 20333 NXDN LausitzLink Germany 
-20333	nxdn02.bzsax.de	41400
-
 # 20421 DL-Nordwest (dl-nordwest.com) by 9V1LH/DG1BGS and DK5BS
 20421	dl-nordwest.com	41400
 
