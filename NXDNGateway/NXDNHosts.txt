@@ -120,9 +120,6 @@
 # 2225  IT Tuscany
 2225	80.211.99.134	41400
 
-# 2231  IT Multiprotocollo Sardegna
-2231	nxdn.is0.org	41400
-
 # 2241 IT TUSCANY MULTIP
 2241	nxdn.grupporadiofirenze.net	41400
 
