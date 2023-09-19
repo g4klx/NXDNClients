@@ -117,14 +117,8 @@
 # 2147 Andalucia Room
 2147	2147.nxdn.es	41400
 
-# 2225  IT Tuscany
-2225	80.211.99.134	41400
-
 # 2231  IT Multiprotocollo Sardegna
 2231	nxdn.is0.org	41400
-
-# 2241 IT TUSCANY MULTIP
-2241	nxdn.grupporadiofirenze.net	41400
 
 # 2249 IT SICILIA
 2249	nxdn.digitalsicilia.it	41400
@@ -297,8 +291,8 @@
 # 22258 D2ALP HBLink Italia
 22258	94.177.173.53	41400
 
-# 22292 IT MP XLX039/B BM2222
-22292	hblink.dmrbrescia.it	41400
+# 22292 Italy-MP TG 22292 BM
+22292	nxdn.grupporadiofirenze.net	41400
 
 # 22488 Italy Centro
 22488	185.203.119.229	41400
