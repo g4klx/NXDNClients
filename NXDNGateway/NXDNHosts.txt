@@ -405,9 +405,6 @@
 # 31264 Dudetronics NXDN
 31264	nxdn.dudetronics.com	41400
 
-# 31266 DGTLCOM Great Lakes Digital Common Interlink (P25/DMR/YSF/NXDN/DSTAR/M17)
-31266	urf734.dgtlcom.net	41400
-
 # 31340 Central New Jersey
 31340	cnjham.msmts.com	41400
 
