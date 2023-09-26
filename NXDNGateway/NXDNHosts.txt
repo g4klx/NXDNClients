@@ -117,9 +117,6 @@
 # 2147 Andalucia Room
 2147	2147.nxdn.es	41400
 
-# 2231  IT Multiprotocollo Sardegna
-2231	nxdn.is0.org	41400
-
 # 2249 IT SICILIA
 2249	nxdn.digitalsicilia.it	41400
 
