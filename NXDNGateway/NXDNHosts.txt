@@ -385,7 +385,7 @@
 31188	w9windigital.org	41400
 
 # 31226 WorldWide Dx System
-31226	198.245.53.107	41400
+31226	74.208.163.225	41400
 
 # 31238 Foxhole Radio Bridged Network
 31238	nxdn.foxhole.radio	41400
