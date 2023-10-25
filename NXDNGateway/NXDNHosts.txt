@@ -309,6 +309,9 @@
 # 23511 LEFARS Multi-Reflector
 23511	xlxlef.gb7hh.co.uk	41400
 
+# 23525 Extended Freedom Network M0XFN
+23525 nxdn.m0xfn.radio 41401
+
 # 23530 CQ-UK-North, http://109.228.47.204/nxdn
 23530	109.228.47.204	41400
 
