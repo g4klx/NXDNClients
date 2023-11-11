@@ -183,6 +183,9 @@
 # 7487 Uruguay Link 
 7487	uruguay.nxdn.es	41400
 
+# 7941 White Mountain Repeater Association
+7941  wmra-nxdn.mooo.com  41400
+
 # 9480 ICQPODCAST - ICQ DIGITAL GROUP
 9480	46.101.36.246 41400
 
