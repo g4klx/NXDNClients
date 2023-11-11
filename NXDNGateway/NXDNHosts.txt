@@ -384,6 +384,9 @@
 # 31171 Illinois Link
 31171	illink.radiotechnology.xyz  41400
 
+# 31177 WESDIG Western US Digital Group
+31177  nxdn.wesdig.com  41400
+
 # 31188 Southern Indiana
 31188	w9windigital.org	41400
 
