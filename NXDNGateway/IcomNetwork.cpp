@@ -102,8 +102,8 @@ unsigned int CIcomNetwork::read(unsigned char* data)
 	if (length <= 0)
 		return 0U;
 
-	if (!CUDPSocket::match(m_addr, addr)) {
-		LogWarning("Icom Data received from an unknown address or port");
+	if (!CUDPSocket::match(m_addr, addr, IMT_ADDRESS_ONLY)) {
+		LogWarning("Icom Data received from an unknown address");
 		return 0U;
 	}
 
