@@ -39,6 +39,9 @@
 # 226 Romania YO NXDN Network
 226	nxdn.dstar-yo.ro	41400
 
+# 235 DV Scotland Phoenix Multimode
+235 nxdn.dvsph.net  41400
+
 # 260 HBLink  Poland
 260 nxdn.hblink.pl 41400
 
@@ -81,6 +84,9 @@
 # 841 Team Wave NXDN Bridge
 841 nxdn.mx0wvv.org 41400
 
+# 847 Chandler Hams
+847 xlx847.kk7mnz.com 41400
+
 # 910 Washington DC - Virginia - Maryland
 910	nxdn910.freeddns.org	41400
 
@@ -110,15 +116,6 @@
 
 # 2147 Andalucia Room
 2147	2147.nxdn.es	41400
-
-# 2225  IT Tuscany
-2225	80.211.99.134	41400
-
-# 2231  IT Multiprotocollo Sardegna
-2231	nxdn.is0.org	41400
-
-# 2241 IT TUSCANY MULTIP
-2241	nxdn.grupporadiofirenze.net	41400
 
 # 2249 IT SICILIA
 2249	nxdn.digitalsicilia.it	41400
@@ -186,6 +183,9 @@
 # 7487 Uruguay Link 
 7487	uruguay.nxdn.es	41400
 
+# 7941 White Mountain Repeater Association
+7941  wmra-nxdn.mooo.com  41400
+
 # 9480 ICQPODCAST - ICQ DIGITAL GROUP
 9480	46.101.36.246 41400
 
@@ -243,9 +243,6 @@
 # 20330 NXDN German DE-RAMSES Project 
 20330	81.169.173.132	41400
 
-# 20333 NXDN LausitzLink Germany 
-20333	nxdn02.bzsax.de	41400
-
 # 20421 DL-Nordwest (dl-nordwest.com) by 9V1LH/DG1BGS and DK5BS
 20421	dl-nordwest.com	41400
 
@@ -294,8 +291,8 @@
 # 22258 D2ALP HBLink Italia
 22258	94.177.173.53	41400
 
-# 22292 IT MP XLX039/B BM2222
-22292	hblink.dmrbrescia.it	41400
+# 22292 Italy-MP TG 22292 BM
+22292	nxdn.grupporadiofirenze.net	41400
 
 # 22488 Italy Centro
 22488	185.203.119.229	41400
@@ -315,14 +312,14 @@
 # 23511 LEFARS Multi-Reflector
 23511	xlxlef.gb7hh.co.uk	41400
 
+# 23525 Extended Freedom Network M0XFN
+23525 nxdn.m0xfn.radio 41401
+
 # 23530 CQ-UK-North, http://109.228.47.204/nxdn
 23530	109.228.47.204	41400
 
 # 23551 NXDN Scotland
 23551	nxdnscotland.ddns.net	41400
-
-# 23556 DV Scotland Phoenix Multimode
-23556 nxdn.dvsph.net  41400
 
 # 23595 OZ-DMR_CHAT
 23595	nxdn.oz-dmr.network	41400
@@ -384,14 +381,20 @@
 # 31137 Kingsland Digital Link
 31137   74.91.119.94    41400
 
+# 31138 Kingsland Local Ga
+31138  kingsland.cbridge.net  41400
+
 # 31171 Illinois Link
 31171	illink.radiotechnology.xyz  41400
+
+# 31177 WESDIG Western US Digital Group
+31177  nxdn.wesdig.com  41400
 
 # 31188 Southern Indiana
 31188	w9windigital.org	41400
 
 # 31226 WorldWide Dx System
-31226	198.245.53.107	41400
+31226	74.208.163.225	41400
 
 # 31238 Foxhole Radio Bridged Network
 31238	nxdn.foxhole.radio	41400
@@ -401,9 +404,6 @@
 
 # 31264 Dudetronics NXDN
 31264	nxdn.dudetronics.com	41400
-
-# 31266 DGTLCOM Great Lakes Digital Common Interlink (P25/DMR/YSF/NXDN/DSTAR/M17)
-31266	urf734.dgtlcom.net	41400
 
 # 31340 Central New Jersey
 31340	cnjham.msmts.com	41400
