@@ -39,7 +39,7 @@
 # 226 Romania YO NXDN Network
 226	nxdn.dstar-yo.ro	41400
 
-# 235 DV Scotland Phoenix Multimode
+# 235 DVSPH UK Wide
 235 nxdn.dvsph.net  41400
 
 # 260 HBLink  Poland
@@ -320,6 +320,9 @@
 
 # 23551 NXDN Scotland
 23551	nxdnscotland.ddns.net	41400
+
+# 23556 DVSPH Multimode
+23556 xlx600.dvsph.net  41400
 
 # 23595 OZ-DMR_CHAT
 23595	nxdn.oz-dmr.network	41400
