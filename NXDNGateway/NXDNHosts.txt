@@ -87,6 +87,9 @@
 # 847 Chandler Hams
 847 xlx847.kk7mnz.com 41400
 
+# URF848
+848 xlx848.kk7mnz.com 41400
+
 # 910 Washington DC - Virginia - Maryland
 910	nxdn910.freeddns.org	41400
 
