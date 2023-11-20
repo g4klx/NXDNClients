@@ -279,6 +279,9 @@
 # 22202 IT SARDINIA
 22202	87.106.152.249	41400
 
+# 22209 IT Radio Chat NXDN
+22209 it-radiochat.ddns.net 41400
+
 # 22220 IT ItalyNet Conference
 22220	198.245.55.177	41400
 
