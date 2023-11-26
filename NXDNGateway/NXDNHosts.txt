@@ -159,6 +159,9 @@
 # PRadise
 3300	nxdn3300.from-pr.com	41400
 
+# PT RICO LINK
+3306 3306.nxdn.es 41400
+
 # 3400 3400 Digital Group (NJ Multimode Reflector)
 3400	3400.ddns.net	41400
 
