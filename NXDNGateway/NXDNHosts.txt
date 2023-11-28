@@ -558,3 +558,5 @@
 # 65209 VARG http://www.varg.club
 65209	3.215.215.169	41410
 
+# 7240 MASTER-SUL Brasil
+7240	nxdn.freedmr-brasil.qsl.br	41400
