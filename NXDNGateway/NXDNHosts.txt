@@ -180,6 +180,9 @@
 # 7225 Multiprotocolo Argentina
 7225	argnxdn.ddnsfree.com	41400
 
+# 7240  MASTER-SUL Brasil 
+7240 nxdn.freedmr-brasil.qsl.br 41400
+
 # 7245  Brasil Multiprotocolo 
 7245 pu4ron.dynv6.net 41400
 
