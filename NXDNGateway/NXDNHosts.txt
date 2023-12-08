@@ -367,7 +367,7 @@
 26085	91.245.81.2	41400
 
 # 26200 Deutschland
-26200	nxdn262.ddns.net	41400
+26200	dl.nxdn.eu	41400
 
 # 26810 Portuguese speakers
 26810	nxcore.brandmeister.pt	41400
