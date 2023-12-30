@@ -82,7 +82,7 @@
 822	nxdn.dstarthailand.com	41400
 
 # 841 Team Wave NXDN Bridge
-841 nxdn.mx0wvv.org 41400
+841 wavenet.ddns.net 41400
 
 # 847 Chandler Hams
 847 xlx847.kk7mnz.com 41400
