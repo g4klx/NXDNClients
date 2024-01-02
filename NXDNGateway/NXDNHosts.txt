@@ -231,8 +231,8 @@
 # 11069 KK6RQ NXDN Reflector
 11069	area52.zapto.org	41400
 
-# 17000 M17 Project
-17000	107.191.48.144	41400
+# 17603 URFM17 Universal Reflector
+17603	urf.m17.link	41400
 
 # 20000 Europe, German speaking
 20000	89.185.97.38	41400
