@@ -79,7 +79,7 @@
 730	sdradio.cl  41400
 
 # 805 US RocketCity-AL-NXDN Bridge
-805 155.138.207.101 41400
+805 45.32.166.46 41400
 
 # 822 Thailand NXDN to BM TG 520822
 822	nxdn.dstarthailand.com	41400
