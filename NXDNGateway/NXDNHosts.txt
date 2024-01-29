@@ -4,19 +4,19 @@
 #
 
 # 14 www.spanish BY radiomania.net
-14 nxdn14.nxdn.es 41400
+14	nxdn14.nxdn.es	41400
 
 # 38 Thailand
-38  nxdn38.kozow.com  41400
+38	nxdn38.kozow.com	41400
 
 # 112 Emergencias EA
-112 112.nxdn.es 41401
+112	112.nxdn.es	41401
 
 # 137 Thailand - USA XLX Bridge
-137 nxdn137.mywire.org  41400
+137	nxdn137.mywire.org	41400
 
 # 138 Thailand
-138 nxdn138.freeddns.org 41400
+138	nxdn138.freeddns.org	41400
 
 # 148 Thailand Link TO XLX148 Module X
 148	nxdn.hs3tdi.com	41400
@@ -25,73 +25,73 @@
 149	nxdn.pwk.ac.th	41400
 
 # 202 HELLAS Zone
-202 hellaszone.com 41400
+202	hellaszone.com	41400
 
 # 204 Netherlands
-204 nxdn.repeaters-haaglanden.nl 41400
+204	nxdn.repeaters-haaglanden.nl	41400
 
 # 214 RED SPAIN
-214 214nxdn.nxdn.es 41401
+214	214nxdn.nxdn.es	41401
 
 # 224 RED SPAIN
-224 nxdn224.nxdn.es 41401
+224	nxdn224.nxdn.es	41401
 
 # 226 Romania YO NXDN Network
 226	nxdn.dstar-yo.ro	41400
 
 # 235 DVSPH UK Wide
-235 nxdn.dvsph.net  41400
+235	nxdn.dvsph.net	41400
 
 # 260 HBLink  Poland
-260 nxdn.hblink.pl 41400
+260	nxdn.hblink.pl	41400
 
 # 280 Cyprus-NXDN  Cyprus
-280 nxdn.greece.freedmr.online 41404
+280	nxdn.greece.freedmr.online	41404
 
 # 302 P25 Canada
 302	p25canada.hopto.org	41400
 
 # 401 CT-RI-NXDN
-401 nxdn.mooo.com 41401
+401	nxdn.mooo.com	41401
 
 # 420 Super Freq
-420 nxdn.superfreqdigital.com 41400
+420	nxdn.superfreqdigital.com	41400
 
 # 530 New Zealand
-530 zldigitalreflectors.hopto.org	41400
+530	zldigitalreflectors.hopto.org	41400
 
 # 545 XLX545E PA
-545 70.44.20.24	41401
+545	70.44.20.24	41401
 
 # 621 HRCC LINK
-621 urf.hrcc.link 41400
+621	urf.hrcc.link	41400
 
 # 707 RuralMN Reflector
 707	707nxdn.kd0ioe.com  41400
 
 # 711 NXDN NL
-711 nxdn1.digitalevoice.nl 41400
+711	nxdn1.digitalevoice.nl	41400
 
 # 712 NXDN JP
-712 nxdn.xreflector-jp.org  41400
+712	nxdn.xreflector-jp.org	41400
 
 # 730 Chile NXDN Reflector to BM TG 730
 730	sdradio.cl  41400
 
 # 805 US RocketCity-AL-NXDN Bridge
-805 45.32.166.46 41400
+805	45.32.166.46	41400
 
 # 822 Thailand NXDN to BM TG 520822
 822	nxdn.dstarthailand.com	41400
 
 # 841 Team Wave NXDN Bridge
-841 mx0wvv.ddns.net 41400
+841	mx0wvv.ddns.net	41400
 
 # 847 Chandler Hams
-847 xlx847.kk7mnz.com 41400
+847	xlx847.kk7mnz.com	41400
 
 # 848 Chandler Hams
-848 xlx848.kk7mnz.com 41400
+848	xlx848.kk7mnz.com	41400
 
 # 910 Washington DC - Virginia - Maryland
 910	nxdn910.freeddns.org	41400
@@ -148,10 +148,10 @@
 2724	dmr.nrsi.ie	41400
 
 # 3023 Ontario Crosslink
-3023    ontxlink.hopto.org 41400
+3023    ontxlink.hopto.org	41400
 
 # 3120 LKDVM NXDN
-3120  lkdvm.nxdn.es  41400
+3120	lkdvm.nxdn.es	41400
 
 # 3142 Pennsylvania
 3142	3.215.215.169	41402
@@ -163,7 +163,7 @@
 3300	nxdn3300.from-pr.com	41400
 
 # PT RICO LINK
-3306 3306.nxdn.es 41400
+3306	3306.nxdn.es	41400
 
 # 3400 3400 Digital Group (NJ Multimode Reflector)
 3400	3400.ddns.net	41400
@@ -172,7 +172,7 @@
 5057	45.248.50.37	41400
 
 # 7144 Chiriqui Link Panama
-7144	nxdn.pa7lim.nl 41400
+7144	nxdn.pa7lim.nl	41400
 
 # 7160 Peru Digital
 7160	nxdn.dmr-peru.net	41400
@@ -184,10 +184,10 @@
 7225	argnxdn.ddnsfree.com	41400
 
 # 7240  MASTER-SUL Brasil 
-7240 nxdn.freedmr-brasil.qsl.br 41400
+7240	nxdn.freedmr-brasil.qsl.br	41400
 
 # 7245  Brasil Multiprotocolo 
-7245 pu4ron.dynv6.net 41400
+7245	pu4ron.dynv6.net	41400
 
 # 7309 CHILE-LINK NXDN Reflector to BM TG 73099
 7309	sdradio.cl	41401
@@ -196,10 +196,10 @@
 7487	uruguay.nxdn.es	41400
 
 # 7941 White Mountain Repeater Association
-7941  wmra-nxdn.mooo.com  41400
+7941	wmra-nxdn.mooo.com	41400
 
 # 8465 Ecuador
-8465  jjsc.ddns.net  41400
+8465	jjsc.ddns.net	41400
 
 # 9480 ICQPODCAST - ICQ DIGITAL GROUP
 9480	46.101.36.246 41400
@@ -262,7 +262,7 @@
 20421	dl-nordwest.com	41400
 
 # 20424 Rijmond regio Rotterdam
-20424 nxdn.pa7lim.nl  41400
+20424	nxdn.pa7lim.nl	41400
 
 # 20426 Boreft regio Bodegraven
 20426	pa8f.nl	41400
@@ -292,7 +292,7 @@
 22202	87.106.152.249	41400
 
 # 22209 IT Radio Chat NXDN
-22209 it-radiochat.ddns.net 41400
+22209	it-radiochat.ddns.net	41400
 
 # 22220 IT ItalyNet Conference
 22220	198.245.55.177	41400
@@ -406,13 +406,13 @@
 31137   74.91.119.94    41400
 
 # 31138 Kingsland Local Ga
-31138  kingsland.cbridge.net  41400
+31138	kingsland.cbridge.net	41400
 
 # 31171 Illinois Link
 31171	illink.radiotechnology.xyz  41400
 
 # 31177 WESDIG Western US Digital Group
-31177  nxdn.wesdig.com  41400
+31177	nxdn.wesdig.com	41400
 
 # 31188 Southern Indiana
 31188	w9windigital.org	41400
@@ -433,7 +433,7 @@
 31340	cnjham.msmts.com	41400
 
 # 31399 OhioLink Network crossmode. http://olnradio.digital
-31399 xlx.kd8grn.net  41400
+31399	xlx.kd8grn.net	41400
 
 # 31403 Oklahoma Link
 31403	3.208.70.29	41400
@@ -448,7 +448,7 @@
 31444	18.219.32.21	41400
 
 # 31490 utah bridge to dmr 314900
-31490  ammermon.lorexddns.net  41400
+31490	ammermon.lorexddns.net	41400
 
 # 31581 KD2UQK Long Island, NY - NXDN Reflector
 31581	kd2uqk.ham-radio-op.net	41400
@@ -550,7 +550,7 @@
 53099	203.86.206.49	41400
 
 # 60777 Who Cares ARG (URF239 A) https://whocaresradio.com/reflector
-60777   urf239.whocaresradio.com    41400
+60777	urf239.whocaresradio.com	41400
 
 # 63600 Latvian Digital MultiMode Network
 63600	xlx.ham.lv	41400
@@ -568,7 +568,7 @@
 65206	161.97.169.233	41400
 
 # 65208 French-NXDN
-65208	nxdn.f5dan.fr  41400
+65208	nxdn.f5dan.fr	41400
 
 # 65209 VARG http://www.varg.club
 65209	3.215.215.169	41410
