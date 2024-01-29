@@ -15,6 +15,6 @@ x64
 .vs
 NXDNGateway/NXDNGateway
 NXDNParrot/NXDNParrot
-NXDNReflector/NXDNReflector
-GitVersion.h
+NXDNGateway/GitVersion.h
+NXDNParrot/GitVersion.h
 

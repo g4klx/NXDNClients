@@ -39,7 +39,7 @@
 # 226 Romania YO NXDN Network
 226	nxdn.dstar-yo.ro	41400
 
-# 235 DV Scotland Phoenix Multimode
+# 235 DVSPH UK Wide
 235 nxdn.dvsph.net  41400
 
 # 260 HBLink  Poland
@@ -78,14 +78,20 @@
 # 730 Chile NXDN Reflector to BM TG 730
 730	sdradio.cl  41400
 
+# 805 US RocketCity-AL-NXDN Bridge
+805 45.32.166.46 41400
+
 # 822 Thailand NXDN to BM TG 520822
 822	nxdn.dstarthailand.com	41400
 
 # 841 Team Wave NXDN Bridge
-841 nxdn.mx0wvv.org 41400
+841 mx0wvv.ddns.net 41400
 
 # 847 Chandler Hams
 847 xlx847.kk7mnz.com 41400
+
+# 848 Chandler Hams
+848 xlx848.kk7mnz.com 41400
 
 # 910 Washington DC - Virginia - Maryland
 910	nxdn910.freeddns.org	41400
@@ -156,6 +162,9 @@
 # PRadise
 3300	nxdn3300.from-pr.com	41400
 
+# PT RICO LINK
+3306 3306.nxdn.es 41400
+
 # 3400 3400 Digital Group (NJ Multimode Reflector)
 3400	3400.ddns.net	41400
 
@@ -174,6 +183,9 @@
 # 7225 Multiprotocolo Argentina
 7225	argnxdn.ddnsfree.com	41400
 
+# 7240  MASTER-SUL Brasil 
+7240 nxdn.freedmr-brasil.qsl.br 41400
+
 # 7245  Brasil Multiprotocolo 
 7245 pu4ron.dynv6.net 41400
 
@@ -185,6 +197,9 @@
 
 # 7941 White Mountain Repeater Association
 7941  wmra-nxdn.mooo.com  41400
+
+# 8465 Ecuador
+8465  jjsc.ddns.net  41400
 
 # 9480 ICQPODCAST - ICQ DIGITAL GROUP
 9480	46.101.36.246 41400
@@ -219,8 +234,8 @@
 # 11069 KK6RQ NXDN Reflector
 11069	area52.zapto.org	41400
 
-# 17000 M17 Project
-17000	107.191.48.144	41400
+# 17603 URFM17 Universal Reflector
+17603	urf.m17.link	41400
 
 # 20000 Europe, German speaking
 20000	89.185.97.38	41400
@@ -276,6 +291,9 @@
 # 22202 IT SARDINIA
 22202	87.106.152.249	41400
 
+# 22209 IT Radio Chat NXDN
+22209 it-radiochat.ddns.net 41400
+
 # 22220 IT ItalyNet Conference
 22220	198.245.55.177	41400
 
@@ -284,6 +302,9 @@
 
 # 22245 IT PIEDMONT GDO
 22245	nxdngdo.duckdns.org	41400
+
+# 22251 IT TG22251 TOSCANA
+22251	nxdn5.grupporadiofirenze.net	41400
 
 # 22252 IT MULTIPROTOCOL NETWORK
 22252	46.226.178.80	41400
@@ -321,6 +342,9 @@
 # 23551 NXDN Scotland
 23551	nxdnscotland.ddns.net	41400
 
+# 23556 DVSPH Multimode
+23556 xlx600.dvsph.net  41400
+
 # 23595 OZ-DMR_CHAT
 23595	nxdn.oz-dmr.network	41400
 
@@ -328,7 +352,7 @@
 25000	173.166.94.77	41400
 
 # 25577 UA Azimuth
-25577	178.136.234.51	41400
+25577	nxdn.ur4wwr.org	41400
 
 # 25617 Russia Kavkaz
 25617   kavkaz.qrz.ru  41400
@@ -349,7 +373,7 @@
 26085	91.245.81.2	41400
 
 # 26200 Deutschland
-26200	135.125.204.81	41400
+26200	dl.nxdn.eu	41400
 
 # 26810 Portuguese speakers
 26810	nxcore.brandmeister.pt	41400
@@ -479,6 +503,9 @@
 
 # 45000 Korea
 45000	nxdn.dvham.com	41400
+
+# 45001 NXDN-DS5QDR Korea
+45001	ds5qdr-mst.duckdns.org	41400
 
 # 46000 China
 46000	120.234.41.144	41400
