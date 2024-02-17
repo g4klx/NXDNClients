@@ -448,7 +448,7 @@
 31444	18.219.32.21	41400
 
 # 31490 utah bridge to dmr 314900
-31490	ammermon.lorexddns.net	41400
+31490	utah00.utahdrn.org 41400
 
 # 31581 KD2UQK Long Island, NY - NXDN Reflector
 31581	kd2uqk.ham-radio-op.net	41400
