@@ -540,7 +540,7 @@
 # 52032 Surin Amateur Radio Association (HS3AS) ,Thailand,XLX149C
 52032	hs3as.pwk.ac.th	41404
 
-# 52149 XLX149 D Thailand
+# 52149 XLX149 K Thailand
 52149	nxdn149d.pwk.ac.th	41408
 
 # 52910 XLX Nexus
