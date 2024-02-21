@@ -33,6 +33,9 @@
 # 214 RED SPAIN
 214	214nxdn.nxdn.es	41401
 
+# 222 TG 222 IPSC2-DIG-ITALIA
+222	nxdn222.grupporadiofirenze.net	41422
+
 # 224 RED SPAIN
 224	nxdn224.nxdn.es	41401
 
