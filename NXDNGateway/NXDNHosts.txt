@@ -171,6 +171,9 @@
 # 3400 3400 Digital Group (NJ Multimode Reflector)
 3400	3400.ddns.net	41400
 
+# 4700 Tennessee Statewide
+4700 ref4700.mywire.org
+
 # 5057 VK7 TAS
 5057	45.248.50.37	41400
 
