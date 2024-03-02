@@ -273,6 +273,9 @@
 # 20426 Boreft regio Bodegraven
 20426	pa8f.nl	41400
 
+# 20698 BE-FRANCOPHONE NXDN Reflector
+20698	vps.on7hh.be	41400
+
 # 20945 Deutschland DL1BH
 20945	dl1bh.ddns.net	41400
 
