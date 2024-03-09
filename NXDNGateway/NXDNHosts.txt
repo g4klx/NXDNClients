@@ -108,6 +108,9 @@
 # 926 HamFurs/LoFAR MultiMode Bridge
 926	urf.kf3rry.org 41400
 
+# 933 FR XLX933N NXDN
+933  nxdn.hamdigital.fr  41400
+
 # 1007 Harley-Hangout TGIF TG-1007 Bridge
 1007	43773.kb5rir.com	41400
 
