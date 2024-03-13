@@ -327,6 +327,9 @@
 # 22292 Italy-MP TG 22292 BM
 22292	nxdn.grupporadiofirenze.net	41400
 
+# 22487 Italy Centro - Digiland - http://217.160.155.85/
+22487  217.160.155.85  41400
+
 # 22488 Italy Centro
 22488	185.203.119.229	41400
 
