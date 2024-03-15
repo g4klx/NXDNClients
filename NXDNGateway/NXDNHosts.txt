@@ -300,8 +300,8 @@
 # 22200 IT HBLINK ITALY
 22200	nxdn.hblink.it	41400
 
-# 22202 IT SARDINIA
-22202	87.106.152.249	41400
+# 22202 IT Sardinia - linked to BM TG 22202
+22202	nxdn.is0.org	41400
 
 # 22209 IT Radio Chat NXDN
 22209	it-radiochat.ddns.net	41400
