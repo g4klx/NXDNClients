@@ -109,7 +109,7 @@
 926	urf.kf3rry.org 41400
 
 # 933 FR XLX933N NXDN
-933  nxdn.hamdigital.fr  41400
+933	nxdn.hamdigital.fr	41400
 
 # 1007 Harley-Hangout TGIF TG-1007 Bridge
 1007	43773.kb5rir.com	41400
@@ -175,7 +175,7 @@
 3400	3400.ddns.net	41400
 
 # 4700 Tennessee Statewide
-4700 ref4700.mywire.org
+4700	ref4700.mywire.org	41400
 
 # 5057 VK7 TAS
 5057	45.248.50.37	41400
@@ -303,6 +303,9 @@
 # 22202 IT Sardinia - linked to BM TG 22202
 22202	nxdn.is0.org	41400
 
+# 22208 Italy Centro - Digiland - http://217.160.155.85/
+22208	217.160.155.85	41400
+
 # 22209 IT Radio Chat NXDN
 22209	it-radiochat.ddns.net	41400
 
@@ -330,9 +333,6 @@
 # 22292 Italy-MP TG 22292 BM
 22292	nxdn.grupporadiofirenze.net	41400
 
-# 22487 Italy Centro - Digiland - http://217.160.155.85/
-22487  217.160.155.85  41400
-
 # 22825 Swiss NXDN Reflerctor
 22825	212.237.33.114	41400
 
@@ -349,7 +349,7 @@
 23511	xlxlef.gb7hh.co.uk	41400
 
 # 23525 Extended Freedom Network M0XFN
-23525 nxdn.m0xfn.radio 41401
+23525	nxdn.m0xfn.radio	41401
 
 # 23530 CQ-UK-North, http://109.228.47.204/nxdn
 23530	109.228.47.204	41400
@@ -361,7 +361,7 @@
 23551	nxdnscotland.ddns.net	41400
 
 # 23556 DVSPH Multimode
-23556 xlx600.dvsph.net  41400
+23556	xlx600.dvsph.net	41400
 
 # 23595 OZ-DMR_CHAT
 23595	nxdn.oz-dmr.network	41400
@@ -373,7 +373,7 @@
 25577	nxdn.ur4wwr.org	41400
 
 # 25617 Russia Kavkaz
-25617   kavkaz.qrz.ru  41400
+25617	kavkaz.qrz.ru	41400
 
 # 25641 Russia NXDN Net
 25641	194.182.85.217	41400
