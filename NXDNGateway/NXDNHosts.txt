@@ -354,8 +354,8 @@
 # 23530 CQ-UK-North, http://109.228.47.204/nxdn
 23530	109.228.47.204	41400
 
-# 23532 XLX275
-23532	nxdn.2e0kfg.co.uk	41400
+# 23532 Essex RAYNET
+23532	77.68.31.104	41402
 
 # 23551 NXDN Scotland
 23551	nxdnscotland.ddns.net	41400
