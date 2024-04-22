@@ -16,15 +16,30 @@ OBJECTS = APRSWriter.o Conf.o GPSHandler.o IcomNetwork.o KenwoodNetwork.o Log.o 
 
 all:		NXDNGateway
 
-NXDNGateway:	$(OBJECTS)
+NXDNGateway:	GitVersion.h $(OBJECTS)
 		$(CXX) $(OBJECTS) $(CFLAGS) $(LIBS) -o NXDNGateway
 
 %.o: %.cpp
 		$(CXX) $(CFLAGS) -c -o $@ $<
+
+NXDNGateway.o: GitVersion.h FORCE
+
+.PHONY: GitVersion.h
+
+FORCE:
+
 
 install:
 		install -m 755 NXDNGateway /usr/local/bin/
 
 clean:
 		$(RM) NXDNGateway *.o *.d *.bak *~
- 
+
+# Export the current git version if the index file exists, else 000...
+GitVersion.h:
+ifneq ("$(wildcard ../.git/index)","")
+	echo "const char *gitversion = \"$(shell git rev-parse HEAD)\";" > $@
+else
+	echo "const char *gitversion = \"0000000000000000000000000000000000000000\";" > $@
+endif
+
