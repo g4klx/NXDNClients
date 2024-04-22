@@ -23,6 +23,7 @@
 #include "Parrot.h"
 #include "Thread.h"
 #include "Timer.h"
+#include "GitVersion.h"
 
 #include <cstdio>
 #include <cstdlib>
@@ -30,21 +31,31 @@
 
 int main(int argc, char** argv)
 {
-	if (argc == 1) {
-		::fprintf(stderr, "Usage: NXDNParrot <port>\n");
-		return 1;
+	if (argc > 1) {
+		for (int currentArg = 1; currentArg < argc; ++currentArg) {
+			std::string arg = argv[currentArg];
+			if ((arg == "-v") || (arg == "--version")) {
+				::fprintf(stdout, "NXDNParrot version %s git #%.7s\n", VERSION, gitversion);
+				return 0;
+			}
+			else if (arg.substr(0, 1) == "-") {
+				::fprintf(stderr, "Usage: NXDNParrot [-v|--version] [-d|--debug] <port>\n");
+				return 1;
+			}
+			else {
+				unsigned short port = (unsigned short)::atoi(argv[1U]);
+				if (port == 0U) {
+					::fprintf(stderr, "NXDNParrot: invalid port number - %s\n", argv[1U]);
+					return 1;
+				}
+
+				CNXDNParrot parrot(port);
+				parrot.run();
+
+				return 0;
+			}
+		}
 	}
-
-	unsigned short port = (unsigned short)::atoi(argv[1U]);
-	if (port == 0U) {
-		::fprintf(stderr, "NXDNParrot: invalid port number - %s\n", argv[1U]);
-		return 1;
-	}
-
-	CNXDNParrot parrot(port);
-	parrot.run();
-
-	return 0;
 }
 
 CNXDNParrot::CNXDNParrot(unsigned short port) :
