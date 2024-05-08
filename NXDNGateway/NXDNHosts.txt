@@ -553,44 +553,44 @@
 51500	dx8wmg-ysf.ddns.net	41400
 
 # 51547 KAPIHAN Network
-51547	nxdn.kapihan.net	41400
+51547  nxdn.kapihan.net  41400
 
 # 52000 Thailand DTDXA XLX520N
-52000	nxdn.dtdxa.com	41400
+52000  nxdn.dtdxa.com  41400
 
 # 52032 Surin Amateur Radio Association (HS3AS) ,Thailand,XLX149C
-52032	hs3as.pwk.ac.th	41404
+52032  hs3as.pwk.ac.th	41404
 
 # 52149 XLX149 K Thailand
-52149	nxdn149d.pwk.ac.th	41408
+52149  nxdn149d.pwk.ac.th	41408
 
 # 52910 XLX Nexus
-52910	nxdn910x.mywire.org	41400
+52910  nxdn910x.mywire.org	41400
 
 # 53099 New Zealand, 53099 linked to BM TG 53099
-53099	203.86.206.49	41400
+53099  203.86.206.49  41400
 
 # 60777 Who Cares ARG (URF239 A) https://whocaresradio.com/reflector
-60777	urf239.whocaresradio.com	41400
+60777  urf239.whocaresradio.com  41400
 
 # 63600 Latvian Digital MultiMode Network
-63600	xlx.ham.lv	41400
+63600  xlx.ham.lv  41400
 
 # 64003 ELITE Group
-64003	51.77.213.200	41400
+64003  51.77.213.200  41400
 
 # 65000 World Wide
-65000	176.9.1.168	41400
+65000  176.9.1.168  41400
 
 # 65100 NXDN - 2007DXGROUP
-65100	89.46.75.115	41400
+65100  89.46.75.115  41400
 
 # 65206 XLX210 YSF-BELGIUM M17BEL Bridges http://freedmr.be/nxdn
-65206	161.97.169.233	41400
+65206  173.212.223.187  41400
 
 # 65208 French-NXDN
-65208	nxdn.f5dan.fr	41400
+65208  nxdn.f5dan.fr  41400
 
 # 65209 VARG http://www.varg.club
-65209	3.215.215.169	41410
+65209  3.215.215.169  41410
 
