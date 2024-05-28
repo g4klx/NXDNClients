@@ -102,6 +102,9 @@
 # 891 WNY-DIGITAL - http://wny-digital.network
 891 xlx891.wny-digital.network 41400
 
+# 909 Volunteer Radio Association, Thailand NXDN Network
+909 xlx.vra.or.th 41400
+
 # 910 Washington DC - Virginia - Maryland
 910	nxdn910.freeddns.org	41400
 
