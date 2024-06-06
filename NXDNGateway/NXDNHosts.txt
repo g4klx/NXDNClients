@@ -321,7 +321,7 @@
 # 22215 IT Sardinia - linked to FreeDMR TG 22215
 22215	87.106.152.249	41400
 
-# 22216 
+# 22216 Allstarlink
 22216   176.223.136.224 41400
 
 # 22220 IT ItalyNet Conference
