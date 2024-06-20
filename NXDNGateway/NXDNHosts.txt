@@ -183,6 +183,9 @@
 # 3400 3400 Digital Group (NJ Multimode Reflector)
 3400	3400.ddns.net	41400
 
+# 4584 Great Lakes Digital Common (P25/DMR/NXDN/YSF/DSTAR/M17)
+4584 gldcom.dyndns.org 41400
+
 # 4700 Tennessee Statewide
 4700	ref4700.mywire.org	41400
 
