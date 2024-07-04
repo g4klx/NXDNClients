@@ -42,8 +42,8 @@
 # 224 RED SPAIN
 224	nxdn224.nxdn.es	41401
 
-# 226 Romania YO NXDN Network
-226	nxdn.dstar-yo.ro	41400
+# 226 Romania
+226	nxdn-yo.duckdns.org	41400
 
 # 235 DVSPH UK Wide
 235	nxdn.dvsph.net	41400
