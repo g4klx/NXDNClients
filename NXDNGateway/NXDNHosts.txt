@@ -48,6 +48,9 @@
 # 235 DVSPH UK Wide
 235	nxdn.dvsph.net	41400
 
+# 23501 Euro Football
+23501 home.ka1vsc.com 41400
+
 # 260 HBLink  Poland
 260	nxdn.hblink.pl	41400
 
