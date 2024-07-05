@@ -48,9 +48,6 @@
 # 235 DVSPH UK Wide
 235	nxdn.dvsph.net	41400
 
-# 23501 Euro Football
-23501 home.ka1vsc.com 41400
-
 # 260 HBLink  Poland
 260	nxdn.hblink.pl	41400
 
@@ -362,6 +359,9 @@
 
 # 23491 NXDN Cambridge
 23491	nxdn-cambridge.dyndns.org	41400
+
+# 23501 Euro Football
+23501 home.ka1vsc.com 41400
 
 # 23511 LEFARS Multi-Reflector
 23511	xlxlef.gb7hh.co.uk	41400
