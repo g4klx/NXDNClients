@@ -45,9 +45,6 @@
 # 226 Romania
 226	nxdn-yo.duckdns.org	41400
 
-# 2261 Romanian diaspora
-2261	nxdn-yo.duckdns.org	41401
-
 # 235 DVSPH UK Wide
 235	nxdn.dvsph.net	41400
 
@@ -143,6 +140,9 @@
 
 # 2249 IT SICILIA
 2249	nxdn.digitalsicilia.it	41400
+
+# 2261 Romanian diaspora
+2261	nxdn-yo.duckdns.org	41401
 
 # 2262 Romania YO2 district
 2262	nxdn-yo.duckdns.org	41402
