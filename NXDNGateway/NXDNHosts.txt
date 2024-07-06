@@ -141,11 +141,32 @@
 # 2249 IT SICILIA
 2249	nxdn.digitalsicilia.it	41400
 
-# 2263 Bucharest YO3 NXDN Network
-2263	nxdn.dstar-yo.ro	41403
+# 2261 Romanian diaspora
+2261	nxdn-yo.duckdns.org	41401
 
-# 2265 Baia Mare YO5 NXDN Network
-2265	nxdn.dstar-yo.ro	41405
+# 2262 Romania YO2 district
+2262	nxdn-yo.duckdns.org	41402
+
+# 2263 Romania YO3 district
+2263	nxdn-yo.duckdns.org	41403
+
+# 2264 Romania YO4 district
+2264	nxdn-yo.duckdns.org	41404
+
+# 2265 Romania YO5 district
+2265	nxdn-yo.duckdns.org	41405
+
+# 2266 Romania YO6 district
+2266	nxdn-yo.duckdns.org	41406
+
+# 2267 Romania YO7 district
+2267	nxdn-yo.duckdns.org	41407
+
+# 2268 Romania YO8 district
+2268	nxdn-yo.duckdns.org	41408
+
+# 2269 Romania YO9 district
+2269	nxdn-yo.duckdns.org	41409
 
 # 2345 CQ-North UK
 2345	nxdn.cqnorth.org.uk	41400
