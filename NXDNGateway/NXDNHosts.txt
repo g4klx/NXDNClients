@@ -525,6 +525,9 @@
 # 31777 DX-LINK SYSTEM,
 31777	8.9.4.102	41400
 
+#31947 K0MGS Western Missouri/KC Metro
+31947	nxdn.ddns.me	41400
+
 # 31983 K8JTK Hub Multimode ILS/DVMIS (K8JTK.org)
 31983	NXDNReflector31983.K8JTK.org	41400
 
