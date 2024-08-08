@@ -102,8 +102,8 @@
 # 848 Chandler Hams
 848	xlx848.kk7mnz.com	41400
 
-# 888 KN6TYF Lucky Radio MM DV
-888  reflector1.dv.jchang.io  41400
+# 888 KN6TYF Lucky LMR Radio
+888  888.dv.kn6tyf.com  41400
 
 # 891 WNY-DIGITAL - http://wny-digital.network
 891 xlx891.wny-digital.network 41400
