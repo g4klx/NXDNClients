@@ -645,6 +645,9 @@
 # 65206 XLX210 YSF-BELGIUM M17BEL Bridges http://freedmr.be/nxdn
 65206  173.212.223.187  41400
 
+# 65400 XLX288 
+65400  xlx288.unusualperson.com  41400
+
 # 65208 French-NXDN
 65208  nxdn.f5dan.fr  41400
 
