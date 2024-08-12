@@ -528,6 +528,9 @@
 # 31582 KO4UYJ Milton, Fl - NXDN Reflector
 31582	ko4uyj.com	41400
 
+# 31611 XPR Pinoy Network
+31611 198.13.41.243 41400
+
 # 31665 TGIF Network
 31665	tgif.network	41400
 
