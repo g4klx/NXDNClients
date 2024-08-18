@@ -211,7 +211,7 @@
 3306	3306.nxdn.es	41400
 
 # 3400 3400 Digital Group (NJ Multimode Reflector)
-3400	3400.ddns.net	41400
+3400	reflector.3400digital.net	41400
 
 # 4584 Great Lakes Digital Common (P25/DMR/NXDN/YSF/DSTAR/M17)
 4584 gldcom.dyndns.org 41400
