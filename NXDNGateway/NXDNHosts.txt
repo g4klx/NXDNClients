@@ -109,7 +109,7 @@
 891 xlx891.wny-digital.network 41400
 
 # 902 MHz NXDN reflector
-902 reflector.dvswitch.org 41902
+902 nxdn.dvswitch.org 41902
 
 # 909 Volunteer Radio Association, Thailand NXDN Network
 909 xlx.vra.or.th 41400
@@ -262,7 +262,7 @@
 9846	nxdn.dudetronics.com	41401
 
 # 10200 North America
-10200	dvswitch.org	42400
+10200	nxdn.dvswitch.org	42400
 
 # 10201 North America TAC
 10201	10201.dyndns.org	41400
