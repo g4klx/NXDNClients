@@ -16,7 +16,7 @@ OBJECTS = APRSWriter.o Conf.o GPSHandler.o IcomNetwork.o KenwoodNetwork.o Log.o 
 
 all:		NXDNGateway
 
-NXDNGateway:	$(OBJECTS)
+NXDNGateway:	GitVersion.h $(OBJECTS)
 		$(CXX) $(OBJECTS) $(CFLAGS) $(LIBS) -o NXDNGateway
 
 %.o: %.cpp
