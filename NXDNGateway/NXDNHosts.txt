@@ -499,7 +499,7 @@
 31264	nxdn.dudetronics.com	41400
 
 # 31340 Central New Jersey
-31340	cnjham.msmts.com	41400
+31340	nxdn-31340.k2dls.net	41400
 
 # 31378 Foothills Wave Whisperers
 31378 66.226.62.35 41400
