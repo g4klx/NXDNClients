@@ -1,5 +1,5 @@
 /*
-*   Copyright (C) 2016,2017,2018,2020 by Jonathan Naylor G4KLX
+*   Copyright (C) 2016,2017,2018,2020,2024 by Jonathan Naylor G4KLX
 *
 *   This program is free software; you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -60,6 +60,17 @@ const char* DEFAULT_INI_FILE = "/etc/NXDNGateway.ini";
 #include <ctime>
 #include <cstring>
 
+static bool m_killed = false;
+static int  m_signal = 0;
+
+#if !defined(_WIN32) && !defined(_WIN64)
+static void sigHandler(int signum)
+{
+	m_killed = true;
+	m_signal = signum;
+}
+#endif
+
 const unsigned char NXDN_TYPE_DCALL_HDR = 0x09U;
 const unsigned char NXDN_TYPE_DCALL = 0x0BU;
 const unsigned char NXDN_TYPE_TX_REL = 0x08U;
@@ -91,11 +102,43 @@ int main(int argc, char** argv)
 		}
 	}
 
-	CNXDNGateway* gateway = new CNXDNGateway(std::string(iniFile));
-	gateway->run();
-	delete gateway;
 
-	return 0;
+#if !defined(_WIN32) && !defined(_WIN64)
+	::signal(SIGINT,  sigHandler);
+	::signal(SIGTERM, sigHandler);
+	::signal(SIGHUP,  sigHandler);
+#endif
+
+	int ret = 0;
+
+	do {
+		m_signal = 0;
+		m_killed = false;
+
+		CNXDNGateway* gateway = new CNXDNGateway(std::string(iniFile));
+		ret = gateway->run();
+
+		delete gateway;
+
+		switch (m_signal) {
+			case 2:
+				::LogInfo("NXDNGateway-%s exited on receipt of SIGINT", VERSION);
+				break;
+			case 15:
+				::LogInfo("NXDNGateway-%s exited on receipt of SIGTERM", VERSION);
+				break;
+			case 1:
+				::LogInfo("NXDNGateway-%s is restarting on receipt of SIGHUP", VERSION);
+				break;
+			default:
+				::LogInfo("NXDNGateway-%s exited on receipt of an unknown signal", VERSION);
+				break;
+		}
+	} while (m_signal == 1);
+
+	::LogFinalise();
+
+	return ret;
 }
 
 CNXDNGateway::CNXDNGateway(const std::string& file) :
@@ -111,12 +154,12 @@ CNXDNGateway::~CNXDNGateway()
 	CUDPSocket::shutdown();
 }
 
-void CNXDNGateway::run()
+int CNXDNGateway::run()
 {
 	bool ret = m_conf.read();
 	if (!ret) {
 		::fprintf(stderr, "NXDNGateway: cannot read the .ini file\n");
-		return;
+		return 1;
 	}
 
 #if !defined(_WIN32) && !defined(_WIN64)
@@ -126,7 +169,7 @@ void CNXDNGateway::run()
 		pid_t pid = ::fork();
 		if (pid == -1) {
 			::fprintf(stderr, "Couldn't fork() , exiting\n");
-			return;
+			return 1;
 		}
 		else if (pid != 0) {
 			exit(EXIT_SUCCESS);
@@ -135,13 +178,13 @@ void CNXDNGateway::run()
 		// Create new session and process group
 		if (::setsid() == -1) {
 			::fprintf(stderr, "Couldn't setsid(), exiting\n");
-			return;
+			return 1;
 		}
 
 		// Set the working directory to the root directory
 		if (::chdir("/") == -1) {
 			::fprintf(stderr, "Couldn't cd /, exiting\n");
-			return;
+			return 1;
 		}
 
 		// If we are currently root...
@@ -149,7 +192,7 @@ void CNXDNGateway::run()
 			struct passwd* user = ::getpwnam("mmdvm");
 			if (user == NULL) {
 				::fprintf(stderr, "Could not get the mmdvm user, exiting\n");
-				return;
+				return 1;
 			}
 
 			uid_t mmdvm_uid = user->pw_uid;
@@ -158,18 +201,18 @@ void CNXDNGateway::run()
 			// Set user and group ID's to mmdvm:mmdvm
 			if (setgid(mmdvm_gid) != 0) {
 				::fprintf(stderr, "Could not set mmdvm GID, exiting\n");
-				return;
+				return 1;
 			}
 
 			if (setuid(mmdvm_uid) != 0) {
 				::fprintf(stderr, "Could not set mmdvm UID, exiting\n");
-				return;
+				return 1;
 			}
 
 			// Double check it worked (AKA Paranoia) 
 			if (setuid(0) != -1) {
 				::fprintf(stderr, "It's possible to regain root - something is wrong!, exiting\n");
-				return;
+				return 1;
 			}
 		}
 	}
@@ -182,7 +225,7 @@ void CNXDNGateway::run()
 #endif
 	if (!ret) {
 		::fprintf(stderr, "NXDNGateway: unable to open the log file\n");
-		return;
+		return 1;
 	}
 
 #if !defined(_WIN32) && !defined(_WIN64)
@@ -204,18 +247,15 @@ void CNXDNGateway::run()
 		localNetwork = new CIcomNetwork(m_conf.getMyPort(), m_conf.getRptAddress(), m_conf.getRptPort(), m_conf.getDebug());
 
 	ret = localNetwork->open();
-	if (!ret) {
-		::LogFinalise();
-		return;
-	}
+	if (!ret)
+		return 1;
 
 	CNXDNNetwork remoteNetwork(m_conf.getNetworkPort(), m_conf.getCallsign(), m_conf.getNetworkDebug());
 	ret = remoteNetwork.open();
 	if (!ret) {
 		localNetwork->close();
 		delete localNetwork;
-		::LogFinalise();
-		return;
+		return 1;
 	}
 
 	CUDPSocket* remoteSocket = NULL;
@@ -290,7 +330,7 @@ void CNXDNGateway::run()
 		}
 	}
 
-	for (;;) {
+	while (!m_killed) {
 		unsigned char buffer[200U];
 		sockaddr_storage addr;
 		unsigned int addrLen;
@@ -636,7 +676,7 @@ void CNXDNGateway::run()
 		delete m_gps;
 	}
 
-	::LogFinalise();
+	return 0;
 }
 
 void CNXDNGateway::createGPS()
