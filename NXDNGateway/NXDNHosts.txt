@@ -45,6 +45,9 @@
 # 226 Romania
 226	nxdn.145500.xyz	41400
 
+# 231 Slovakia NXDN Digital Network
+231  158.255.31.102  41400
+
 # 235 DVSPH UK Wide
 235	nxdn.dvsph.net	41400
 
