@@ -121,6 +121,8 @@ int main(int argc, char** argv)
 		delete gateway;
 
 		switch (m_signal) {
+			case 0:
+				break;
 			case 2:
 				::LogInfo("NXDNGateway-%s exited on receipt of SIGINT", VERSION);
 				break;
