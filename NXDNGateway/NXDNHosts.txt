@@ -659,3 +659,6 @@
 
 # 65400 XLX288 Reflector N6OGM http://xlx288.unusualperson.com:8002 
 65400  xlx288.unusualperson.com  41400
+
+# 22273 IT-C4FM_BAT
+22273  82.85.236.36   41400
