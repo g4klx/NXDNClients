@@ -380,7 +380,8 @@
 
 # 22273 IT-C4FM_BAT
 22273  82.85.236.36  41400
-
+# 22291 NXDN_ADN_ITALY
+22291 2221.adn.systems 41400
 # 22292 Italy-MP TG 22292 BM
 22292	nxdn.grupporadiofirenze.net	41400
 
