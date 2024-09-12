@@ -353,7 +353,8 @@
 
 # 22209 IT Radio Chat NXDN
 22209	it-radiochat.ddns.net	41400
-
+# 22214 NXDN ADN_ITALY
+22214 185.203.216.4 41400
 # 22215 IT Sardinia - linked to FreeDMR TG 22215
 22215	87.106.152.249	41400
 
