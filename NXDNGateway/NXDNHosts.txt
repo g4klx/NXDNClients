@@ -66,6 +66,9 @@
 # 420 Super Freq
 420	nxdn.superfreqdigital.com	41400
 
+# 478 Ham Radio Village URF478
+478 urf.hamvillage.org 41400
+
 # 530 New Zealand
 530	zldigitalreflectors.hopto.org	41400
 
