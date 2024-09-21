@@ -253,7 +253,7 @@
 7487	uruguay.nxdn.es	41400
 
 # 7941 White Mountain Repeater Association
-7941	wmra-nxdn.mooo.com	41400
+7941  wmra-multimode.link  41400
 
 # 8465 Ecuador
 8465	jjsc.ddns.net	41400
