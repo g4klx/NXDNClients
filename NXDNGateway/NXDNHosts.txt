@@ -456,6 +456,9 @@
 # 26200 Deutschland
 26200	dl.nxdn.eu	41400
 
+# 26269 Multimode HE_RLP
+26269 urf169.dc9vq.de 41400
+
 # 26235 Funknetz-Celle
 26235 95.215.198.111 41400
 
