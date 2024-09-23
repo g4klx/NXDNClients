@@ -460,7 +460,7 @@
 26269 urf169.dc9vq.de 41400
 
 # 26235 Funknetz-Celle
-26235 95.215.198.111 41400
+26235 85.215.198.111 41400
 
 # 26810 Portuguese speakers
 26810	nxcore.brandmeister.pt	41400
