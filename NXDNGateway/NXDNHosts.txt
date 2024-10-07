@@ -246,6 +246,9 @@
 # 7245  Brasil Multiprotocolo 
 7245	pu4ron.dynv6.net	41400
 
+# 7246  Brasil pu2rry NXDN
+7246	pu2rry.com.br		41400
+
 # 7309 CHILE-LINK NXDN Reflector to BM TG 73099
 7309	sdradio.cl	41401
 
