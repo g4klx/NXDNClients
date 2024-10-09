@@ -90,11 +90,14 @@
 # 712 NXDN JP
 712  nxdn.xreflector-jp.org	41400
 
+# 718 NXDN IT to Tg 2220066 BM
+718  romastream718.online  41040
+
 # 730 Chile NXDN Reflector to BM TG 730
-730	sdradio.cl  41400
+730  sdradio.cl  41400
 
 # 805 US RocketCity-AL-NXDN Bridge
-805	45.32.166.46	41400
+805  45.32.166.46  41400
 
 # 822 Thailand NXDN to BM TG 520822
 822	nxdn.dstarthailand.com	41400
