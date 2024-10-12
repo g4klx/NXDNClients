@@ -460,6 +460,15 @@
 26085	91.245.81.2	41400
 
 # 26200 Deutschland
+26200	26200.nxdn.eu	41400
+
+# 26230 DL-RegHannover
+26230	26230.nxdn.eu	41410
+
+# 26230 DL-NiMitte
+26231	26231.nxdn.eu	41420
+
+# 26200 Deutschland
 26200	dl.nxdn.eu	41400
 
 # 26269 Multimode HE_RLP
