@@ -460,13 +460,19 @@
 26085	91.245.81.2	41400
 
 # 26200 Deutschland
-26200	dl.nxdn.eu	41400
+26200	26200.nxdn.eu	41400
 
-# 26269 Multimode HE_RLP
-26269 urf169.dc9vq.de 41400
+# 26230 DL-RegHannover
+26230	26230.nxdn.eu	41410
+
+# 26231 DL-NiMitte
+26231	26231.nxdn.eu	41420
 
 # 26235 Funknetz-Celle
 26235 85.215.198.111 41400
+
+# 26269 Multimode HE_RLP
+26269 urf169.dc9vq.de 41400
 
 # 26810 Portuguese speakers
 26810	nxcore.brandmeister.pt	41400
