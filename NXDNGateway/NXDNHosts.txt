@@ -378,6 +378,9 @@
 # 22221 HBLINK IT-DMR REGIONALE LOMBARDIA
 22221	dagobah.hblink.it	41400
 
+# 22222 Brescia-Network
+22222	nxdn.dmrbrescia.it 41400
+
 # 22245 IT PIEDMONT GDO
 22245	nxdngdo.duckdns.org	41400
 
