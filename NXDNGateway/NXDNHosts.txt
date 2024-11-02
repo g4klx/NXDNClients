@@ -96,6 +96,9 @@
 # 730 Chile NXDN Reflector to BM TG 730
 730  sdradio.cl  41400
 
+# 747 DVMproject MM - KN6TYF
+747  fne.dv.kn6tyf.com  41401
+
 # 805 US RocketCity-AL-NXDN Bridge
 805  45.32.166.46  41400
 
