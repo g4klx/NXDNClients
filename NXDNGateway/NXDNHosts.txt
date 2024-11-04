@@ -689,3 +689,6 @@
 
 # 65400 XLX288 Reflector N6OGM http://xlx288.unusualperson.com:8002 
 65400  xlx288.unusualperson.com  41400
+
+# 65410 WWRARN NETWORK
+65410  192.155.88.30  41400 
