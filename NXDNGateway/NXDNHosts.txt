@@ -645,6 +645,9 @@
 # 50599 BM NXCore bridge
 50599	nxdn.duckdns.org	41490
 
+# 51000 DMR2NXDN
+51000	185.174.14.75	41401
+
 # 51500 DX8WMG-NXDN
 51500	dx8wmg-ysf.ddns.net	41400
 
