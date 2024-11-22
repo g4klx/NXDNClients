@@ -603,6 +603,9 @@
 # 37500 Belarus Digital MultiMode Network
 37500	xlx375.bfrr.by	41400
 
+# 40102 Kazakhstan NXDN
+4102	84.240.249.68	41400
+
 # 40721 Fusion Canada Fr /Wires-x /Ysf /Nxdn Network
 40721	158.69.169.205	41400
 
