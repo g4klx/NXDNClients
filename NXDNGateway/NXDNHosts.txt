@@ -240,8 +240,8 @@
 # 7160 Peru Digital
 7160	nxdn.dmr-peru.net	41400
 
-# 7221 FreeDMR Argentina
-7221	nxdn.freedmr.ar		41400
+# 7223 Argentina Network
+7223	nxdn.argentinanetwork.ar		41400
 
 # 7225 Multiprotocolo Argentina
 7225	argnxdn.ddnsfree.com	41400
