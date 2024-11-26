@@ -153,6 +153,9 @@
 # 2029 GR-Crete-DV-NXDN
 2029	nxdn.greece.freedmr.online 41402
 
+# 2044 Dutch NXDN URFd Reflector URFNL1
+2044	141.95.54.250e 41400 
+
 # 2140 Treehouse NXDN
 2140	2140.nxdn.es 41402
 
