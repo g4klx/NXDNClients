@@ -306,6 +306,9 @@
 # 11069 KK6RQ NXDN Reflector
 11069	area52.zapto.org	41400
 
+# 11710 Emergency Communications Teams
+11710	sbanetweb.com	41400
+
 # 17603 URFM17 Universal Reflector
 17603	urf.m17.link	41400
 
