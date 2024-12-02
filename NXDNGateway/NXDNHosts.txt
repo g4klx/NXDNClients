@@ -99,6 +99,9 @@
 # 747 DVMproject MM - KN6TYF
 747  fne.dv.kn6tyf.com  41401
 
+# 775 IT NXDN XLX775C
+775	62.2.109.205	41401
+
 # 805 US RocketCity-AL-NXDN Bridge
 805  45.32.166.46  41400
 
