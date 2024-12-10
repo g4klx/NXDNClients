@@ -414,6 +414,9 @@
 # 22292 Italy-MP TG 22292 BM
 22292	nxdn.grupporadiofirenze.net	41400
 
+# 22556 URF556 Stafford Virginia
+22556 urf556.kq4tnv.net	41400
+
 # 22825 Swiss NXDN Reflerctor
 22825	212.237.33.114	41400
 
