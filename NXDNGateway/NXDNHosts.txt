@@ -348,6 +348,9 @@
 # 20945 Deutschland DL1BH
 20945	dl1bh.ddns.net	41400
 
+# 21277 AK7AN Utah TG
+21277 204.225.21.58 41400
+
 # 21426 FreeSTAR SPAIN
 21426	nxdn.pa7lim.nl	41400
 
