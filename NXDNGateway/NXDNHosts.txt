@@ -63,6 +63,9 @@
 # 401 CT-RI-NXDN
 401	nxdn.mooo.com	41401
 
+# 419 Toledo Amateur Digital Association
+419  tada-p25.mywire.org  41040
+
 # 420 Super Freq
 420	nxdn.superfreqdigital.com	41400
 
