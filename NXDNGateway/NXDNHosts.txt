@@ -540,6 +540,9 @@
 # 31188 Southern Indiana
 31188	w9windigital.org	41400
 
+# 31220 Lucas County Ohio ARES
+31220  w8mal.webredirect.org  41400
+
 # 31226 WorldWide Dx System
 31226	74.208.163.225	41400
 
