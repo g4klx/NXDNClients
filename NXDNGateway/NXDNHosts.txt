@@ -162,6 +162,9 @@
 # 2044 Dutch NXDN URFd Reflector URFNL1
 2044	141.95.54.250 41400 
 
+# 2121 Cambria County, PA Multi-Mode Hub
+2121  108.174.58.66 41400
+
 # 2140 Treehouse NXDN
 2140	2140.nxdn.es 41402
 
