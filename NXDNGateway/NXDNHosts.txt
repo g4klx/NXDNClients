@@ -655,7 +655,7 @@
 45000	nxdn.dvham.com	41400
 
 # 45001 NXDN-DS5QDR Korea
-45001	ds5qdr-mst.duckdns.org	41400
+45001	dvsys.duckdns.org	41400
 
 # 46000 China
 46000	120.234.41.144	41400
