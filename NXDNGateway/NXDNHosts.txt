@@ -648,6 +648,9 @@
 # 43389 SouthEast Link
 43389	nxdn.lmarc.net	41400
 
+# 43715 KZ Digital MultiMode Network
+43715	xlx.svx03.kz	41400
+
 # 44000 Japan
 44000	nxdn44000.f5.si	41400
 
