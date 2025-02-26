@@ -21,6 +21,7 @@
 
 #include "APRSWriter.h"
 #include "GPSHandler.h"
+#include "Voice.h"
 #include "Timer.h"
 #include "Conf.h"
 
@@ -52,8 +53,11 @@ private:
 	CConf        m_conf;
 	CAPRSWriter* m_writer;
 	CGPSHandler* m_gps;
+	CVoice*      m_voice;
 
 	void createGPS();
+
+	bool isVoiceBusy() const;
 };
 
 #endif

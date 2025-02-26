@@ -1,5 +1,5 @@
 /*
-*   Copyright (C) 2017,2018 by Jonathan Naylor G4KLX
+*   Copyright (C) 2017,2018,2024 by Jonathan Naylor G4KLX
 *
 *   This program is free software; you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -353,4 +353,9 @@ void CVoice::createTrailer(bool grp, unsigned int dstId)
 
 	::memcpy(m_voiceData + m_voiceLength, buffer, NXDN_FRAME_LENGTH);
 	m_voiceLength += NXDN_FRAME_LENGTH;
+}
+
+bool CVoice::isBusy() const
+{
+	return (m_status == VS_WAITING) || (m_status == VS_SENDING);
 }
