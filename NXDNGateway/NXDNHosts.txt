@@ -55,7 +55,7 @@
 260	nxdn.hblink.pl	41400
 
 # 280 Cyprus-NXDN  Cyprus
-280	nxdn.greece.freedmr.online	41404
+280	reflector.freedmr.gr	41404
 
 # 302 P25 Canada
 302	p25canada.hopto.org	41400
@@ -154,10 +154,10 @@
 1200	florida.nxref.org	41400
 
 # 2020 GR-GREECE-DV-NXDN
-2020	nxdn.greece.freedmr.online 41400
+2020	reflector.freedmr.gr 41400
 
 # 2029 GR-Crete-DV-NXDN
-2029	nxdn.greece.freedmr.online 41402
+2029	reflector.freedmr.gr 41401
 
 # 2044 Dutch NXDN URFd Reflector URFNL1
 2044	141.95.54.250 41400 
@@ -324,14 +324,17 @@
 # 20000 Europe, German speaking
 20000	89.185.97.38	41400
 
+# 20200 GR-MULTIMODE-DV-NXDNN
+20200	reflector.freedmr.gr	41403
+
 # 20201 NXDN Athens GR HBLink
 20201	stargate-dmr.net	41400
 
 # 20211 GR-Lamia-DV-NXDN
-20211	nxdn.greece.freedmr.online	41403
+20211	reflector.freedmr.gr	41404
 
 # 20281 GR-KERKYRA-DV-NXDN
-20281	nxdn.greece.freedmr.online 41401
+20281	reflector.freedmr.gr 41405
 
 # 20222 NXDN HELLAS-FRN
 20222	greece-frn.ddns.net	41400
