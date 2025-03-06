@@ -55,7 +55,7 @@
 260	nxdn.hblink.pl	41400
 
 # 280 Cyprus-NXDN  Cyprus
-280	reflector.freedmr.gr	41404
+280	reflector.freedmr.gr	41402
 
 # 302 P25 Canada
 302	p25canada.hopto.org	41400
