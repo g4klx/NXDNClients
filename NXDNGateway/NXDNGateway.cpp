@@ -732,7 +732,7 @@ void CNXDNGateway::writeCommand(const std::string& command)
 
 bool CNXDNGateway::isVoiceBusy() const
 {
-	if (m_voice == NULL)
+	if (m_voice == nullptr)
 		return false;
 
 	return m_voice->isBusy();
