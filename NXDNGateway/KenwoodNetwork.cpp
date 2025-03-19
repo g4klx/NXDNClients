@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2009-2014,2016,2018,2020 by Jonathan Naylor G4KLX
+ *   Copyright (C) 2009-2014,2016,2018,2020,2025 by Jonathan Naylor G4KLX
  *
  *   This program is free software; you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -45,7 +45,7 @@ m_seen1(false),
 m_seen2(false),
 m_seen3(false),
 m_seen4(false),
-m_sacch(NULL),
+m_sacch(nullptr),
 m_sessionId(1U),
 m_seqNo(0U),
 m_ssrc(0U),
@@ -106,7 +106,7 @@ bool CKenwoodNetwork::open()
 
 bool CKenwoodNetwork::write(const unsigned char* data, unsigned int length)
 {
-	assert(data != NULL);
+	assert(data != nullptr);
 
 	switch (data[0U]) {
 	case 0x81U:	// Voice header or trailer
@@ -122,7 +122,7 @@ bool CKenwoodNetwork::write(const unsigned char* data, unsigned int length)
 
 bool CKenwoodNetwork::processIcomVoiceHeader(const unsigned char* inData)
 {
-	assert(inData != NULL);
+	assert(inData != nullptr);
 
 	unsigned char outData[30U];
 	::memset(outData, 0x00U, 30U);
@@ -166,7 +166,7 @@ bool CKenwoodNetwork::processIcomVoiceHeader(const unsigned char* inData)
 
 bool CKenwoodNetwork::processIcomVoiceData(const unsigned char* inData)
 {
-	assert(inData != NULL);
+	assert(inData != nullptr);
 
 	unsigned char outData[40U], temp[10U];
 	::memset(outData, 0x00U, 40U);
@@ -246,7 +246,7 @@ bool CKenwoodNetwork::processIcomVoiceData(const unsigned char* inData)
 
 bool CKenwoodNetwork::writeRTPVoiceHeader(const unsigned char* data)
 {
-	assert(data != NULL);
+	assert(data != nullptr);
 
 	unsigned char buffer[50U];
 	::memset(buffer, 0x00U, 50U);
@@ -293,7 +293,7 @@ bool CKenwoodNetwork::writeRTPVoiceHeader(const unsigned char* data)
 
 bool CKenwoodNetwork::writeRTPVoiceTrailer(const unsigned char* data)
 {
-	assert(data != NULL);
+	assert(data != nullptr);
 
 	unsigned char buffer[50U];
 	::memset(buffer, 0x00U, 50U);
@@ -339,7 +339,7 @@ bool CKenwoodNetwork::writeRTPVoiceTrailer(const unsigned char* data)
 
 bool CKenwoodNetwork::writeRTPVoiceData(const unsigned char* data)
 {
-	assert(data != NULL);
+	assert(data != nullptr);
 
 	unsigned char buffer[60U];
 	::memset(buffer, 0x00U, 60U);
@@ -397,7 +397,7 @@ bool CKenwoodNetwork::writeRTCPStart()
 	m_startUSecs = st.wMilliseconds * 1000U;
 #else
 	struct timeval tod;
-	::gettimeofday(&tod, NULL);
+	::gettimeofday(&tod, nullptr);
 
 	m_startSecs  = tod.tv_sec;
 	m_startUSecs = tod.tv_usec;
@@ -530,7 +530,7 @@ bool CKenwoodNetwork::writeRTCPHang()
 
 unsigned int CKenwoodNetwork::read(unsigned char* data)
 {
-	assert(data != NULL);
+	assert(data != nullptr);
 
 	unsigned char dummy[BUFFER_LENGTH];
 	readRTCP(dummy);
@@ -556,7 +556,7 @@ unsigned int CKenwoodNetwork::read(unsigned char* data)
 
 unsigned int CKenwoodNetwork::readRTP(unsigned char* data)
 {
-	assert(data != NULL);
+	assert(data != nullptr);
 
 	unsigned char buffer[BUFFER_LENGTH];
 
@@ -567,7 +567,7 @@ unsigned int CKenwoodNetwork::readRTP(unsigned char* data)
 		return 0U;
 
 	// Check if the data is for us
-	if (!CUDPSocket::match(m_rtpAddr, addr, IMT_ADDRESS_ONLY)) {
+	if (!CUDPSocket::match(m_rtpAddr, addr, IPMATCHTYPE::ADDRESS_ONLY)) {
 		LogMessage("Kenwood RTP packet received from an invalid source");
 		return 0U;
 	}
@@ -582,7 +582,7 @@ unsigned int CKenwoodNetwork::readRTP(unsigned char* data)
 
 unsigned int CKenwoodNetwork::readRTCP(unsigned char* data)
 {
-	assert(data != NULL);
+	assert(data != nullptr);
 
 	unsigned char buffer[BUFFER_LENGTH];
 
@@ -593,7 +593,7 @@ unsigned int CKenwoodNetwork::readRTCP(unsigned char* data)
 		return 0U;
 
 	// Check if the data is for us
-	if (!CUDPSocket::match(m_rtcpAddr, addr, IMT_ADDRESS_ONLY)) {
+	if (!CUDPSocket::match(m_rtcpAddr, addr, IPMATCHTYPE::ADDRESS_ONLY)) {
 		LogMessage("Kenwood RTCP packet received from an invalid source");
 		return 0U;
 	}
@@ -639,7 +639,7 @@ void CKenwoodNetwork::clock(unsigned int ms)
 
 unsigned int CKenwoodNetwork::processKenwoodVoiceHeader(unsigned char* inData)
 {
-	assert(inData != NULL);
+	assert(inData != nullptr);
 
 	unsigned char outData[50U], temp[20U];
 	::memset(outData, 0x00U, 50U);
@@ -696,7 +696,7 @@ unsigned int CKenwoodNetwork::processKenwoodVoiceHeader(unsigned char* inData)
 
 unsigned int CKenwoodNetwork::processKenwoodVoiceData(unsigned char* inData)
 {
-	assert(inData != NULL);
+	assert(inData != nullptr);
 
 	unsigned char outData[50U], temp[20U];
 	::memset(outData, 0x00U, 50U);
@@ -846,7 +846,7 @@ unsigned long CKenwoodNetwork::getTimeStamp() const
 	timeStamp += ms * 80U;
 #else
 	struct timeval tod;
-	::gettimeofday(&tod, NULL);
+	::gettimeofday(&tod, nullptr);
 
 	unsigned int ss = tod.tv_sec;
 	unsigned int ms = tod.tv_usec / 1000U;
@@ -860,7 +860,7 @@ unsigned long CKenwoodNetwork::getTimeStamp() const
 
 unsigned int CKenwoodNetwork::processKenwoodVoiceLateEntry(unsigned char* inData)
 {
-	assert(inData != NULL);
+	assert(inData != nullptr);
 
 	unsigned char sacch[4U];
 	sacch[0U] = inData[12U];

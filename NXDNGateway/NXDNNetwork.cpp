@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2009-2014,2016,2018,2020,2024 by Jonathan Naylor G4KLX
+ *   Copyright (C) 2009-2014,2016,2018,2020,2024,2025 by Jonathan Naylor G4KLX
  *
  *   This program is free software; you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -58,7 +58,7 @@ bool CNXDNNetwork::open()
 
 bool CNXDNNetwork::writeData(const unsigned char* data, unsigned int length, unsigned short srcId, unsigned short dstId, bool grp, const sockaddr_storage& addr, unsigned int addrLen)
 {
-	assert(data != NULL);
+	assert(data != nullptr);
 	assert(length > 0U);
 
 	unsigned char buffer[50U];
@@ -170,7 +170,7 @@ bool CNXDNNetwork::writeUnlink(const sockaddr_storage& addr, unsigned int addrLe
 
 unsigned int CNXDNNetwork::readData(unsigned char* data, unsigned int length, sockaddr_storage& addr, unsigned int& addrLen)
 {
-	assert(data != NULL);
+	assert(data != nullptr);
 	assert(length > 0U);
 
 	int len = m_socket4.read(data, length, addr, addrLen);

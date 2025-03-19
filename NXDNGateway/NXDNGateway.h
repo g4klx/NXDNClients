@@ -59,21 +59,23 @@ public:
 	int run();
 
 private:
-	CConf        m_conf;
-	CAPRSWriter* m_writer;
-	CGPSHandler* m_gps;
-	CVoice*      m_voice;
-	CNXDNNetwork* m_remoteNetwork;
+	CConf          m_conf;
+	CAPRSWriter*   m_writer;
+	CGPSHandler*   m_gps;
+	CVoice*        m_voice;
+	CNXDNNetwork*  m_remoteNetwork;
 	unsigned short m_currentTG;
-	unsigned int m_currentAddrLen;
+	unsigned int   m_currentAddrLen;
 	sockaddr_storage m_currentAddr;
-	bool         m_currentIsStatic;
-	CTimer       m_hangTimer;
-	unsigned int m_rfHangTime;
-	CReflectors* m_reflectors;	
+	bool           m_currentIsStatic;
+	CTimer         m_hangTimer;
+	unsigned int   m_rfHangTime;
+	CReflectors*   m_reflectors;	
 	std::vector<CStaticTG> m_staticTGs;
 
 	void createGPS();
+
+	bool isVoiceBusy() const;
 
 	void writeJSONStatus(const std::string& status);
 	void writeJSONLinking(const std::string& reason, unsigned short tg);

@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2010-2014,2016,2017,2018,2020,2023 by Jonathan Naylor G4KLX
+ *   Copyright (C) 2010-2014,2016,2017,2018,2020,2023,2025 by Jonathan Naylor G4KLX
  *
  *   This program is free software; you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -95,7 +95,7 @@ bool CAPRSWriter::open()
 			return false;
 		}
 
-		::gps_stream(&m_gpsdData, WATCH_ENABLE | WATCH_JSON, NULL);
+		::gps_stream(&m_gpsdData, WATCH_ENABLE | WATCH_JSON, nullptr);
 
 		LogMessage("Connected to GPSD");
 	}
@@ -108,7 +108,7 @@ bool CAPRSWriter::open()
 
 void CAPRSWriter::write(const char* data)
 {
-	assert(data != NULL);
+	assert(data != nullptr);
 
 	if (m_debug)
 		LogDebug("APRS ==> %s", data);
@@ -143,7 +143,7 @@ void CAPRSWriter::close()
 {
 #if defined(USE_GPSD)
 	if (m_gpsdEnabled) {
-		::gps_stream(&m_gpsdData, WATCH_DISABLE, NULL);
+		::gps_stream(&m_gpsdData, WATCH_DISABLE, nullptr);
 		::gps_close(&m_gpsdData);
 	}
 #endif
@@ -221,7 +221,7 @@ void CAPRSWriter::sendIdFrameMobile()
 		return;
 
 #if GPSD_API_MAJOR_VERSION >= 7
-	if (::gps_read(&m_gpsdData, NULL, 0) <= 0)
+	if (::gps_read(&m_gpsdData, nullptr, 0) <= 0)
 		return;
 #else
 	if (::gps_read(&m_gpsdData) <= 0)

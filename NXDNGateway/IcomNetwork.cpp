@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2009-2014,2016,2018,2020 by Jonathan Naylor G4KLX
+ *   Copyright (C) 2009-2014,2016,2018,2020,2025 by Jonathan Naylor G4KLX
  *
  *   This program is free software; you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -58,7 +58,7 @@ bool CIcomNetwork::open()
 
 bool CIcomNetwork::write(const unsigned char* data, unsigned int length)
 {
-	assert(data != NULL);
+	assert(data != nullptr);
 
 	unsigned char buffer[110U];
 	::memset(buffer, 0x00U, 110U);
@@ -92,7 +92,7 @@ bool CIcomNetwork::write(const unsigned char* data, unsigned int length)
 
 unsigned int CIcomNetwork::read(unsigned char* data)
 {
-	assert(data != NULL);
+	assert(data != nullptr);
 
 	unsigned char buffer[BUFFER_LENGTH];
 	sockaddr_storage addr;
@@ -102,7 +102,7 @@ unsigned int CIcomNetwork::read(unsigned char* data)
 	if (length <= 0)
 		return 0U;
 
-	if (!CUDPSocket::match(m_addr, addr, IMT_ADDRESS_ONLY)) {
+	if (!CUDPSocket::match(m_addr, addr, IPMATCHTYPE::ADDRESS_ONLY)) {
 		LogWarning("Icom Data received from an unknown address");
 		return 0U;
 	}
