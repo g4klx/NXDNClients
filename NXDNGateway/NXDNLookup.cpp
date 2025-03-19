@@ -1,5 +1,5 @@
 /*
-*   Copyright (C) 2016,2017,2018 by Jonathan Naylor G4KLX
+*   Copyright (C) 2016,2017,2018,2025 by Jonathan Naylor G4KLX
 *
 *   This program is free software; you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -117,7 +117,7 @@ bool CNXDNLookup::exists(unsigned int id)
 bool CNXDNLookup::load()
 {
 	FILE* fp = ::fopen(m_filename.c_str(), "rt");
-	if (fp == NULL) {
+	if (fp == nullptr) {
 		LogWarning("Cannot open the NXDN Id lookup file - %s", m_filename.c_str());
 		return false;
 	}
@@ -128,14 +128,14 @@ bool CNXDNLookup::load()
 	m_table.clear();
 
 	char buffer[100U];
-	while (::fgets(buffer, 100U, fp) != NULL) {
+	while (::fgets(buffer, 100U, fp) != nullptr) {
 		if (buffer[0U] == '#')
 			continue;
 
 		char* p1 = ::strtok(buffer, ",\t\r\n");
-		char* p2 = ::strtok(NULL, ",\t\r\n");
+		char* p2 = ::strtok(nullptr, ",\t\r\n");
 
-		if (p1 != NULL && p2 != NULL) {
+		if (p1 != nullptr && p2 != nullptr) {
 			unsigned int id = (unsigned int)::atoi(p1);
 			if (id > 0U) {
 				for (char* p = p2; *p != 0x00U; p++)

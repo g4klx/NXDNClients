@@ -53,8 +53,8 @@ m_status(VOICE_STATUS::NONE),
 m_timer(1000U, 1U),
 m_stopWatch(),
 m_sent(0U),
-m_ambe(NULL),
-m_voiceData(NULL),
+m_ambe(nullptr),
+m_voiceData(nullptr),
 m_voiceLength(0U),
 m_positions()
 {
@@ -87,7 +87,7 @@ CVoice::~CVoice()
 bool CVoice::open()
 {
 	FILE* fpindx = ::fopen(m_indxFile.c_str(), "rt");
-	if (fpindx == NULL) {
+	if (fpindx == nullptr) {
 		LogError("Unable to open the index file - %s", m_indxFile.c_str());
 		return false;
 	}
@@ -101,7 +101,7 @@ bool CVoice::open()
 	}
 
 	FILE* fpambe = ::fopen(m_ambeFile.c_str(), "rb");
-	if (fpambe == NULL) {
+	if (fpambe == nullptr) {
 		LogError("Unable to open the AMBE file - %s", m_ambeFile.c_str());
 		::fclose(fpindx);
 		return false;
@@ -112,12 +112,12 @@ bool CVoice::open()
 	size_t sizeRead = ::fread(m_ambe, 1U, statStruct.st_size, fpambe);
 	if (sizeRead != 0U) {
 		char buffer[80U];
-		while (::fgets(buffer, 80, fpindx) != NULL) {
+		while (::fgets(buffer, 80, fpindx) != nullptr) {
 			char* p1 = ::strtok(buffer, "\t\r\n");
-			char* p2 = ::strtok(NULL, "\t\r\n");
-			char* p3 = ::strtok(NULL, "\t\r\n");
+			char* p2 = ::strtok(nullptr, "\t\r\n");
+			char* p3 = ::strtok(nullptr, "\t\r\n");
 
-			if (p1 != NULL && p2 != NULL && p3 != NULL) {
+			if (p1 != nullptr && p2 != nullptr && p3 != nullptr) {
 				std::string symbol  = std::string(p1);
 				unsigned int start  = ::atoi(p2) * AMBE_LENGTH;
 				unsigned int length = ::atoi(p3) * AMBE_LENGTH;
@@ -259,7 +259,7 @@ void CVoice::createVoice(unsigned int tg, const std::vector<std::string>& words)
 
 unsigned int CVoice::read(unsigned char* data)
 {
-	assert(data != NULL);
+	assert(data != nullptr);
 
 	if (m_status != VOICE_STATUS::SENDING)
 		return 0U;

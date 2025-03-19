@@ -32,13 +32,13 @@ const unsigned int NXDN_DATA_MAX_LENGTH = 16U * NXDN_DATA_LENGTH;
 CGPSHandler::CGPSHandler(const std::string& callsign, const std::string& suffix, CAPRSWriter* writer) :
 m_callsign(callsign),
 m_writer(writer),
-m_data(NULL),
+m_data(nullptr),
 m_length(0U),
 m_source(),
 m_suffix(suffix)
 {
 	assert(!callsign.empty());
-	assert(writer != NULL);
+	assert(writer != nullptr);
 
 	m_data = new unsigned char[NXDN_DATA_MAX_LENGTH];
 
@@ -58,7 +58,7 @@ void CGPSHandler::processHeader(const std::string& source)
 
 void CGPSHandler::processData(const unsigned char* data)
 {
-	assert(data != NULL);
+	assert(data != nullptr);
 
 	::memcpy(m_data + m_length, data + 1U, NXDN_DATA_LENGTH);
 	m_length += NXDN_DATA_LENGTH;
@@ -93,7 +93,7 @@ bool CGPSHandler::processIcom()
 	if (::memcmp(m_data + 1U, "$G", 2U) != 0)
 		return false;
 
-	if (::strchr((char*)(m_data + 1U), '*') == NULL)
+	if (::strchr((char*)(m_data + 1U), '*') == nullptr)
 		return false;
 
 	// From here onwards we have something that looks like Icom GPS data
@@ -111,15 +111,15 @@ bool CGPSHandler::processIcom()
 	::memset(pRMC, 0x00U, 20U * sizeof(char*));
 	unsigned int nRMC = 0U;
 
-	char* p = NULL;
+	char* p = nullptr;
 	char* d = (char*)(m_data + 1U);
-	while ((p = ::strtok(d, ",\r\n")) != NULL && nRMC < 20U) {
+	while ((p = ::strtok(d, ",\r\n")) != nullptr && nRMC < 20U) {
 		pRMC[nRMC++] = p;
-		d = NULL;
+		d = nullptr;
 	}
 
 	// Is there any position data?
-	if (pRMC[3U] == NULL || pRMC[4U] == NULL || pRMC[5U] == NULL || pRMC[6U] == NULL || ::strlen(pRMC[3U]) == 0U || ::strlen(pRMC[4U]) == 0U || ::strlen(pRMC[5U]) == 0 || ::strlen(pRMC[6U]) == 0)
+	if (pRMC[3U] == nullptr || pRMC[4U] == nullptr || pRMC[5U] == nullptr || pRMC[6U] == nullptr || ::strlen(pRMC[3U]) == 0U || ::strlen(pRMC[4U]) == 0U || ::strlen(pRMC[5U]) == 0 || ::strlen(pRMC[6U]) == 0)
 		return true;
 
 	// Is it a valid GPS fix?
@@ -136,7 +136,7 @@ bool CGPSHandler::processIcom()
 	}
 
 	char output[300U];
-	if (pRMC[7U] != NULL && pRMC[8U] != NULL && ::strlen(pRMC[7U]) > 0U && ::strlen(pRMC[8U]) > 0U) {
+	if (pRMC[7U] != nullptr && pRMC[8U] != nullptr && ::strlen(pRMC[7U]) > 0U && ::strlen(pRMC[8U]) > 0U) {
 		int bearing = ::atoi(pRMC[8U]);
 		int speed   = ::atoi(pRMC[7U]);
 

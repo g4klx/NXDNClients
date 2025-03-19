@@ -100,7 +100,7 @@ CConf::~CConf()
 bool CConf::read()
 {
   FILE* fp = ::fopen(m_file.c_str(), "rt");
-  if (fp == NULL) {
+  if (fp == nullptr) {
     ::fprintf(stderr, "Couldn't open the .ini file - %s\n", m_file.c_str());
     return false;
   }
@@ -108,7 +108,7 @@ bool CConf::read()
   SECTION section = SECTION::NONE;
 
   char buffer[BUFFER_SIZE];
-  while (::fgets(buffer, BUFFER_SIZE, fp) != NULL) {
+  while (::fgets(buffer, BUFFER_SIZE, fp) != nullptr) {
 	  if (buffer[0U] == '#')
 		  continue;
 
@@ -138,11 +138,11 @@ bool CConf::read()
 	  }
 
 	  char* key = ::strtok(buffer, " \t=\r\n");
-	  if (key == NULL)
+	  if (key == nullptr)
 		  continue;
 
-	  char* value = ::strtok(NULL, "\r\n");
-	  if (value == NULL)
+	  char* value = ::strtok(nullptr, "\r\n");
+	  if (value == nullptr)
 		  continue;
 
 	  // Remove quotes from the value
@@ -154,7 +154,7 @@ bool CConf::read()
 		  char *p;
 
 		  // if value is not quoted, remove after # (to make comment)
-		  if ((p = strchr(value, '#')) != NULL)
+		  if ((p = strchr(value, '#')) != nullptr)
 			  *p = '\0';
 
 		  // remove trailing tab/space
@@ -257,10 +257,10 @@ bool CConf::read()
 			  m_networkNXDN2DMRPort = (unsigned short)::atoi(value);
 		  else if (::strcmp(key, "Static") == 0) {
 			  char* p = ::strtok(value, ",\r\n");
-			  while (p != NULL) {
+			  while (p != nullptr) {
 				  unsigned short tg = (unsigned short)::atoi(p);
 				  m_networkStatic.push_back(tg);
-				  p = ::strtok(NULL, ",\r\n");
+				  p = ::strtok(nullptr, ",\r\n");
 			  }
 		  } else if (::strcmp(key, "RFHangTime") == 0)
 			  m_networkRFHangTime = (unsigned int)::atoi(value);

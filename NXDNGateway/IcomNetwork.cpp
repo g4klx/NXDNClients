@@ -58,7 +58,7 @@ bool CIcomNetwork::open()
 
 bool CIcomNetwork::write(const unsigned char* data, unsigned int length)
 {
-	assert(data != NULL);
+	assert(data != nullptr);
 
 	unsigned char buffer[110U];
 	::memset(buffer, 0x00U, 110U);
@@ -92,7 +92,7 @@ bool CIcomNetwork::write(const unsigned char* data, unsigned int length)
 
 unsigned int CIcomNetwork::read(unsigned char* data)
 {
-	assert(data != NULL);
+	assert(data != nullptr);
 
 	unsigned char buffer[BUFFER_LENGTH];
 	sockaddr_storage addr;
