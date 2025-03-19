@@ -1,5 +1,5 @@
 /*
-*   Copyright (C) 2017,2018,2024 by Jonathan Naylor G4KLX
+*   Copyright (C) 2017,2018,2024,2025 by Jonathan Naylor G4KLX
 *
 *   This program is free software; you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -49,7 +49,7 @@ m_language(language),
 m_indxFile(),
 m_ambeFile(),
 m_srcId(srcId),
-m_status(VS_NONE),
+m_status(VOICE_STATUS::NONE),
 m_timer(1000U, 1U),
 m_stopWatch(),
 m_sent(0U),
@@ -152,7 +152,7 @@ void CVoice::linkedTo(unsigned int tg)
 		words.push_back("linkedto");
 	}
 
-	for (unsigned int i = 0U; letters[i] != 0x00U; i++)
+	for (unsigned int i = 0U; (i < 10U) && (letters[i] != 0x00U); i++)
 		words.push_back(std::string(1U, letters[i]));
 
 	createVoice(tg, words);
@@ -261,7 +261,7 @@ unsigned int CVoice::read(unsigned char* data)
 {
 	assert(data != NULL);
 
-	if (m_status != VS_SENDING)
+	if (m_status != VOICE_STATUS::SENDING)
 		return 0U;
 
 	unsigned int count = m_stopWatch.elapsed() / NXDN_FRAME_TIME;
@@ -276,7 +276,7 @@ unsigned int CVoice::read(unsigned char* data)
 		if (offset >= m_voiceLength) {
 			m_timer.stop();
 			m_voiceLength = 0U;
-			m_status = VS_NONE;
+			m_status = VOICE_STATUS::NONE;
 		}
 
 		return NXDN_FRAME_LENGTH;
@@ -290,7 +290,7 @@ void CVoice::eof()
 	if (m_voiceLength == 0U)
 		return;
 
-	m_status = VS_WAITING;
+	m_status = VOICE_STATUS::WAITING;
 
 	m_timer.start();
 }
@@ -299,9 +299,9 @@ void CVoice::clock(unsigned int ms)
 {
 	m_timer.clock(ms);
 	if (m_timer.isRunning() && m_timer.hasExpired()) {
-		if (m_status == VS_WAITING) {
+		if (m_status == VOICE_STATUS::WAITING) {
 			m_stopWatch.start();
-			m_status = VS_SENDING;
+			m_status = VOICE_STATUS::SENDING;
 			m_sent = 0U;
 		}
 	}
@@ -357,5 +357,5 @@ void CVoice::createTrailer(bool grp, unsigned int dstId)
 
 bool CVoice::isBusy() const
 {
-	return (m_status == VS_WAITING) || (m_status == VS_SENDING);
+	return (m_status == VOICE_STATUS::WAITING) || (m_status == VOICE_STATUS::SENDING);
 }

@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2015,2016,2017,2018,2020 by Jonathan Naylor G4KLX
+ *   Copyright (C) 2015,2016,2017,2018,2020,2025 by Jonathan Naylor G4KLX
  *
  *   This program is free software; you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -26,17 +26,17 @@
 
 const int BUFFER_SIZE = 500;
 
-enum SECTION {
-  SECTION_NONE,
-  SECTION_GENERAL,
-  SECTION_INFO,
-  SECTION_ID_LOOKUP,
-  SECTION_VOICE,
-  SECTION_LOG,
-  SECTION_APRS,
-  SECTION_NETWORK,
-  SECTION_GPSD,
-  SECTION_REMOTE_COMMANDS
+enum class SECTION {
+	NONE,
+	GENERAL,
+	INFO,
+	ID_LOOKUP,
+	VOICE,
+	LOG,
+	APRS,
+	NETWORK,
+	GPSD,
+	REMOTE_COMMANDS
 };
 
 CConf::CConf(const std::string& file) :
@@ -105,7 +105,7 @@ bool CConf::read()
     return false;
   }
 
-  SECTION section = SECTION_NONE;
+  SECTION section = SECTION::NONE;
 
   char buffer[BUFFER_SIZE];
   while (::fgets(buffer, BUFFER_SIZE, fp) != NULL) {
@@ -114,25 +114,25 @@ bool CConf::read()
 
 	  if (buffer[0U] == '[') {
 		  if (::strncmp(buffer, "[General]", 9U) == 0)
-			  section = SECTION_GENERAL;
+			  section = SECTION::GENERAL;
 		  else if (::strncmp(buffer, "[Info]", 6U) == 0)
-			  section = SECTION_INFO;
+			  section = SECTION::INFO;
 		  else if (::strncmp(buffer, "[Id Lookup]", 11U) == 0)
-			  section = SECTION_ID_LOOKUP;
+			  section = SECTION::ID_LOOKUP;
 		  else if (::strncmp(buffer, "[Voice]", 7U) == 0)
-			  section = SECTION_VOICE;
+			  section = SECTION::VOICE;
 		  else if (::strncmp(buffer, "[Log]", 5U) == 0)
-			  section = SECTION_LOG;
+			  section = SECTION::LOG;
 		  else if (::strncmp(buffer, "[APRS]", 6U) == 0)
-			  section = SECTION_APRS;
+			  section = SECTION::APRS;
 		  else if (::strncmp(buffer, "[Network]", 9U) == 0)
-			  section = SECTION_NETWORK;
+			  section = SECTION::NETWORK;
 		  else if (::strncmp(buffer, "[GPSD]", 6U) == 0)
-			  section = SECTION_GPSD;
+			  section = SECTION::GPSD;
 		  else if (::strncmp(buffer, "[Remote Commands]", 17U) == 0)
-			  section = SECTION_REMOTE_COMMANDS;
+			  section = SECTION::REMOTE_COMMANDS;
 		  else
-			  section = SECTION_NONE;
+			  section = SECTION::NONE;
 
 		  continue;
 	  }
@@ -162,7 +162,7 @@ bool CConf::read()
 			  *p = '\0';
 	  }
 
-	  if (section == SECTION_GENERAL) {
+	  if (section == SECTION::GENERAL) {
 		  if (::strcmp(key, "Callsign") == 0) {
 			  // Convert the callsign to upper case
 			  for (unsigned int i = 0U; value[i] != 0; i++)
@@ -185,7 +185,7 @@ bool CConf::read()
 			  m_debug = ::atoi(value) == 1;
 		  else if (::strcmp(key, "Daemon") == 0)
 			  m_daemon = ::atoi(value) == 1;
-	  } else if (section == SECTION_INFO) {
+	  } else if (section == SECTION::INFO) {
 		  if (::strcmp(key, "TXFrequency") == 0)
 			  m_txFrequency = (unsigned int)::atoi(value);
 		  else if (::strcmp(key, "RXFrequency") == 0)
@@ -202,19 +202,19 @@ bool CConf::read()
 			  m_name = value;
 		  else if (::strcmp(key, "Description") == 0)
 			  m_description = value;
-	  } else if (section == SECTION_ID_LOOKUP) {
+	  } else if (section == SECTION::ID_LOOKUP) {
 		  if (::strcmp(key, "Name") == 0)
 			  m_lookupName = value;
 		  else if (::strcmp(key, "Time") == 0)
 			  m_lookupTime = (unsigned int)::atoi(value);
-	  } else if (section == SECTION_VOICE) {
+	  } else if (section == SECTION::VOICE) {
 		  if (::strcmp(key, "Enabled") == 0)
 			  m_voiceEnabled = ::atoi(value) == 1;
 		  else if (::strcmp(key, "Language") == 0)
 			  m_voiceLanguage = value;
 		  else if (::strcmp(key, "Directory") == 0)
 			  m_voiceDirectory = value;
-	  } else if (section == SECTION_LOG) {
+	  } else if (section == SECTION::LOG) {
 		  if (::strcmp(key, "FilePath") == 0)
 			  m_logFilePath = value;
 		  else if (::strcmp(key, "FileRoot") == 0)
@@ -225,7 +225,7 @@ bool CConf::read()
 			  m_logDisplayLevel = (unsigned int)::atoi(value);
 		  else if (::strcmp(key, "FileRotate") == 0)
 			  m_logFileRotate = ::atoi(value) ==  1;
-	  } else if (section == SECTION_APRS) {
+	  } else if (section == SECTION::APRS) {
 		  if (::strcmp(key, "Enable") == 0)
 			  m_aprsEnabled = ::atoi(value) == 1;
 		  else if (::strcmp(key, "Address") == 0)
@@ -238,7 +238,7 @@ bool CConf::read()
 			  m_aprsDescription = value;
                   else if (::strcmp(key, "Symbol") == 0)
                           m_aprsSymbol = value;
-	  } else if (section == SECTION_NETWORK) {
+	  } else if (section == SECTION::NETWORK) {
 		  if (::strcmp(key, "Port") == 0)
 			  m_networkPort = (unsigned short)::atoi(value);
 		  else if (::strcmp(key, "HostsFile1") == 0)
@@ -268,14 +268,14 @@ bool CConf::read()
 			  m_networkNetHangTime = (unsigned int)::atoi(value);
 		  else if (::strcmp(key, "Debug") == 0)
 			  m_networkDebug = ::atoi(value) == 1;
-	  } else if (section == SECTION_GPSD) {
+	  } else if (section == SECTION::GPSD) {
 		  if (::strcmp(key, "Enable") == 0)
 			  m_gpsdEnabled = ::atoi(value) == 1;
 		  else if (::strcmp(key, "Address") == 0)
 			  m_gpsdAddress = value;
 		  else if (::strcmp(key, "Port") == 0)
 			  m_gpsdPort = value;
-	  }  else if (section == SECTION_REMOTE_COMMANDS) {
+	  }  else if (section == SECTION::REMOTE_COMMANDS) {
 		  if (::strcmp(key, "Enable") == 0)
 			  m_remoteCommandsEnabled = ::atoi(value) == 1;
 		  else if (::strcmp(key, "Port") == 0)

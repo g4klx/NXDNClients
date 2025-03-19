@@ -567,7 +567,7 @@ unsigned int CKenwoodNetwork::readRTP(unsigned char* data)
 		return 0U;
 
 	// Check if the data is for us
-	if (!CUDPSocket::match(m_rtpAddr, addr, IMT_ADDRESS_ONLY)) {
+	if (!CUDPSocket::match(m_rtpAddr, addr, IPMATCHTYPE::ADDRESS_ONLY)) {
 		LogMessage("Kenwood RTP packet received from an invalid source");
 		return 0U;
 	}
@@ -593,7 +593,7 @@ unsigned int CKenwoodNetwork::readRTCP(unsigned char* data)
 		return 0U;
 
 	// Check if the data is for us
-	if (!CUDPSocket::match(m_rtcpAddr, addr, IMT_ADDRESS_ONLY)) {
+	if (!CUDPSocket::match(m_rtcpAddr, addr, IPMATCHTYPE::ADDRESS_ONLY)) {
 		LogMessage("Kenwood RTCP packet received from an invalid source");
 		return 0U;
 	}
