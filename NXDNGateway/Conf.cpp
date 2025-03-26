@@ -73,6 +73,9 @@ m_mqttAddress("127.0.0.1"),
 m_mqttPort(1883U),
 m_mqttKeepalive(60U),
 m_mqttName("nxdn-gateway"),
+m_mqttAuthEnabled(false),
+m_mqttUsername(),
+m_mqttPassword(),
 m_networkPort(0U),
 m_networkHosts1(),
 m_networkHosts2(),
@@ -238,6 +241,12 @@ bool CConf::read()
 				m_mqttKeepalive = (unsigned int)::atoi(value);
 			else if (::strcmp(key, "Name") == 0)
 				m_mqttName = value;
+			else if (::strcmp(key, "Auth") == 0)
+				m_mqttAuthEnabled = ::atoi(value) == 1;
+			else if (::strcmp(key, "Username") == 0)
+				m_mqttUsername = value;
+			else if (::strcmp(key, "Password") == 0)
+				m_mqttPassword = value;
 		} else if (section == SECTION::NETWORK) {
 			if (::strcmp(key, "Port") == 0)
 				m_networkPort = (unsigned short)::atoi(value);
@@ -429,6 +438,21 @@ unsigned int CConf::getMQTTKeepalive() const
 std::string CConf::getMQTTName() const
 {
 	return m_mqttName;
+}
+
+bool CConf::getMQTTAuthEnabled() const
+{
+	return m_mqttAuthEnabled;
+}
+
+std::string CConf::getMQTTUsername() const
+{
+	return m_mqttUsername;
+}
+
+std::string CConf::getMQTTPassword() const
+{
+	return m_mqttPassword;
 }
 
 unsigned int CConf::getLogDisplayLevel() const

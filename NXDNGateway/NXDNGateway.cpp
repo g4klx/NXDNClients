@@ -237,7 +237,7 @@ int CNXDNGateway::run()
 	if (m_conf.getRemoteCommandsEnabled())
 		subscriptions.push_back(std::make_pair("command", CNXDNGateway::onCommand));
 
-	m_mqtt = new CMQTTConnection(m_conf.getMQTTAddress(), m_conf.getMQTTPort(), m_conf.getMQTTName(), subscriptions, m_conf.getMQTTKeepalive());
+	m_mqtt = new CMQTTConnection(m_conf.getMQTTAddress(), m_conf.getMQTTPort(), m_conf.getMQTTName(), m_conf.getMQTTAuthEnabled(), m_conf.getMQTTUsername(), m_conf.getMQTTPassword(), subscriptions, m_conf.getMQTTKeepalive());
 	ret = m_mqtt->open();
 	if (!ret)
 		return 1;
