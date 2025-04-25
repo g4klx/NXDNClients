@@ -411,6 +411,9 @@
 # 22222 Brescia-Network
 22222	nxdn.dmrbrescia.it 41400
 
+# 22231 IT TG22231 FVG
+22231 nxdn.arifvg.it 41400
+
 # 22245 IT PIEDMONT GDO
 22245	nxdngdo.duckdns.org	41400
 
