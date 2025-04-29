@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2009-2014,2016,2018,2020,2024,2025 by Jonathan Naylor G4KLX
+ *   Copyright (C) 2009-2014,2016,2020,2024,2025 by Jonathan Naylor G4KLX
  *
  *   This program is free software; you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -26,17 +26,22 @@
 
 CNXDNNetwork::CNXDNNetwork(unsigned short port, const std::string& callsign, bool debug) :
 m_callsign(callsign),
-m_socket4(port),
-m_socket6(port),
+m_socket4(nullptr),
+m_socket6(nullptr),
 m_debug(debug)
 {
 	assert(port > 0U);
+
+	m_socket4 = new CUDPSocket(port);
+	m_socket6 = new CUDPSocket(port);
 
 	m_callsign.resize(10U, ' ');
 }
 
 CNXDNNetwork::~CNXDNNetwork()
 {
+	delete m_socket4;
+	delete m_socket6;
 }
 
 bool CNXDNNetwork::open()
@@ -46,17 +51,30 @@ bool CNXDNNetwork::open()
 	sockaddr_storage addr4;
 	addr4.ss_family = AF_INET;
 
-	bool ret = m_socket4.open(addr4);
-	if (!ret)
-		return false;
+	bool ret4 = m_socket4->open(addr4);
+	if (!ret4) {
+		delete m_socket4;
+		m_socket4 = nullptr;
+	}
 
 	sockaddr_storage addr6;
 	addr6.ss_family = AF_INET6;
 
-	return m_socket6.open(addr6);
+	bool ret6 = m_socket6->open(addr6);
+	if (!ret6) {
+		delete m_socket6;
+		m_socket6 = nullptr;
+	}
+
+	if (!ret4 && !ret6) {
+		LogError("Unable to open an IPv4 or an IPv6 socket");
+		return false;
+	}
+
+	return true;
 }
 
-bool CNXDNNetwork::writeData(const unsigned char* data, unsigned int length, unsigned short srcId, unsigned short dstId, bool grp, const sockaddr_storage& addr, unsigned int addrLen)
+bool CNXDNNetwork::writeData(const unsigned char* data, unsigned int length, unsigned short srcId, unsigned short dstId, bool grp, const CNXDNReflector& address)
 {
 	assert(data != nullptr);
 	assert(length > 0U);
@@ -97,18 +115,17 @@ bool CNXDNNetwork::writeData(const unsigned char* data, unsigned int length, uns
 	if (m_debug)
 		CUtils::dump(1U, "NXDN Network Data Sent", buffer, 43U);
 
-	switch (addr.ss_family) {
-		case AF_INET:
-			return m_socket4.write(buffer, 43U, addr, addrLen);
-		case AF_INET6:
-			return m_socket6.write(buffer, 43U, addr, addrLen);
-		default:
-			LogError("Unknown socket address family - %u", addr.ss_family);
-			return false;
+	if (address.hasIPv6() && hasIPv6()) {
+		return m_socket6->write(buffer, 43U, address.IPv6.m_addr, address.IPv6.m_addrLen);
+	} else if (address.hasIPv4() && hasIPv4()) {
+		return m_socket4->write(buffer, 43U, address.IPv4.m_addr, address.IPv4.m_addrLen);
+	} else {
+		LogError("No suitable IP address to write data to TG%u", address.m_id);
+		return false;
 	}
 }
 
-bool CNXDNNetwork::writePoll(const sockaddr_storage& addr, unsigned int addrLen, unsigned short tg)
+bool CNXDNNetwork::writePoll(const CNXDNReflector& address)
 {
 	unsigned char data[20U];
 
@@ -121,24 +138,23 @@ bool CNXDNNetwork::writePoll(const sockaddr_storage& addr, unsigned int addrLen,
 	for (unsigned int i = 0U; i < 10U; i++)
 		data[i + 5U] = m_callsign.at(i);
 
-	data[15U] = (tg >> 8) & 0xFFU;
-	data[16U] = (tg >> 0) & 0xFFU;
+	data[15U] = (address.m_id >> 8) & 0xFFU;
+	data[16U] = (address.m_id >> 0) & 0xFFU;
 
 	if (m_debug)
 		CUtils::dump(1U, "NXDN Network Poll Sent", data, 17U);
 
-	switch (addr.ss_family) {
-		case AF_INET:
-			return m_socket4.write(data, 17U, addr, addrLen);
-		case AF_INET6:
-			return m_socket6.write(data, 17U, addr, addrLen);
-		default:
-			LogError("Unknown socket address family - %u", addr.ss_family);
-			return false;
+	if (address.hasIPv6() && hasIPv6()) {
+		return m_socket6->write(data, 17U, address.IPv6.m_addr, address.IPv6.m_addrLen);
+	} else if (address.hasIPv4() && hasIPv4()) {
+		return m_socket4->write(data, 17U, address.IPv4.m_addr, address.IPv4.m_addrLen);
+	} else {
+		LogError("No suitable IP address to poll TG%u", address.m_id);
+		return false;
 	}
 }
 
-bool CNXDNNetwork::writeUnlink(const sockaddr_storage& addr, unsigned int addrLen, unsigned short tg)
+bool CNXDNNetwork::writeUnlink(const CNXDNReflector& address)
 {
 	unsigned char data[20U];
 
@@ -151,20 +167,19 @@ bool CNXDNNetwork::writeUnlink(const sockaddr_storage& addr, unsigned int addrLe
 	for (unsigned int i = 0U; i < 10U; i++)
 		data[i + 5U] = m_callsign.at(i);
 
-	data[15U] = (tg >> 8) & 0xFFU;
-	data[16U] = (tg >> 0) & 0xFFU;
+	data[15U] = (address.m_id >> 8) & 0xFFU;
+	data[16U] = (address.m_id >> 0) & 0xFFU;
 
 	if (m_debug)
 		CUtils::dump(1U, "NXDN Network Unlink Sent", data, 17U);
 
-	switch (addr.ss_family) {
-		case AF_INET:
-			return m_socket4.write(data, 17U, addr, addrLen);
-		case AF_INET6:
-			return m_socket6.write(data, 17U, addr, addrLen);
-		default:
-			LogError("Unknown socket address family - %u", addr.ss_family);
-			return false;
+	if (address.hasIPv6() && hasIPv6()) {
+		return m_socket6->write(data, 17U, address.IPv6.m_addr, address.IPv6.m_addrLen);
+	} else if (address.hasIPv4() && hasIPv4()) {
+		return m_socket4->write(data, 17U, address.IPv4.m_addr, address.IPv4.m_addrLen);
+	} else {
+		LogError("No suitable IP address to unlink from TG%u", address.m_id);
+		return false;
 	}
 }
 
@@ -173,17 +188,28 @@ unsigned int CNXDNNetwork::readData(unsigned char* data, unsigned int length, so
 	assert(data != nullptr);
 	assert(length > 0U);
 
-	int len = m_socket4.read(data, length, addr, addrLen);
-	if (len <= 0)
-		len = m_socket6.read(data, length, addr, addrLen);
-	if (len <= 0)
-		return 0U;
+	if (hasIPv4()) {
+		int len = m_socket4->read(data, length, addr, addrLen);
+		if (len > 0) {
+			if (((::memcmp(data, "NXDNP", 5U) == 0) && (len == 17)) || ((::memcmp(data, "NXDND", 5U) == 0) && (len == 43))) {
+				if (m_debug)
+					CUtils::dump(1U, "NXDN Network Data Received", data, len);
 
-	if ((::memcmp(data, "NXDNP", 5U) == 0 && len == 17) || (::memcmp(data, "NXDND", 5U) == 0 && len == 43)) {
-		if (m_debug)
-			CUtils::dump(1U, "NXDN Network Data Received", data, len);
+				return len;
+			}
+		}
+	}
 
-		return len;
+	if (hasIPv6()) {
+		int len = m_socket6->read(data, length, addr, addrLen);
+		if (len > 0) {
+			if (((::memcmp(data, "NXDNP", 5U) == 0) && (len == 17)) || ((::memcmp(data, "NXDND", 5U) == 0) && (len == 43))) {
+				if (m_debug)
+					CUtils::dump(1U, "NXDN Network Data Received", data, len);
+
+				return len;
+			}
+		}
 	}
 
 	return 0U;
@@ -191,8 +217,46 @@ unsigned int CNXDNNetwork::readData(unsigned char* data, unsigned int length, so
 
 void CNXDNNetwork::close()
 {
-	m_socket4.close();
-	m_socket6.close();
+	if (hasIPv4()) {
+		m_socket4->close();
+		delete m_socket4;
+		m_socket4 = nullptr;
+	}
+
+	if (hasIPv6()) {
+		m_socket6->close();
+		delete m_socket6;
+		m_socket6 = nullptr;
+	}
 
 	LogInfo("Closing NXDN network connection");
+}
+
+bool CNXDNNetwork::hasIPv4() const
+{
+	return m_socket4 != nullptr;
+}
+
+bool CNXDNNetwork::hasIPv6() const
+{
+	return m_socket6 != nullptr;
+}
+
+bool CNXDNNetwork::match(const sockaddr_storage& address, const CNXDNReflector& reflector)
+{
+	switch (address.ss_family) {
+		case AF_INET:
+			if (!reflector.hasIPv4())
+				return false;
+			return CUDPSocket::match(address, reflector.IPv4.m_addr);
+
+		case AF_INET6:
+			if (!reflector.hasIPv6())
+				return false;
+			return CUDPSocket::match(address, reflector.IPv6.m_addr);
+
+		default:
+			LogError("Trying to match an unknown protocol family - %d", address.ss_family);
+			return false;
+	}
 }

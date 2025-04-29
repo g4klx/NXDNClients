@@ -19,6 +19,9 @@
 #include "Reflectors.h"
 #include "Log.h"
 
+#include <fstream>
+#include <nlohmann/json.hpp>
+
 #include <algorithm>
 #include <functional>
 #include <cstdio>
@@ -31,6 +34,8 @@ m_hostsFile1(hostsFile1),
 m_hostsFile2(hostsFile2),
 m_parrotAddress(),
 m_parrotPort(0U),
+m_nxdn2dmrAddress(),
+m_nxdn2dmrPort(0U),
 m_reflectors(),
 m_timer(1000U, reloadTime * 60U)
 {
@@ -40,10 +45,7 @@ m_timer(1000U, reloadTime * 60U)
 
 CReflectors::~CReflectors()
 {
-	for (std::vector<CNXDNReflector*>::iterator it = m_reflectors.begin(); it != m_reflectors.end(); ++it)
-		delete *it;
-
-	m_reflectors.clear();
+	remove();
 }
 
 void CReflectors::setParrot(const std::string& address, unsigned short port)
@@ -61,77 +63,21 @@ void CReflectors::setNXDN2DMR(const std::string& address, unsigned short port)
 bool CReflectors::load()
 {
 	// Clear out the old reflector list
-	for (std::vector<CNXDNReflector*>::iterator it = m_reflectors.begin(); it != m_reflectors.end(); ++it)
-		delete *it;
+	remove();
 
-	m_reflectors.clear();
-
-	FILE* fp = ::fopen(m_hostsFile1.c_str(), "rt");
-	if (fp != nullptr) {
-		char buffer[100U];
-		while (::fgets(buffer, 100U, fp) != nullptr) {
-			if (buffer[0U] == '#')
-				continue;
-
-			char* p1 = ::strtok(buffer, " \t\r\n");
-			char* p2 = ::strtok(nullptr,   " \t\r\n");
-			char* p3 = ::strtok(nullptr,   " \t\r\n");
-
-			if (p1 != nullptr && p2 != nullptr && p3 != nullptr) {
-				std::string host  = std::string(p2);
-				unsigned short port = (unsigned short)::atoi(p3);
-
-				sockaddr_storage addr;
-				unsigned int addrLen;
-				if (CUDPSocket::lookup(host, port, addr, addrLen) == 0) {
-					CNXDNReflector* refl = new CNXDNReflector;
-					refl->m_id      = (unsigned short)::atoi(p1);
-					refl->m_addr    = addr;
-					refl->m_addrLen = addrLen;
-					m_reflectors.push_back(refl);
-				} else {
-					LogWarning("Unable to resolve the address of %s", host.c_str());
-				}
-			}
-		}
-
-		::fclose(fp);
+	try {
+		parse(m_hostsFile1);
+	}
+	catch (...) {
+		LogError("Unable to load/parse file %s", m_hostsFile1.c_str());
+		return false;
 	}
 
-	fp = ::fopen(m_hostsFile2.c_str(), "rt");
-	if (fp != nullptr) {
-		char buffer[100U];
-		while (::fgets(buffer, 100U, fp) != nullptr) {
-			if (buffer[0U] == '#')
-				continue;
-
-			char* p1 = ::strtok(buffer, " \t\r\n");
-			char* p2 = ::strtok(nullptr, " \t\r\n");
-			char* p3 = ::strtok(nullptr, " \t\r\n");
-
-			if (p1 != nullptr && p2 != nullptr && p3 != nullptr) {
-				// Don't allow duplicate reflector ids from the secondary hosts file.
-				unsigned int id = (unsigned int)::atoi(p1);
-				if (find(id) == nullptr) {
-					std::string host  = std::string(p2);
-					unsigned short port = (unsigned short)::atoi(p3);
-
-					sockaddr_storage addr;
-					unsigned int addrLen;
-					if (CUDPSocket::lookup(host, port, addr, addrLen) == 0) {
-						CNXDNReflector* refl = new CNXDNReflector;
-						refl->m_id      = id;
-						refl->m_addr    = addr;
-						refl->m_addrLen = addrLen;
-						m_reflectors.push_back(refl);
-					} else {
-						LogWarning("Unable to resolve the address of %s", host.c_str());
-					}
-				}
-			}
-		}
-
-		::fclose(fp);
+	try {
+		parse(m_hostsFile2);
+	}
+	catch (...) {
+		LogWarning("Unable to load/parse file %s", m_hostsFile2.c_str());
 	}
 
 	size_t size = m_reflectors.size();
@@ -143,25 +89,27 @@ bool CReflectors::load()
 		unsigned int addrLen;
 		if (CUDPSocket::lookup(m_parrotAddress, m_parrotPort, addr, addrLen) == 0) {
 			CNXDNReflector* refl = new CNXDNReflector;
-			refl->m_id      = 10U;
-			refl->m_addr    = addr;
-			refl->m_addrLen = addrLen;
+			refl->m_id           = 10U;
+			refl->IPv4.m_addr    = addr;
+			refl->IPv4.m_addrLen = addrLen;
+			refl->IPv6.m_addrLen = 0U;
 			m_reflectors.push_back(refl);
 			LogInfo("Loaded NXDN parrot (TG%u)", refl->m_id);
 		} else {
-			LogWarning("Unable to resolve the address of the NXDN Parrot");
+			LogWarning("Unable to resolve the address of the Parrot");
 		}
 	}
 
-	// Add the NXDN2DMR entry
+	// Add the P252DMR entry
 	if (m_nxdn2dmrPort > 0U) {
 		sockaddr_storage addr;
 		unsigned int addrLen;
 		if (CUDPSocket::lookup(m_nxdn2dmrAddress, m_nxdn2dmrPort, addr, addrLen) == 0) {
 			CNXDNReflector* refl = new CNXDNReflector;
-			refl->m_id      = 20U;
-			refl->m_addr    = addr;
-			refl->m_addrLen = addrLen;
+			refl->m_id           = 20U;
+			refl->IPv4.m_addr    = addr;
+			refl->IPv4.m_addrLen = addrLen;
+			refl->IPv6.m_addrLen = 0U;
 			m_reflectors.push_back(refl);
 			LogInfo("Loaded NXDN2DMR (TG%u)", refl->m_id);
 		} else {
@@ -193,5 +141,69 @@ void CReflectors::clock(unsigned int ms)
 	if (m_timer.isRunning() && m_timer.hasExpired()) {
 		load();
 		m_timer.start();
+	}
+}
+
+void CReflectors::remove()
+{
+	for (std::vector<CNXDNReflector*>::iterator it = m_reflectors.begin(); it != m_reflectors.end(); ++it)
+		delete* it;
+
+	m_reflectors.clear();
+}
+
+void CReflectors::parse(const std::string& fileName)
+{
+	std::fstream file(fileName);
+
+	nlohmann::json data = nlohmann::json::parse(file);
+
+	bool hasData = data["reflectors"].is_array();
+	if (!hasData)
+		throw;
+
+	nlohmann::json::array_t hosts = data["reflectors"];
+	for (const auto& it : hosts) {
+		unsigned int tg = it["designator"];
+		if (tg > 0xFFFFU) {
+			LogWarning("NXDN Talkgroups can only be 16 bits. %u is too large", tg);
+			continue;
+		}
+
+		unsigned short port = it["port"];
+
+		sockaddr_storage addr_v4    = sockaddr_storage();
+		unsigned int     addrLen_v4 = 0U;
+
+		bool isNull = it["ipv4"].is_null();
+		if (!isNull) {
+			std::string ipv4 = it["ipv4"];
+			if (!CUDPSocket::lookup(ipv4, port, addr_v4, addrLen_v4) == 0) {
+				LogWarning("Unable to resolve the address of %s", ipv4.c_str());
+				addrLen_v4 = 0U;
+			}
+		}
+
+		sockaddr_storage addr_v6    = sockaddr_storage();
+		unsigned int     addrLen_v6 = 0U;
+
+		isNull = it["ipv6"].is_null();
+		if (!isNull) {
+			std::string ipv6 = it["ipv6"];
+			if (!CUDPSocket::lookup(ipv6, port, addr_v6, addrLen_v6) == 0) {
+				LogWarning("Unable to resolve the address of %s", ipv6.c_str());
+				addrLen_v6 = 0U;
+			}
+		}
+
+		if ((addrLen_v4 > 0U) || (addrLen_v6 > 0U)) {
+			CNXDNReflector* refl = new CNXDNReflector;
+			refl->m_id         = tg;
+			refl->IPv4.m_addr    = addr_v4;
+			refl->IPv4.m_addrLen = addrLen_v4;
+			refl->IPv6.m_addr    = addr_v6;
+			refl->IPv6.m_addrLen = addrLen_v6;
+			m_reflectors.push_back(refl);
+		}
 	}
 }

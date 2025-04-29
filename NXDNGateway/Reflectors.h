@@ -1,5 +1,5 @@
 /*
-*   Copyright (C) 2016,2018,2020 by Jonathan Naylor G4KLX
+*   Copyright (C) 2016,2018,2020,2025 by Jonathan Naylor G4KLX
 *
 *   This program is free software; you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -25,18 +25,77 @@
 #include <vector>
 #include <string>
 
+#include <cstring>
+
 class CNXDNReflector {
 public:
 	CNXDNReflector() :
-	m_id(0U),
-	m_addr(),
-	m_addrLen(0U)
+	m_id(0U)
 	{
+		IPv4.m_addrLen = 0U;
+		IPv6.m_addrLen = 0U;
 	}
 
-	unsigned short   m_id;
-	sockaddr_storage m_addr;
-	unsigned int     m_addrLen;
+	CNXDNReflector(const CNXDNReflector& in)
+	{
+		m_id = in.m_id;
+
+		IPv4.m_addrLen = in.IPv4.m_addrLen;
+		IPv6.m_addrLen = in.IPv6.m_addrLen;
+
+		::memcpy(&IPv4.m_addr, &in.IPv4.m_addr, sizeof(sockaddr_storage));
+		::memcpy(&IPv6.m_addr, &in.IPv6.m_addr, sizeof(sockaddr_storage));
+	}
+
+	bool isEmpty() const
+	{
+		return m_id == 0U;
+	}
+
+	bool isUsed() const
+	{
+		return m_id > 0U;
+	}
+
+	void reset()
+	{
+		m_id = 0U;
+	}
+
+	bool hasIPv4() const
+	{
+		return IPv4.m_addrLen > 0U;
+	}
+
+	bool hasIPv6() const
+	{
+		return IPv6.m_addrLen > 0U;
+	}
+
+	unsigned short       m_id;
+	struct {
+		sockaddr_storage m_addr;
+		unsigned int     m_addrLen;
+	} IPv4;
+	struct {
+		sockaddr_storage m_addr;
+		unsigned int     m_addrLen;
+	} IPv6;
+
+	CNXDNReflector& operator=(const CNXDNReflector& in)
+	{
+		if (&in != this) {
+			m_id = in.m_id;
+
+			IPv4.m_addrLen = in.IPv4.m_addrLen;
+			IPv6.m_addrLen = in.IPv6.m_addrLen;
+
+			::memcpy(&IPv4.m_addr, &in.IPv4.m_addr, sizeof(sockaddr_storage));
+			::memcpy(&IPv6.m_addr, &in.IPv6.m_addr, sizeof(sockaddr_storage));
+		}
+
+		return *this;
+	}
 };
 
 class CReflectors {
@@ -62,6 +121,9 @@ private:
 	unsigned short m_nxdn2dmrPort;
 	std::vector<CNXDNReflector*> m_reflectors;
 	CTimer       m_timer;
+
+	void remove();
+	void parse(const std::string& fileName);
 };
 
 #endif

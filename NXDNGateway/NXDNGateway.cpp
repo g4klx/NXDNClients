@@ -306,28 +306,22 @@ int CNXDNGateway::run()
 	unsigned short dstTG = 0U;
 	bool grp = false;
 
-	bool currentIsStatic        = false;
-	unsigned short currentTG    = 0U;
-	unsigned int currentAddrLen = 0U;
-	sockaddr_storage currentAddr;
+	bool currentIsStatic = false;
+	CNXDNReflector currentTG;
 
 	std::vector<unsigned short> staticIds = m_conf.getNetworkStatic();
 
-	std::vector<CStaticTG> staticTGs;
-	for (std::vector<unsigned short>::const_iterator it = staticIds.cbegin(); it != staticIds.cend(); ++it) {
-		CNXDNReflector* reflector = reflectors.find(*it);
+	std::vector<CNXDNReflector> staticTGs;
+	for (const auto& it : staticIds) {
+		CNXDNReflector* reflector = reflectors.find(it);
 		if (reflector != nullptr) {
-			CStaticTG staticTG;
-			staticTG.m_tg      = *it;
-			staticTG.m_addr    = reflector->m_addr;
-			staticTG.m_addrLen = reflector->m_addrLen;
-			staticTGs.push_back(staticTG);
+			staticTGs.push_back(*reflector);
 
-			remoteNetwork.writePoll(staticTG.m_addr, staticTG.m_addrLen, staticTG.m_tg);
-			remoteNetwork.writePoll(staticTG.m_addr, staticTG.m_addrLen, staticTG.m_tg);
-			remoteNetwork.writePoll(staticTG.m_addr, staticTG.m_addrLen, staticTG.m_tg);
+			remoteNetwork.writePoll(*reflector);
+			remoteNetwork.writePoll(*reflector);
+			remoteNetwork.writePoll(*reflector);
 
-			LogMessage("Statically linked to reflector %u", *it);
+			LogMessage("Statically linked to reflector %u", it);
 		}
 	}
 
@@ -340,7 +334,7 @@ int CNXDNGateway::run()
 		unsigned int len = remoteNetwork.readData(buffer, 200U, addr, addrLen);
 		while (len > 0U) {
 			// If we're linked and it's from the right place, send it on
-			if (currentAddrLen > 0U && CUDPSocket::match(currentAddr, addr)) {
+			if (currentTG.isUsed() && CNXDNNetwork::match(addr, currentTG)) {
 				// Don't pass reflector control data through to the MMDVM
 				if (::memcmp(buffer, "NXDND", 5U) == 0) {
 					unsigned short dstTG = 0U;
@@ -349,29 +343,27 @@ int CNXDNGateway::run()
 
 					bool grp = (buffer[9U] & 0x01U) == 0x01U;
 
-					if (grp && currentTG == dstTG) {
+					if (grp && currentTG.m_id == dstTG) {
 						if (!isVoiceBusy())
 							localNetwork->write(buffer + 10U, len - 10U);
 					}
 
 					hangTimer.start();
 				}
-			} else if (currentTG == 0U) {
+			} else if (currentTG.isEmpty()) {
 				bool poll = false;
 
 				// We weren't really connected yet, but we got a reply from a poll, or some data
 				if ((::memcmp(buffer, "NXDND", 5U) == 0) || (poll = (::memcmp(buffer, "NXDNP", 5U) == 0))) {
 					// Find the static TG that this audio data/poll belongs to
-					for (std::vector<CStaticTG>::const_iterator it = staticTGs.cbegin(); it != staticTGs.cend(); ++it) {
-						if (CUDPSocket::match(addr, (*it).m_addr)) {
-							currentTG = (*it).m_tg;
+					for (const auto& it : staticTGs) {
+						if (CNXDNNetwork::match(addr, it)) {
+							currentTG = it;
 							break;
 						}
 					}
 
-					if (currentTG > 0U) {
-						currentAddr     = addr;
-						currentAddrLen  = addrLen;
+					if (currentTG.isUsed()) {
 						currentIsStatic = true;
 
 						unsigned short dstTG = 0U;
@@ -380,12 +372,12 @@ int CNXDNGateway::run()
 
 						bool grp = (buffer[9U] & 0x01U) == 0x01U;
 
-						if (grp && currentTG == dstTG && !poll) {
+						if (grp && (currentTG.m_id == dstTG) && !poll) {
 							if (!isVoiceBusy())
 								localNetwork->write(buffer + 10U, len - 10U);
 						}
 
-						LogMessage("Switched to reflector %u due to network activity", currentTG);
+						LogMessage("Switched to reflector %u due to network activity", currentTG.m_id);
 
 						hangTimer.setTimeout(netHangTime);
 						hangTimer.start();
@@ -409,56 +401,51 @@ int CNXDNGateway::run()
 				dstTG  = (buffer[10U] << 8) & 0xFF00U;
 				dstTG |= (buffer[11U] << 0) & 0x00FFU;
 
-				if (dstTG != currentTG) {
-					if (currentAddrLen > 0U) {
+				if (dstTG != currentTG.m_id) {
+					if (currentTG.isUsed()) {
 						std::string callsign = lookup->find(srcId);
-						LogMessage("Unlinking from reflector %u by %s", currentTG, callsign.c_str());
+						LogMessage("Unlinking from reflector %u by %s", currentTG.m_id, callsign.c_str());
 
 						if (!currentIsStatic) {
-							remoteNetwork.writeUnlink(currentAddr, currentAddrLen, currentTG);
-							remoteNetwork.writeUnlink(currentAddr, currentAddrLen, currentTG);
-							remoteNetwork.writeUnlink(currentAddr, currentAddrLen, currentTG);
+							remoteNetwork.writeUnlink(currentTG);
+							remoteNetwork.writeUnlink(currentTG);
+							remoteNetwork.writeUnlink(currentTG);
 						}
 
 						hangTimer.stop();
 					}
 
-					const CStaticTG* found = nullptr;
-					for (std::vector<CStaticTG>::const_iterator it = staticTGs.cbegin(); it != staticTGs.cend(); ++it) {
-						if (dstTG == (*it).m_tg) {
-							found = &(*it);
+					CNXDNReflector found;
+					for (const auto& it : staticTGs) {
+						if (dstTG == it.m_id) {
+							found = it;
 							break;
 						}
 					}
 
-					if (found == nullptr) {
+					if (found.isEmpty()) {
 						CNXDNReflector* refl = reflectors.find(dstTG);
 						if (refl != nullptr) {
-							currentTG       = dstTG;
-							currentAddr     = refl->m_addr;
-							currentAddrLen  = refl->m_addrLen;
+							currentTG       = *refl;
 							currentIsStatic = false;
 						} else {
-							currentTG       = dstTG;
-							currentAddrLen  = 0U;
+							currentTG.reset();
 							currentIsStatic = false;
 						}
 					} else {
-						currentTG       = found->m_tg;
-						currentAddr     = found->m_addr;
-						currentAddrLen  = found->m_addrLen;
+						currentTG       = found;
 						currentIsStatic = true;
 					}
 
 					// Link to the new reflector
-					if (currentAddrLen > 0U) {
+					if (currentTG.isUsed()) {
 						std::string callsign = lookup->find(srcId);
-						LogMessage("Switched to reflector %u due to RF activity from %s", currentTG, callsign.c_str());
+						LogMessage("Switched to reflector %u due to RF activity from %s", currentTG.m_id, callsign.c_str());
 
 						if (!currentIsStatic) {
-							remoteNetwork.writePoll(currentAddr, currentAddrLen, currentTG);
-							remoteNetwork.writePoll(currentAddr, currentAddrLen, currentTG);
-							remoteNetwork.writePoll(currentAddr, currentAddrLen, currentTG);
+							remoteNetwork.writePoll(currentTG);
+							remoteNetwork.writePoll(currentTG);
+							remoteNetwork.writePoll(currentTG);
 						}
 
 						hangTimer.setTimeout(rfHangTime);
@@ -468,10 +455,10 @@ int CNXDNGateway::run()
 					}
 
 					if (m_voice != nullptr) {
-						if (currentAddrLen == 0U)
+						if (currentTG.isEmpty())
 							m_voice->unlinked();
 						else
-							m_voice->linkedTo(currentTG);
+							m_voice->linkedTo(currentTG.m_id);
 					}
 				}
 
@@ -506,8 +493,8 @@ int CNXDNGateway::run()
 			}
 
 			// If we're linked and we have a network, send it on
-			if (currentAddrLen > 0U) {
-				remoteNetwork.writeData(buffer, len, srcId, dstTG, grp, currentAddr, currentAddrLen);
+			if (currentTG.isUsed()) {
+				remoteNetwork.writeData(buffer, len, srcId, dstTG, grp, currentTG);
 				hangTimer.start();
 			}
 
@@ -529,54 +516,49 @@ int CNXDNGateway::run()
 				if (::memcmp(buffer + 0U, "TalkGroup", 9U) == 0) {
 					unsigned int tg = ((strlen((char*)buffer + 0U) > 10) ? (unsigned int)::atoi((char*)(buffer + 10U)) : 9999);
 
-					if (tg != currentTG) {
-						if (currentAddrLen > 0U) {
-							LogMessage("Unlinked from reflector %u by remote command", currentTG);
+					if (tg != currentTG.m_id) {
+						if (currentTG.isUsed()) {
+							LogMessage("Unlinked from reflector %u by remote command", currentTG.m_id);
 
 							if (!currentIsStatic) {
-								remoteNetwork.writeUnlink(currentAddr, currentAddrLen, currentTG);
-								remoteNetwork.writeUnlink(currentAddr, currentAddrLen, currentTG);
-								remoteNetwork.writeUnlink(currentAddr, currentAddrLen, currentTG);
+								remoteNetwork.writeUnlink(currentTG);
+								remoteNetwork.writeUnlink(currentTG);
+								remoteNetwork.writeUnlink(currentTG);
 							}
 
 							hangTimer.stop();
 						}
 
-						const CStaticTG* found = nullptr;
-						for (std::vector<CStaticTG>::const_iterator it = staticTGs.cbegin(); it != staticTGs.cend(); ++it) {
-							if (tg == (*it).m_tg) {
-								found = &(*it);
+						CNXDNReflector found;
+						for (const auto& it : staticTGs) {
+							if (tg == it.m_id) {
+								found = it;
 								break;
 							}
 						}
 
-						if (found == nullptr) {
+						if (found.isEmpty()) {
 							CNXDNReflector* refl = reflectors.find(tg);
 							if (refl != nullptr) {
-								currentTG       = tg;
-								currentAddr     = refl->m_addr;
-								currentAddrLen  = refl->m_addrLen;
+								currentTG       = *refl;
 								currentIsStatic = false;
 							} else {
-								currentTG       = tg;
-								currentAddrLen  = 0U;
+								currentTG.reset();
 								currentIsStatic = false;
 							}
 						} else {
-							currentTG       = found->m_tg;
-							currentAddr     = found->m_addr;
-							currentAddrLen  = found->m_addrLen;
+							currentTG = found;
 							currentIsStatic = true;
 						}
 
 						// Link to the new reflector
-						if (currentAddrLen > 0U) {
-							LogMessage("Switched to reflector %u by remote command", currentTG);
+						if (currentTG.isUsed()) {
+							LogMessage("Switched to reflector %u by remote command", currentTG.m_id);
 
 							if (!currentIsStatic) {
-								remoteNetwork.writePoll(currentAddr, currentAddrLen, currentTG);
-								remoteNetwork.writePoll(currentAddr, currentAddrLen, currentTG);
-								remoteNetwork.writePoll(currentAddr, currentAddrLen, currentTG);
+								remoteNetwork.writePoll(currentTG);
+								remoteNetwork.writePoll(currentTG);
+								remoteNetwork.writePoll(currentTG);
 							}
 
 							hangTimer.setTimeout(rfHangTime);
@@ -586,25 +568,31 @@ int CNXDNGateway::run()
 						}
 
 						if (m_voice != nullptr) {
-							if (currentAddrLen == 0U)
+							if (currentTG.isEmpty())
 								m_voice->unlinked();
 							else
-								m_voice->linkedTo(currentTG);
+								m_voice->linkedTo(currentTG.m_id);
 						}
 					}
 				} else if (::memcmp(buffer + 0U, "status", 6U) == 0) {
-					std::string state = std::string("nxdn:") + ((currentAddrLen > 0) ? "conn" : "disc");
+					std::string state = std::string("nxdn:") + (currentTG.isUsed() ? "conn" : "disc");
 					remoteSocket->write((unsigned char*)state.c_str(), (unsigned int)state.length(), addr, addrLen);
 				} else if (::memcmp(buffer + 0U, "host", 4U) == 0) {
-					std::string ref;
+					std::string host = "nxdn:\"NONE\"";
 
-					if (currentAddrLen > 0U) {
-						char buffer[INET6_ADDRSTRLEN];
-						if (::getnameinfo((struct sockaddr*)&currentAddr, currentAddrLen, buffer, sizeof(buffer), 0, 0, NI_NUMERICHOST | NI_NUMERICSERV) == 0)
-							ref = std::string(buffer);
+					if (currentTG.isUsed()) {
+						if (remoteNetwork.hasIPv6() && currentTG.hasIPv6()) {
+							char buffer[100U];
+							if (::getnameinfo((struct sockaddr*)&currentTG.IPv6.m_addr, currentTG.IPv6.m_addrLen, buffer, sizeof(buffer), 0, 0, NI_NUMERICHOST | NI_NUMERICSERV) == 0)
+								host = "p25:\"" + std::string(buffer) + "\"";
+						}
+						else if (remoteNetwork.hasIPv4() && currentTG.hasIPv4()) {
+							char buffer[100U];
+							if (::getnameinfo((struct sockaddr*)&currentTG.IPv4.m_addr, currentTG.IPv4.m_addrLen, buffer, sizeof(buffer), 0, 0, NI_NUMERICHOST | NI_NUMERICSERV) == 0)
+								host = "p25:\"" + std::string(buffer) + "\"";
+						}
 					}
 
-					std::string host = std::string("nxdn:\"") + ((ref.length() == 0) ? "NONE" : ref) + "\"";
 					remoteSocket->write((unsigned char*)host.c_str(), (unsigned int)host.length(), addr, addrLen);
 				} else {
 					CUtils::dump("Invalid remote command received", buffer, res);
@@ -624,35 +612,35 @@ int CNXDNGateway::run()
 
 		hangTimer.clock(ms);
 		if (hangTimer.isRunning() && hangTimer.hasExpired()) {
-			if (currentAddrLen > 0U) {
-				LogMessage("Unlinking from %u due to inactivity", currentTG);
+			if (currentTG.isUsed()) {
+				LogMessage("Unlinking from %u due to inactivity", currentTG.m_id);
 
 				if (!currentIsStatic) {
-					remoteNetwork.writeUnlink(currentAddr, currentAddrLen, currentTG);
-					remoteNetwork.writeUnlink(currentAddr, currentAddrLen, currentTG);
-					remoteNetwork.writeUnlink(currentAddr, currentAddrLen, currentTG);
+					remoteNetwork.writeUnlink(currentTG);
+					remoteNetwork.writeUnlink(currentTG);
+					remoteNetwork.writeUnlink(currentTG);
 				}
 
 				if (m_voice != nullptr)
 					m_voice->unlinked();
 
-				currentAddrLen = 0U;
+				currentTG.reset();
 
 				hangTimer.stop();
 			}
 
-			currentTG = 0U;
+			currentTG.reset();
 		}
 
 		pollTimer.clock(ms);
 		if (pollTimer.isRunning() && pollTimer.hasExpired()) {
 			// Poll the static TGs
-			for (std::vector<CStaticTG>::const_iterator it = staticTGs.cbegin(); it != staticTGs.cend(); ++it)
-				remoteNetwork.writePoll((*it).m_addr, (*it).m_addrLen, (*it).m_tg);
+			for (const auto& it : staticTGs)
+				remoteNetwork.writePoll(it);
 
 			// Poll the dynamic TG
-			if (!currentIsStatic && currentAddrLen > 0U)
-				remoteNetwork.writePoll(currentAddr, currentAddrLen, currentTG);
+			if (!currentIsStatic && currentTG.isUsed())
+				remoteNetwork.writePoll(currentTG);
 
 			pollTimer.start();
 		}
