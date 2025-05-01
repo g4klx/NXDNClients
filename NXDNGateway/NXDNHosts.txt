@@ -331,7 +331,7 @@
 20201	stargate-dmr.net	41400
 
 # 20210 GR-Hellas-ADN-NXDN
-20210	173.212.222.148 41400
+20210	gr-hellas-adn-nxdn.ddns.net 41400
 
 # 20211 GR-Lamia-DV-NXDN
 20211	reflector.freedmr.gr	41404
