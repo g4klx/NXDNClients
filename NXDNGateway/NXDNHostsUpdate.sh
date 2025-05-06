@@ -37,7 +37,7 @@ then
 	exit 1
 fi
 
-# Download P25Hosts.json file
+# Download the NXDNHosts.json file
 curl https://dvref.com/nxdn/reflectors/?format=json > ${NXDNHOSTS}
 
 exit 0
