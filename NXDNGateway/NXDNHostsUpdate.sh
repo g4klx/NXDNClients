@@ -22,7 +22,7 @@
 #
 # Full path to the NXDNHosts JSON file
 #
-P25HOSTS=/path/to/NXDNHosts.json
+NXDNHOSTS=/path/to/NXDNHosts.json
 
 ###############################################################################
 #
