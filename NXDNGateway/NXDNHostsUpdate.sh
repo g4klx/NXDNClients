@@ -38,6 +38,6 @@ then
 fi
 
 # Download the NXDNHosts.json file
-curl https://dvref.com/nxdn/reflectors/?format=json > ${NXDNHOSTS}
+curl -X 'GET' 'https://dvref.com/nxdn/reflectors/' -H 'accept: */*' > ${NXDNHOSTS}
 
 exit 0
