@@ -38,6 +38,6 @@ then
 fi
 
 # Download the NXDNHosts.txt file
-curl https://dvref.com/downloads/NXDNHosts-resolved.txt > ${NXDNHOSTS}
+curl --fail --silent -S -L -o  ${NXDNHOSTS} -A "NXDNGateway - G4KLX" https://hostfiles.refcheck.radio/NXDNHosts.txt
 
 exit 0
