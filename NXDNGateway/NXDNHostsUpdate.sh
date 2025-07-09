@@ -38,6 +38,6 @@ then
 fi
 
 # Download the NXDNHosts.json file
-curl -X 'GET' 'https://dvref.com/nxdn/reflectors/' -H 'accept: */*' > ${NXDNHOSTS}
+curl --fail --silent -S -L -o  ${NXDNHOSTS} -A "NXDNGateway - G4KLX" https://hostfiles.refcheck.radio/NXDNHosts.json
 
 exit 0
