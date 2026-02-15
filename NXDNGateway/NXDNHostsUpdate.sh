@@ -20,7 +20,6 @@
 #
 ###############################################################################
 #
-# Full path to the NXDNHosts JSON file
 #
 NXDNHOSTS=/path/to/NXDNHosts.json
 
