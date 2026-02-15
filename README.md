@@ -15,8 +15,13 @@ line. The Parrot takes the UDP port number to listen on as an argument.
 The MMDVM .ini file should have the IP address and port number of the client in
 the [NXDN Network] settings.
 
+The file that contains the information about the reachable reflectors is held in
+the NXDNHosts.txt file that should be donwloaded from the DVRef.com web site. A
+script to do this under Linux is included. This is handled automatically in WPSD
+and Pi-Star.
+
 These programs build on 32-bit and 64-bit Linux as well as on Windows using
-Visual Studio 2019 on x86 and x64.
+Visual Studio 2022 on x86 and x64.
 
 This software is licenced under the GPL v2 and is primarily intended for amateur and
 educational use.
