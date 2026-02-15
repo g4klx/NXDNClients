@@ -1,5 +1,5 @@
 /*
-*   Copyright (C) 2016,2018,2023,2024 by Jonathan Naylor G4KLX
+*   Copyright (C) 2016,2018,2023,2024,2026 by Jonathan Naylor G4KLX
 *
 *   This program is free software; you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -20,9 +20,9 @@
 #define	NXDNGateway_H
 
 #include "NXDNNetwork.h"
+#include "Reflectors.h"
 #include "APRSWriter.h"
 #include "GPSHandler.h"
-#include "Reflectors.h"
 #include "Voice.h"
 #include "Timer.h"
 #include "Conf.h"
@@ -43,13 +43,6 @@
 #include <winsock.h>
 #endif
 
-class CStaticTG {
-public:
-	unsigned short   m_tg;
-	sockaddr_storage m_addr;
-	unsigned int     m_addrLen;
-};
-
 class CNXDNGateway
 {
 public:
@@ -64,14 +57,12 @@ private:
 	CGPSHandler*   m_gps;
 	CVoice*        m_voice;
 	CNXDNNetwork*  m_remoteNetwork;
-	unsigned short m_currentTG;
-	unsigned int   m_currentAddrLen;
-	sockaddr_storage m_currentAddr;
+	CReflectors*   m_reflectors;
+	std::vector<CNXDNReflector> m_staticTGs;
 	bool           m_currentIsStatic;
+	CNXDNReflector m_currentTG;
 	CTimer         m_hangTimer;
 	unsigned int   m_rfHangTime;
-	CReflectors*   m_reflectors;	
-	std::vector<CStaticTG> m_staticTGs;
 
 	void createGPS();
 
