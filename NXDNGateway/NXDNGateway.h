@@ -72,6 +72,7 @@ private:
 	void writeJSONLinking(const std::string& reason, unsigned short tg);
 	void writeJSONUnlinked(const std::string& reason);
 	void writeJSONRelinking(unsigned short tg);
+	void writeJSONFailed(const std::string& reason, unsigned short tg);
 
 	void writeCommand(const std::string& command);
 
