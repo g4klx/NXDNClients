@@ -318,6 +318,9 @@ int CNXDNGateway::run()
 
 			LogMessage("Statically linked to reflector %u", *it);
 			writeJSONLinking("startup", *it);
+		} else {
+			LogWarning("Unable to find static reflector %u", *it);
+			writeJSONFailed("startup", *it);
 		}
 	}
 
@@ -451,6 +454,8 @@ int CNXDNGateway::run()
 						m_hangTimer.setTimeout(m_rfHangTime);
 						m_hangTimer.start();
 					} else {
+						LogWarning("Unable to find reflector %u requested by RF activity", dstTG);
+						writeJSONFailed("user", dstTG);
 						m_hangTimer.stop();
 					}
 
@@ -684,6 +689,8 @@ void CNXDNGateway::writeCommand(const std::string& command)
 				m_hangTimer.setTimeout(m_rfHangTime);
 				m_hangTimer.start();
 			} else {
+				LogWarning("Unable to find reflector %u requested by remote command", tg);
+				writeJSONFailed("remote", tg);
 				m_hangTimer.stop();
 			}
 
@@ -766,6 +773,18 @@ void CNXDNGateway::writeJSONRelinking(unsigned short tg)
 
 	json["timestamp"] = CUtils::createTimestamp();
 	json["action"]    = "relinking";
+	json["talkgroup"] = int(tg);
+
+	WriteJSON("link", json, true);
+}
+
+void CNXDNGateway::writeJSONFailed(const std::string& reason, unsigned short tg)
+{
+	nlohmann::json json;
+
+	json["timestamp"] = CUtils::createTimestamp();
+	json["action"]    = "failed";
+	json["reason"]    = reason;
 	json["talkgroup"] = int(tg);
 
 	WriteJSON("link", json, true);
