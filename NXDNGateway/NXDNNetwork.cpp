@@ -115,10 +115,10 @@ bool CNXDNNetwork::writeData(const unsigned char* data, unsigned int length, uns
 	if (m_debug)
 		CUtils::dump(1U, "NXDN Network Data Sent", buffer, 43U);
 
-	if (address.hasIPv6() && hasIPv6()) {
-		return m_socket6->write(buffer, 43U, address.IPv6.m_addr, address.IPv6.m_addrLen);
-	} else if (address.hasIPv4() && hasIPv4()) {
+	if (address.hasIPv4() && hasIPv4()) {
 		return m_socket4->write(buffer, 43U, address.IPv4.m_addr, address.IPv4.m_addrLen);
+	} else if (address.hasIPv6() && hasIPv6()) {
+		return m_socket6->write(buffer, 43U, address.IPv6.m_addr, address.IPv6.m_addrLen);
 	} else {
 		LogError("No suitable IP address to write data to TG%u", address.m_id);
 		return false;
@@ -144,10 +144,10 @@ bool CNXDNNetwork::writePoll(const CNXDNReflector& address)
 	if (m_debug)
 		CUtils::dump(1U, "NXDN Network Poll Sent", data, 17U);
 
-	if (address.hasIPv6() && hasIPv6()) {
-		return m_socket6->write(data, 17U, address.IPv6.m_addr, address.IPv6.m_addrLen);
-	} else if (address.hasIPv4() && hasIPv4()) {
+	if (address.hasIPv4() && hasIPv4()) {
 		return m_socket4->write(data, 17U, address.IPv4.m_addr, address.IPv4.m_addrLen);
+	} else if (address.hasIPv6() && hasIPv6()) {
+		return m_socket6->write(data, 17U, address.IPv6.m_addr, address.IPv6.m_addrLen);
 	} else {
 		LogError("No suitable IP address to poll TG%u", address.m_id);
 		return false;
@@ -173,10 +173,10 @@ bool CNXDNNetwork::writeUnlink(const CNXDNReflector& address)
 	if (m_debug)
 		CUtils::dump(1U, "NXDN Network Unlink Sent", data, 17U);
 
-	if (address.hasIPv6() && hasIPv6()) {
-		return m_socket6->write(data, 17U, address.IPv6.m_addr, address.IPv6.m_addrLen);
-	} else if (address.hasIPv4() && hasIPv4()) {
+	if (address.hasIPv4() && hasIPv4()) {
 		return m_socket4->write(data, 17U, address.IPv4.m_addr, address.IPv4.m_addrLen);
+	} else if (address.hasIPv6() && hasIPv6()) {
+		return m_socket6->write(data, 17U, address.IPv6.m_addr, address.IPv6.m_addrLen);
 	} else {
 		LogError("No suitable IP address to unlink from TG%u", address.m_id);
 		return false;
