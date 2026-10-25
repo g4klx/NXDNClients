@@ -350,11 +350,9 @@ int CNXDNGateway::run()
 					m_hangTimer.start();
 				}
 			} else if (m_currentTG.isEmpty()) {
-				bool poll = false;
-
-				// We weren't really connected yet, but we got a reply from a poll, or some data
-				if ((::memcmp(buffer, "NXDND", 5U) == 0) || (poll = (::memcmp(buffer, "NXDNP", 5U) == 0))) {
-					// Find the static TG that this audio data/poll belongs to
+				// We weren't really connected yet, but we got some real voice data (poll acks don't count - they arrive from all static TGs constantly and would just race on network latency)
+				if (::memcmp(buffer, "NXDND", 5U) == 0) {
+					// Find the static TG that this audio data belongs to
 					for (std::vector<CNXDNReflector>::const_iterator it = m_staticTGs.cbegin(); it != m_staticTGs.cend(); ++it) {
 						if (CNXDNNetwork::match(addr, *it)) {
 							m_currentTG = *it;
@@ -371,7 +369,7 @@ int CNXDNGateway::run()
 
 						bool grp = (buffer[9U] & 0x01U) == 0x01U;
 
-						if (grp && m_currentTG.m_id == dstTG && !poll) {
+						if (grp && m_currentTG.m_id == dstTG) {
 							if (!isVoiceBusy())
 								localNetwork->write(buffer + 10U, len - 10U);
 						}
