@@ -63,6 +63,7 @@ private:
 	CNXDNReflector m_currentTG;
 	CTimer         m_hangTimer;
 	unsigned int   m_rfHangTime;
+	unsigned short m_linkedTo;
 
 	void createGPS();
 
@@ -80,4 +81,3 @@ private:
 };
 
 #endif
-
