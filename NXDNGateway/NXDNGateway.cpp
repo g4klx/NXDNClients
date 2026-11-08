@@ -769,7 +769,6 @@ void CNXDNGateway::writeJSONLinking(const std::string& reason, unsigned short tg
 	json["timestamp"] = CUtils::createTimestamp();
 	json["action"]    = "linking";
 	json["reason"]    = reason;
-	json["protocol"]  = "nxdn";
 	json["talkgroup"] = int(tg);
 
 	WriteJSON("link", json, true);
@@ -792,7 +791,6 @@ void CNXDNGateway::writeJSONRelinking(unsigned short tg)
 
 	json["timestamp"] = CUtils::createTimestamp();
 	json["action"]    = "relinking";
-	json["protocol"]  = "nxdn";
 	json["talkgroup"] = int(tg);
 
 	WriteJSON("link", json, true);
