@@ -151,7 +151,8 @@ m_staticTGs(),
 m_currentIsStatic(false),
 m_currentTG(),
 m_hangTimer(1000U),
-m_rfHangTime(0U)
+m_rfHangTime(0U),
+m_linkedTo(0U)
 {
 	CUDPSocket::startup();
 }
@@ -334,6 +335,13 @@ int CNXDNGateway::run()
 		while (len > 0U) {
 			// If we're linked and it's from the right place, send it on
 			if (m_currentTG.isUsed() && CNXDNNetwork::match(addr, m_currentTG)) {
+				
+				// NXDNP or NXDND indicates the link is established
+				if (m_linkedTo != m_currentTG.m_id) {
+					writeJSONLinking("established", m_currentTG.m_id);
+					m_linkedTo = m_currentTG.m_id;
+				}
+
 				// Don't pass reflector control data through to the MMDVM
 				if (::memcmp(buffer, "NXDND", 5U) == 0) {
 					unsigned short dstTG = 0U;
@@ -362,6 +370,8 @@ int CNXDNGateway::run()
 
 					if (m_currentTG.isUsed()) {
 						m_currentIsStatic = true;
+						
+						m_linkedTo = m_currentTG.m_id;
 
 						unsigned short dstTG = 0U;
 						dstTG |= (buffer[7U] << 8) & 0xFF00U;
@@ -413,6 +423,7 @@ int CNXDNGateway::run()
 						}
 
 						m_hangTimer.stop();
+						m_linkedTo = 0U;
 					}
 
 					CNXDNReflector found;
@@ -538,6 +549,7 @@ int CNXDNGateway::run()
 				m_currentTG.reset();
 
 				m_hangTimer.stop();
+				m_linkedTo = 0U;
 			}
 
 			m_currentTG.reset();
@@ -656,6 +668,7 @@ void CNXDNGateway::writeCommand(const std::string& command)
 				}
 
 				m_hangTimer.stop();
+				m_linkedTo = 0U;
 			}
 
 			CNXDNReflector found;
@@ -756,6 +769,7 @@ void CNXDNGateway::writeJSONLinking(const std::string& reason, unsigned short tg
 	json["timestamp"] = CUtils::createTimestamp();
 	json["action"]    = "linking";
 	json["reason"]    = reason;
+	json["protocol"]  = "nxdn";
 	json["talkgroup"] = int(tg);
 
 	WriteJSON("link", json, true);
@@ -778,6 +792,7 @@ void CNXDNGateway::writeJSONRelinking(unsigned short tg)
 
 	json["timestamp"] = CUtils::createTimestamp();
 	json["action"]    = "relinking";
+	json["protocol"]  = "nxdn";
 	json["talkgroup"] = int(tg);
 
 	WriteJSON("link", json, true);
