@@ -385,7 +385,7 @@ int CNXDNGateway::run()
 						}
 
 						writeJSONLinking("network", m_currentTG.m_id);
-						LogMessage("Switched to reflector %u due to network activity", m_currentTG.m_id);
+						LogMessage("Call on static talkgroup %u", m_currentTG.m_id);
 
 						m_hangTimer.setTimeout(netHangTime);
 						m_hangTimer.start();
@@ -533,18 +533,29 @@ int CNXDNGateway::run()
 
 		m_hangTimer.clock(ms);
 		if (m_hangTimer.isRunning() && m_hangTimer.hasExpired()) {
-			if (m_currentTG.isUsed()) {
+			if (m_currentTG.isUsed() && m_currentIsStatic) {
+				// A static talkgroup is never unlinked: the call ended,
+				// the link stays.
+				LogMessage("Call on static talkgroup %u ended, still linked to the static talkgroups", m_currentTG.m_id);
+				writeJSONLinking("static", m_currentTG.m_id);
+
+				m_hangTimer.stop();
+				m_linkedTo = 0U;
+			} else if (m_currentTG.isUsed()) {
 				LogMessage("Unlinking from %u due to inactivity", m_currentTG.m_id);
 				writeJSONUnlinked("timer");
 
-				if (!m_currentIsStatic) {
-					m_remoteNetwork->writeUnlink(m_currentTG);
-					m_remoteNetwork->writeUnlink(m_currentTG);
-					m_remoteNetwork->writeUnlink(m_currentTG);
-				}
+				m_remoteNetwork->writeUnlink(m_currentTG);
+				m_remoteNetwork->writeUnlink(m_currentTG);
+				m_remoteNetwork->writeUnlink(m_currentTG);
 
 				if (m_voice != nullptr)
 					m_voice->unlinked();
+
+				if (!m_staticTGs.empty()) {
+					LogMessage("Still linked to the static talkgroups");
+					writeJSONLinking("static", m_staticTGs.front().m_id);
+				}
 
 				m_currentTG.reset();
 
