@@ -737,7 +737,7 @@ void CNXDNGateway::writeCommand(const std::string& command)
 		std::string ref;
 
 		if (m_currentTG.isUsed()) {
-			if (m_remoteNetwork->hasIPv6() && m_currentTG.hasIPv6()) {
+			if (m_remoteNetwork->useIPv6(m_currentTG)) {
 				char buffer[100U];
 				if (::getnameinfo((struct sockaddr*)&m_currentTG.IPv6.m_addr, m_currentTG.IPv6.m_addrLen, buffer, sizeof(buffer), 0, 0, NI_NUMERICHOST | NI_NUMERICSERV) == 0)
 					ref = std::string(buffer);
