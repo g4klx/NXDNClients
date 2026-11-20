@@ -28,7 +28,10 @@ CNXDNNetwork::CNXDNNetwork(unsigned short port, const std::string& callsign, boo
 m_callsign(callsign),
 m_socket4(nullptr),
 m_socket6(nullptr),
-m_debug(debug)
+m_debug(debug),
+m_v6Addr(),
+m_v6Checked(0),
+m_v6Ok(false)
 {
 	assert(port > 0U);
 
@@ -115,7 +118,7 @@ bool CNXDNNetwork::writeData(const unsigned char* data, unsigned int length, uns
 	if (m_debug)
 		CUtils::dump(1U, "NXDN Network Data Sent", buffer, 43U);
 
-	if (address.hasIPv6() && hasIPv6()) {
+	if (useIPv6(address)) {
 		return m_socket6->write(buffer, 43U, address.IPv6.m_addr, address.IPv6.m_addrLen);
 	} else if (address.hasIPv4() && hasIPv4()) {
 		return m_socket4->write(buffer, 43U, address.IPv4.m_addr, address.IPv4.m_addrLen);
@@ -144,7 +147,7 @@ bool CNXDNNetwork::writePoll(const CNXDNReflector& address)
 	if (m_debug)
 		CUtils::dump(1U, "NXDN Network Poll Sent", data, 17U);
 
-	if (address.hasIPv6() && hasIPv6()) {
+	if (useIPv6(address)) {
 		return m_socket6->write(data, 17U, address.IPv6.m_addr, address.IPv6.m_addrLen);
 	} else if (address.hasIPv4() && hasIPv4()) {
 		return m_socket4->write(data, 17U, address.IPv4.m_addr, address.IPv4.m_addrLen);
@@ -173,7 +176,7 @@ bool CNXDNNetwork::writeUnlink(const CNXDNReflector& address)
 	if (m_debug)
 		CUtils::dump(1U, "NXDN Network Unlink Sent", data, 17U);
 
-	if (address.hasIPv6() && hasIPv6()) {
+	if (useIPv6(address)) {
 		return m_socket6->write(data, 17U, address.IPv6.m_addr, address.IPv6.m_addrLen);
 	} else if (address.hasIPv4() && hasIPv4()) {
 		return m_socket4->write(data, 17U, address.IPv4.m_addr, address.IPv4.m_addrLen);
@@ -259,4 +262,26 @@ bool CNXDNNetwork::match(const sockaddr_storage& address, const CNXDNReflector& 
 			LogError("Trying to match an unknown protocol family - %d", address.ss_family);
 			return false;
 	}
+}
+
+bool CNXDNNetwork::useIPv6(const CNXDNReflector& address)
+{
+	if (!address.hasIPv6() || !hasIPv6())
+		return false;
+
+	// The IPv6 socket opens whether or not this host has IPv6 connectivity;
+	// without a route every packet is refused (ENETUNREACH) and the link is
+	// lost, so IPv4 is used instead.
+	time_t now = ::time(nullptr);
+	bool same = m_v6Checked != 0 && CUDPSocket::match(address.IPv6.m_addr, m_v6Addr);
+	if (!same || (now - m_v6Checked) >= 60) {
+		bool ok = CUDPSocket::isReachable(address.IPv6.m_addr, address.IPv6.m_addrLen);
+		if (!ok && (!same || m_v6Ok) && address.hasIPv4())
+			LogMessage("No IPv6 route to the reflector, using IPv4");
+		::memcpy(&m_v6Addr, &address.IPv6.m_addr, sizeof(sockaddr_storage));
+		m_v6Checked = now;
+		m_v6Ok = ok;
+	}
+
+	return m_v6Ok;
 }
